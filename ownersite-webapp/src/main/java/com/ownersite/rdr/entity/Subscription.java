@@ -12,6 +12,8 @@ public class Subscription extends BaseEntity{
 	private String subscriptionname;
 	private String subscriptiondec;
 	private List<Services> services;
+	private long price;
+
 	public String getSubscriptionname(){
 		return subscriptionname;
 	}
@@ -34,6 +36,14 @@ public class Subscription extends BaseEntity{
 
 	public void setServices(List<Services> services) {
 		this.services = services;
+	}
+
+	public long getPrice() {
+		return price;
+	}
+
+	public void setPrice(long price) {
+		this.price = price;
 	}
 
 	@Override

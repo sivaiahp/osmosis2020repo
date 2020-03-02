@@ -1,9 +1,7 @@
 package com.ownersite.rdr.entity;
 
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Cacheable(false)
@@ -13,6 +11,9 @@ public class CustomerSubscription extends BaseEntity{
 	private String subscriptiondec;
 	private java.util.Date customer_sub_startdate;
 	private java.util.Date customer_sub_enddate;
+    @ManyToOne
+    @JoinColumn(name = "id")
+	private Customer customer;
 
 	public String getSubscriptionname(){
 		return subscriptionname;
@@ -44,6 +45,14 @@ public class CustomerSubscription extends BaseEntity{
 
 	public void setCustomer_sub_enddate(java.util.Date customer_sub_enddate){
 		this.customer_sub_enddate=customer_sub_enddate;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	@Override

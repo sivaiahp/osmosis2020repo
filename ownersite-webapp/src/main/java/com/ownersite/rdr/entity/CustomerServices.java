@@ -1,9 +1,7 @@
 package com.ownersite.rdr.entity;
 
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Cacheable(false)
@@ -13,6 +11,17 @@ public class CustomerServices extends BaseEntity{
 	private String service_analysis_desc;
 	private String service_repairs_desc;
 	private double service_cost;
+    @ManyToOne
+    @JoinColumn(name = "id")
+	private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+	private Dealer dealer;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+	private Service service;
 
 	public String getService_cust_complaints(){
 		return service_cust_complaints;
@@ -44,6 +53,30 @@ public class CustomerServices extends BaseEntity{
 
 	public void setService_cost(double service_cost){
 		this.service_cost=service_cost;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Dealer getDealer() {
+		return dealer;
+	}
+
+	public void setDealer(Dealer dealer) {
+		this.dealer = dealer;
+	}
+
+	public Service getService() {
+		return service;
+	}
+
+	public void setService(Service service) {
+		this.service = service;
 	}
 
 	@Override

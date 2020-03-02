@@ -1,8 +1,6 @@
 package com.ownersite.rdr.entity;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Cacheable(false)
@@ -12,6 +10,14 @@ public class CustomerEnquiry extends BaseEntity{
 	private java.util.Date enquiry_resolved_date;
 	private String enquiry_question;
 	private String enquiry_answer;
+
+	@ManyToOne
+	@JoinColumn(name = "id")
+	private Customer customer;
+
+	@ManyToOne
+	@JoinColumn(name = "id")
+	private Dealer dealer;
 
 	public java.util.Date getEnquiry_created_date(){
 		return enquiry_created_date;
@@ -43,6 +49,22 @@ public class CustomerEnquiry extends BaseEntity{
 
 	public void setEnquiry_answer(String enquiry_answer){
 		this.enquiry_answer=enquiry_answer;
+	}
+
+	public Dealer getDealer() {
+		return dealer;
+	}
+
+	public void setDealer(Dealer dealer) {
+		this.dealer = dealer;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	@Override

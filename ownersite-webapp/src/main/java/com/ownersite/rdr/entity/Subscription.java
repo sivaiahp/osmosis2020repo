@@ -1,8 +1,6 @@
 package com.ownersite.rdr.entity;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -11,7 +9,8 @@ import java.util.List;
 public class Subscription extends BaseEntity{
 	private String subscriptionname;
 	private String subscriptiondec;
-	private List<Services> services;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id", cascade = CascadeType.ALL)
+	private List<Service> services;
 	private long price;
 
 	public String getSubscriptionname(){
@@ -30,11 +29,11 @@ public class Subscription extends BaseEntity{
 		this.subscriptiondec=subscriptiondec;
 	}
 
-	public List<Services> getServices() {
+	public List<Service> getServices() {
 		return services;
 	}
 
-	public void setServices(List<Services> services) {
+	public void setServices(List<Service> services) {
 		this.services = services;
 	}
 

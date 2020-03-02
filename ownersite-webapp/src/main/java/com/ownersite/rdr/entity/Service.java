@@ -6,8 +6,8 @@ import javax.persistence.Table;
 
 @Entity
 @Cacheable(false)
-@Table(name = "Services")
-public class Services extends BaseEntity{
+@Table(name = "Service")
+public class Service extends BaseEntity{
 	private String servicename;
 	private String servicedec;
 
@@ -29,7 +29,7 @@ public class Services extends BaseEntity{
 
 	@Override
 	public String toString() {
-		return "Services{" +
+		return "Service{" +
 				"servicename='" + servicename + '\'' +
 				", servicedec='" + servicedec + '\'' +
 				'}';

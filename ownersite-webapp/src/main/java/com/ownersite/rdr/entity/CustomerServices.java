@@ -1,4 +1,6 @@
-Class CustomerServices({
+package com.ownersite.rdr.entity;
+
+public class CustomerServices{
 	private String service_cust_complaints;
 	private String service_analysis_desc;
 	private String service_repairs_desc;

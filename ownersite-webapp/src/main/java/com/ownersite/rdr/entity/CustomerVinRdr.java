@@ -1,4 +1,6 @@
-Class CustomerVinRdr({
+package com.ownersite.rdr.entity;
+
+public class CustomerVinRdr{
 	private java.util.Date rdr_confirmed_date;
 
 	public java.util.Date getRdr_confirmed_date(){

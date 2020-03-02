@@ -1,4 +1,6 @@
-Class CustomerEnquiry({
+package com.ownersite.rdr.entity;
+
+public class CustomerEnquiry{
 	private java.util.Date enquiry_created_date;
 	private java.util.Date enquiry_resolved_date;
 	private String enquiry_question;

@@ -1,4 +1,6 @@
-Class CustomerSubscription({
+package com.ownersite.rdr.entity;
+
+public class CustomerSubscription{
 	private String subscriptionname;
 	private String subscriptiondec;
 	private java.util.Date customer_sub_startdate;

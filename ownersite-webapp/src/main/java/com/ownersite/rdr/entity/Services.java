@@ -1,4 +1,6 @@
-Class Services({
+package com.ownersite.rdr.entity;
+
+public class Services{
 	private String servicename;
 	private String servicedec;
 

@@ -1,4 +1,6 @@
-Class Dealer({
+package com.ownersite.rdr.entity;
+
+public class Dealer{
 	private String firstname;
 	private String lastname;
 	private String mobile;

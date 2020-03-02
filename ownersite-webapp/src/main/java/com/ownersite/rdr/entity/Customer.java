@@ -1,4 +1,6 @@
-Class Customer({
+package com.ownersite.rdr.entity;
+
+public class Customer{
 	private String firstname;
 	private String lastname;
 	private String mobile;

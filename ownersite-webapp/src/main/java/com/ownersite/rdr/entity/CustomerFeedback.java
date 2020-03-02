@@ -1,4 +1,6 @@
-Class CustomerFeedback({
+package com.ownersite.rdr.entity;
+
+public class  CustomerFeedback{
 	private java.util.Date enquiry_created_date;
 	private java.util.Date enquiry_resolved_date;
 	private String enquiry_question;

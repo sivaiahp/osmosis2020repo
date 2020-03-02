@@ -1,4 +1,6 @@
-Class ServiceStation({
+package com.ownersite.rdr.entity;
+
+public class ServiceStation{
 	private String firstname;
 	private String lastname;
 	private String mobile;

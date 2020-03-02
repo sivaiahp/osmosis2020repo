@@ -1,6 +1,14 @@
 package com.ownersite.rdr.entity;
 
-public class CustomerServices{
+
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Cacheable(false)
+@Table(name = "CustomerServices")
+public class CustomerServices extends BaseEntity{
 	private String service_cust_complaints;
 	private String service_analysis_desc;
 	private String service_repairs_desc;

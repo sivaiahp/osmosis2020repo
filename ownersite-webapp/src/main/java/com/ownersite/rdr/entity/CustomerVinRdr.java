@@ -1,6 +1,13 @@
 package com.ownersite.rdr.entity;
 
-public class CustomerVinRdr{
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Cacheable(false)
+@Table(name = "CustomerVinRdr")
+public class CustomerVinRdr extends BaseEntity{
 	private java.util.Date rdr_confirmed_date;
 
 	public java.util.Date getRdr_confirmed_date(){

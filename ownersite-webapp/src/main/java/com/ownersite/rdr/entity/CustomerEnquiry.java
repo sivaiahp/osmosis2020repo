@@ -1,6 +1,13 @@
 package com.ownersite.rdr.entity;
 
-public class CustomerEnquiry{
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Cacheable(false)
+@Table(name = "CustomerEnquiry")
+public class CustomerEnquiry extends BaseEntity{
 	private java.util.Date enquiry_created_date;
 	private java.util.Date enquiry_resolved_date;
 	private String enquiry_question;

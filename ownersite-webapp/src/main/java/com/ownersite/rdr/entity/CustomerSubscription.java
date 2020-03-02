@@ -1,6 +1,14 @@
 package com.ownersite.rdr.entity;
 
-public class CustomerSubscription{
+
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Cacheable(false)
+@Table(name = "CustomerSubscription")
+public class CustomerSubscription extends BaseEntity{
 	private String subscriptionname;
 	private String subscriptiondec;
 	private java.util.Date customer_sub_startdate;

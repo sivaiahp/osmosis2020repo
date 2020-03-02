@@ -1,9 +1,17 @@
 package com.ownersite.rdr.entity;
 
-public class Subscription{
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.List;
+
+@Entity
+@Cacheable(false)
+@Table(name = "Subscription")
+public class Subscription extends BaseEntity{
 	private String subscriptionname;
 	private String subscriptiondec;
-
+	private List<Services> services;
 	public String getSubscriptionname(){
 		return subscriptionname;
 	}
@@ -18,5 +26,13 @@ public class Subscription{
 
 	public void setSubscriptiondec(String subscriptiondec){
 		this.subscriptiondec=subscriptiondec;
+	}
+
+	public List<Services> getServices() {
+		return services;
+	}
+
+	public void setServices(List<Services> services) {
+		this.services = services;
 	}
 }

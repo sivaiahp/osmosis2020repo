@@ -1,6 +1,13 @@
 package com.ownersite.rdr.entity;
 
-public class Services{
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Cacheable(false)
+@Table(name = "Services")
+public class Services extends BaseEntity{
 	private String servicename;
 	private String servicedec;
 

@@ -1,6 +1,13 @@
 package com.ownersite.rdr.entity;
 
-public class Vehicle {
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Cacheable(false)
+@Table(name = "Vehicle")
+public class Vehicle extends BaseEntity{
 
 	private String make;
 	private String model;

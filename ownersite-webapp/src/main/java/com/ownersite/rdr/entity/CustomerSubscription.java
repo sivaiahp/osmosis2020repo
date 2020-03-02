@@ -12,7 +12,7 @@ public class CustomerSubscription extends BaseEntity{
 	private java.util.Date customer_sub_startdate;
 	private java.util.Date customer_sub_enddate;
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
 	private Customer customer;
 
 	public String getSubscriptionname(){

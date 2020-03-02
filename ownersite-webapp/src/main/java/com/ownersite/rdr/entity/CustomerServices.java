@@ -12,15 +12,15 @@ public class CustomerServices extends BaseEntity{
 	private String service_repairs_desc;
 	private double service_cost;
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
 	private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "dealer_id", referencedColumnName = "id")
 	private Dealer dealer;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "service_id", referencedColumnName = "id")
 	private Service service;
 
 	public String getService_cust_complaints(){

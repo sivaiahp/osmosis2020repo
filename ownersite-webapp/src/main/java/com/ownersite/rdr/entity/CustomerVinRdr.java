@@ -7,8 +7,9 @@ import javax.persistence.*;
 @Table(name = "CustomerVinRdr")
 public class CustomerVinRdr extends BaseEntity{
 	private java.util.Date rdr_confirmed_date;
+
 	@ManyToOne
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "customer_id", referencedColumnName = "id")
 	private Customer customer;
 
 	public java.util.Date getRdr_confirmed_date(){

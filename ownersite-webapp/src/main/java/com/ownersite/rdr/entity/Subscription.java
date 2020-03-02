@@ -35,4 +35,13 @@ public class Subscription extends BaseEntity{
 	public void setServices(List<Services> services) {
 		this.services = services;
 	}
+
+	@Override
+	public String toString() {
+		return "Subscription{" +
+				"subscriptionname='" + subscriptionname + '\'' +
+				", subscriptiondec='" + subscriptiondec + '\'' +
+				", services=" + services +
+				'}';
+	}
 }

@@ -80,4 +80,18 @@ public class Dealer extends BaseEntity{
 	public void setCountry(String country){
 		this.country=country;
 	}
+
+	@Override
+	public String toString() {
+		return "Dealer{" +
+				"firstname='" + firstname + '\'' +
+				", lastname='" + lastname + '\'' +
+				", mobile='" + mobile + '\'' +
+				", email='" + email + '\'' +
+				", address='" + address + '\'' +
+				", city='" + city + '\'' +
+				", state='" + state + '\'' +
+				", country='" + country + '\'' +
+				'}';
+	}
 }

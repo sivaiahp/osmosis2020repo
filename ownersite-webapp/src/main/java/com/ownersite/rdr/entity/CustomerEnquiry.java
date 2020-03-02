@@ -44,4 +44,14 @@ public class CustomerEnquiry extends BaseEntity{
 	public void setEnquiry_answer(String enquiry_answer){
 		this.enquiry_answer=enquiry_answer;
 	}
+
+	@Override
+	public String toString() {
+		return "CustomerEnquiry{" +
+				"enquiry_created_date=" + enquiry_created_date +
+				", enquiry_resolved_date=" + enquiry_resolved_date +
+				", enquiry_question='" + enquiry_question + '\'' +
+				", enquiry_answer='" + enquiry_answer + '\'' +
+				'}';
+	}
 }

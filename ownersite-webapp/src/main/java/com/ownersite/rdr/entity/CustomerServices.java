@@ -45,4 +45,14 @@ public class CustomerServices extends BaseEntity{
 	public void setService_cost(double service_cost){
 		this.service_cost=service_cost;
 	}
+
+	@Override
+	public String toString() {
+		return "CustomerServices{" +
+				"service_cust_complaints='" + service_cust_complaints + '\'' +
+				", service_analysis_desc='" + service_analysis_desc + '\'' +
+				", service_repairs_desc='" + service_repairs_desc + '\'' +
+				", service_cost=" + service_cost +
+				'}';
+	}
 }

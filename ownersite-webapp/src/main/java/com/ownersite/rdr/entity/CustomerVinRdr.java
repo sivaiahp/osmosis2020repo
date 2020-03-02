@@ -17,4 +17,11 @@ public class CustomerVinRdr extends BaseEntity{
 	public void setRdr_confirmed_date(java.util.Date rdr_confirmed_date){
 		this.rdr_confirmed_date=rdr_confirmed_date;
 	}
+
+	@Override
+	public String toString() {
+		return "CustomerVinRdr{" +
+				"rdr_confirmed_date=" + rdr_confirmed_date +
+				'}';
+	}
 }

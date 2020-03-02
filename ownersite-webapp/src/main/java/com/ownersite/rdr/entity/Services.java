@@ -26,4 +26,12 @@ public class Services extends BaseEntity{
 	public void setServicedec(String servicedec){
 		this.servicedec=servicedec;
 	}
+
+	@Override
+	public String toString() {
+		return "Services{" +
+				"servicename='" + servicename + '\'' +
+				", servicedec='" + servicedec + '\'' +
+				'}';
+	}
 }

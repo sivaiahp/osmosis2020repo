@@ -45,4 +45,14 @@ public class CustomerSubscription extends BaseEntity{
 	public void setCustomer_sub_enddate(java.util.Date customer_sub_enddate){
 		this.customer_sub_enddate=customer_sub_enddate;
 	}
+
+	@Override
+	public String toString() {
+		return "CustomerSubscription{" +
+				"subscriptionname='" + subscriptionname + '\'' +
+				", subscriptiondec='" + subscriptiondec + '\'' +
+				", customer_sub_startdate=" + customer_sub_startdate +
+				", customer_sub_enddate=" + customer_sub_enddate +
+				'}';
+	}
 }

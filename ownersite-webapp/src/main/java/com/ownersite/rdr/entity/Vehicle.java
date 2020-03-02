@@ -45,4 +45,14 @@ public class Vehicle extends BaseEntity{
 	public void setYear(java.util.Date year){
 		this.year=year;
 	}
+
+	@Override
+	public String toString() {
+		return "Vehicle{" +
+				"make='" + make + '\'' +
+				", model='" + model + '\'' +
+				", submodel='" + submodel + '\'' +
+				", year=" + year +
+				'}';
+	}
 }

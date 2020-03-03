@@ -5,6 +5,8 @@ package com.ownersite.rdr.repository;
 
 import com.ownersite.rdr.entity.Service;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * @author polamred
@@ -12,5 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ServicesJpaRepository extends JpaRepository<Service, Long>{
 	
-	Service findById(long id);
+	@Query(value = "SELECT c from Service c where id =:id")
+	Service findByServiceId(@Param("id") long id);
 }

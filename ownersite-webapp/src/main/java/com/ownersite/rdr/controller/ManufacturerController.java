@@ -1,8 +1,6 @@
 package com.ownersite.rdr.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,23 +37,6 @@ public class ManufacturerController {
 	public ManufacturerController (ManufacturerService manufacturerService){
 		this.manufacturerService = manufacturerService;
 	}
-	
-	
-	
-
-	static {
-		services = new ArrayList<>();
-		Service service = new Service();
-		service.setId(++id);
-		service.setServicedec("Connecting all your safety");
-		service.setServicename("Safety connect");
-		services.add(service);
-		service = new Service();
-		service.setId(++id);
-		service.setServicedec("Connecting all your services");
-		service.setServicename("Service connect");
-		services.add(service);
-	}
 
 	@GetMapping(value = "/getAllServices", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Service>> getAllServices() {
@@ -88,13 +69,13 @@ public class ManufacturerController {
 	}
 
 	@DeleteMapping(value = "/deleteService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> delete(@RequestBody(required = true) Long serviceId) {
+	public ResponseEntity<String> delete(@RequestBody(required = true) Service service) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 
 		try {
-			if (ManufacturerController.services.stream().anyMatch(service -> service.getId().equals(serviceId))) {
-				ManufacturerController.services.removeIf(service -> service.getId().equals(serviceId));
+			if (manufacturerService.findServiceById(service.getId()) != null) {
+				manufacturerService.deleteService(service.getId());
 			} else {
 				responseCode = "1";
 				httpStatus = ERROR;
@@ -113,12 +94,9 @@ public class ManufacturerController {
 		HttpStatus httpStatus = OK;
 
 		try {
-			Optional<Service> servicesToUpdate = ManufacturerController.services.stream()
-					.filter(service -> service.getId().equals(serviceToUpdate.getId())).findFirst();
-
-			if (servicesToUpdate.isPresent()) {
-				responseCode = "0";
-			} else {
+			if (manufacturerService.findServiceById(serviceToUpdate.getId()) != null) {
+				manufacturerService.updateService(serviceToUpdate);
+			}  else {
 				responseCode = "1";
 				httpStatus = ERROR;
 			}

@@ -10,9 +10,9 @@ public interface ManufacturerService {
 	
 	public void addService(Service service);
 	
-	public void deleteService(Long serviceId);
+	public void deleteService(long serviceId);
 
 	public void updateService(Service service);
 	
-	Service findServiceById(Long serviceId);
+	Service findServiceById(long serviceId);
 }

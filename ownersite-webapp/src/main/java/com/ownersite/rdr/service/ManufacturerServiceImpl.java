@@ -45,7 +45,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
 
 	@Override
-	public void deleteService(Long serviceId) {
+	public void deleteService(long serviceId) {
 		
 		servicesJpaRepository.deleteById(serviceId);
 	}
@@ -59,9 +59,9 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
 
 	@Override
-	public com.ownersite.rdr.entity.Service findServiceById(Long serviceId) {
+	public com.ownersite.rdr.entity.Service findServiceById(long serviceId) {
 				
-		return null;
+		return servicesJpaRepository.findByServiceId(serviceId);
 	}
 
 }

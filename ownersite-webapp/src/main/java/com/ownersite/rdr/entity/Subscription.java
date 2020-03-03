@@ -9,8 +9,10 @@ import java.util.List;
 public class Subscription extends BaseEntity{
 	private String subscriptionname;
 	private String subscriptiondec;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id", cascade = CascadeType.ALL)
-	private List<Service> services;
+
+	@OneToMany(mappedBy = "subscription")
+	private List<SubscriptionService> subscriptionServicRegistrations;
+
 	private long price;
 
 	public String getSubscriptionname(){
@@ -29,12 +31,12 @@ public class Subscription extends BaseEntity{
 		this.subscriptiondec=subscriptiondec;
 	}
 
-	public List<Service> getServices() {
-		return services;
+	public List<SubscriptionService> getSubscriptionServicRegistrations() {
+		return subscriptionServicRegistrations;
 	}
 
-	public void setServices(List<Service> services) {
-		this.services = services;
+	public void setSubscriptionServicRegistrations(List<SubscriptionService> subscriptionServicRegistrations) {
+		this.subscriptionServicRegistrations = subscriptionServicRegistrations;
 	}
 
 	public long getPrice() {
@@ -50,7 +52,6 @@ public class Subscription extends BaseEntity{
 		return "Subscription{" +
 				"subscriptionname='" + subscriptionname + '\'' +
 				", subscriptiondec='" + subscriptiondec + '\'' +
-				", services=" + services +
 				'}';
 	}
 }

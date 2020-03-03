@@ -1,8 +1,7 @@
 package com.ownersite.rdr.entity;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Cacheable(false)
@@ -10,6 +9,9 @@ import javax.persistence.Table;
 public class Service extends BaseEntity{
 	private String servicename;
 	private String servicedec;
+
+	@OneToMany(mappedBy = "service")
+	private List<SubscriptionService> subscriptionServicRegistrations;
 
 	public String getServicename(){
 		return servicename;
@@ -25,6 +27,14 @@ public class Service extends BaseEntity{
 
 	public void setServicedec(String servicedec){
 		this.servicedec=servicedec;
+	}
+
+	public List<SubscriptionService> getSubscriptionServicRegistrations() {
+		return subscriptionServicRegistrations;
+	}
+
+	public void setSubscriptionServicRegistrations(List<SubscriptionService> subscriptionServicRegistrations) {
+		this.subscriptionServicRegistrations = subscriptionServicRegistrations;
 	}
 
 	@Override

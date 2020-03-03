@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ownersite.rdr.entity.Service;
+import com.ownersite.rdr.service.ManufacturerService;
 
 @RestController
 @RequestMapping("/owner-site/manufacturer")
@@ -29,6 +31,17 @@ public class ManufacturerController {
 	private static final HttpStatus OK = HttpStatus.OK;
 	private static final HttpStatus ERROR = HttpStatus.ACCEPTED;
 	private static Long id = 0L;
+	
+	
+	private final ManufacturerService manufacturerService;
+	
+	@Autowired
+	public ManufacturerController (ManufacturerService manufacturerService){
+		this.manufacturerService = manufacturerService;
+	}
+	
+	
+	
 
 	static {
 		services = new ArrayList<>();
@@ -46,16 +59,16 @@ public class ManufacturerController {
 
 	@GetMapping(value = "/getAllServices", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Service>> getAllServices() {
-		List<Service> mockedServices = null;
+		List<Service> services = null;
 		HttpStatus httpStatus = OK;
 
 		try {
-			mockedServices = ManufacturerController.services;
+			services = manufacturerService.getAllServices();
 		} catch (Exception exception) {
 			httpStatus = ERROR;
 		}
 
-		return new ResponseEntity<>(mockedServices, httpStatus);
+		return new ResponseEntity<>(services, httpStatus);
 	}
 
 	@PostMapping(value = "/addNewService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,8 +77,8 @@ public class ManufacturerController {
 		HttpStatus httpStatus = OK;
 
 		try {
-			service.setId(++id);
-			ManufacturerController.services.add(service);
+			//service.setId(++id);
+			manufacturerService.addService(service);
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;

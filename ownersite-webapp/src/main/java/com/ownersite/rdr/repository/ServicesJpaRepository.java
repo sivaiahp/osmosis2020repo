@@ -11,5 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  */
 public interface ServicesJpaRepository extends JpaRepository<Service, Long>{
-
+	
+	Service findById(long id);
 }

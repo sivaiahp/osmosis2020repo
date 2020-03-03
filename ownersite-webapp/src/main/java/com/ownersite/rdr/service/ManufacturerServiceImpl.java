@@ -3,14 +3,12 @@
  */
 package com.ownersite.rdr.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ownersite.rdr.repository.ServicesJpaRepository;
-import com.ownersite.rdr.view.ServicesView;
 
 /**
  * @author polamred
@@ -30,25 +28,40 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	
 	
 	@Override
-	public List<ServicesView> getAllServices() {
+	public List<com.ownersite.rdr.entity.Service> getAllServices() {
 		
-		List<ServicesView> listserviceviews = new ArrayList<>();
-		ServicesView serviceView = new ServicesView();
-		serviceView.setServiceId(1L);
-		serviceView.setServiceDec("hai");
-		serviceView.setServiceName("sample");
-		listserviceviews.add(serviceView);
-		/*List<Services> listservices = servicesJpaRepository.findAll();
-		for(Services service: listservices){
-			if(service != null){
-				serviceView = new ServicesView();
-				serviceView.setServiceId(service.getId());
-				serviceView.setServiceDec(service.getServicedec());
-				serviceView.setServiceName(serviceView.getServiceName());
-				listserviceviews.add(serviceView);
-			}
-		}*/
-		return listserviceviews;
+		
+		List<com.ownersite.rdr.entity.Service> listservices = servicesJpaRepository.findAll();
+		
+		return listservices;
+	}
+
+
+	@Override
+	public void addService(com.ownersite.rdr.entity.Service service) {
+		
+		servicesJpaRepository.save(service);
+	}
+
+
+	@Override
+	public void deleteService(Long serviceId) {
+		
+		servicesJpaRepository.deleteById(serviceId);
+	}
+
+
+	@Override
+	public void updateService(com.ownersite.rdr.entity.Service service) {
+		
+		servicesJpaRepository.save(service);
+	}
+
+
+	@Override
+	public com.ownersite.rdr.entity.Service findServiceById(Long serviceId) {
+				
+		return null;
 	}
 
 }

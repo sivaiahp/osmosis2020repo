@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Cacheable(false)
-@Table(name = "Vehicle")
+@Table(name = "vehicle")
 public class Vehicle extends BaseEntity{
 
 	private String make;

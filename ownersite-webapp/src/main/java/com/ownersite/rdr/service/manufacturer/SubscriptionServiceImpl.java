@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.dto.SubscriptionServiceDTO;
 import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
@@ -104,6 +105,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 				throw new Exception("Invalid input");
 			}
 
+			// FIXME: adds multiple services
 			List<com.ownersite.rdr.entity.SubscriptionService> subscriptionServicRegistrations = services.stream()
 					.map(service -> {
 						com.ownersite.rdr.entity.SubscriptionService subscriptionService = new com.ownersite.rdr.entity.SubscriptionService();
@@ -119,6 +121,24 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		} catch (Exception exception) {
 			throw new RuntimeException();
 		}
+	}
+
+	@Override
+	public List<ServiceDTO> getServicesBySubscription(CustomerSubscriptionDTO customerSubscriptionDTO) {
+		List<ServiceDTO> serviceDTOs = null;
+		
+		try {
+			Subscription subscription = subscriptionJpaRepository
+					.findBySubscriptionId(Long.valueOf(customerSubscriptionDTO.getSubscriptionId()));
+			
+			serviceDTOs = subscription.getSubscriptionServicRegistrations().stream()
+					.map(com.ownersite.rdr.entity.SubscriptionService::getService).map(ServiceDTO::new)
+					.collect(Collectors.toList());
+		} catch (Exception exception) {
+			// TODO
+		}
+
+		return serviceDTOs;
 	}
 
 }

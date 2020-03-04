@@ -6,29 +6,29 @@ import java.util.List;
 @Entity
 @Cacheable(false)
 @Table(name = "Subscription")
-public class Subscription extends BaseEntity{
+public class Subscription extends BaseEntity {
 	private String subscriptionname;
 	private String subscriptiondec;
 
-	@OneToMany(mappedBy = "subscription")
+	@OneToMany(mappedBy = "subscription", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<SubscriptionService> subscriptionServicRegistrations;
 
 	private long price;
 
-	public String getSubscriptionname(){
+	public String getSubscriptionname() {
 		return subscriptionname;
 	}
 
-	public void setSubscriptionname(String subscriptionname){
-		this.subscriptionname=subscriptionname;
+	public void setSubscriptionname(String subscriptionname) {
+		this.subscriptionname = subscriptionname;
 	}
 
-	public String getSubscriptiondec(){
+	public String getSubscriptiondec() {
 		return subscriptiondec;
 	}
 
-	public void setSubscriptiondec(String subscriptiondec){
-		this.subscriptiondec=subscriptiondec;
+	public void setSubscriptiondec(String subscriptiondec) {
+		this.subscriptiondec = subscriptiondec;
 	}
 
 	public List<SubscriptionService> getSubscriptionServicRegistrations() {
@@ -49,9 +49,7 @@ public class Subscription extends BaseEntity{
 
 	@Override
 	public String toString() {
-		return "Subscription{" +
-				"subscriptionname='" + subscriptionname + '\'' +
-				", subscriptiondec='" + subscriptiondec + '\'' +
-				'}';
+		return "Subscription{" + "subscriptionname='" + subscriptionname + '\'' + ", subscriptiondec='"
+				+ subscriptiondec + '\'' + '}';
 	}
 }

@@ -1,6 +1,8 @@
 package com.ownersite.rdr.controller;
 
 
+import com.ownersite.rdr.dto.CustomerServicesDTO;
+import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.entity.CustomerServices;
 import com.ownersite.rdr.entity.CustomerSubscription;
 import com.ownersite.rdr.entity.Service;
@@ -29,8 +31,8 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/getAllSubscriptions")
-    public ResponseEntity<List<CustomerSubscription>> getAllSubscriptions(@RequestParam  String customerId) {
-        List<CustomerSubscription> subscriptions = null;
+    public ResponseEntity<List<CustomerSubscriptionDTO>> getAllSubscriptions(@RequestParam  String customerId) {
+        List<CustomerSubscriptionDTO> subscriptions = null;
         HttpStatus httpStatus = OK;
         try {
             subscriptions = customerService.getAllSubscriptions(customerId);
@@ -42,8 +44,8 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/getServiceHistory")
-    public ResponseEntity<List<CustomerServices>> getServiceHistory(@RequestParam  String customerId) {
-        List<CustomerServices> customerServices = null;
+    public ResponseEntity<List<CustomerServicesDTO>> getServiceHistory(@RequestParam  String customerId) {
+        List<CustomerServicesDTO> customerServices = null;
         HttpStatus httpStatus = OK;
         try {
             customerServices = customerService.getServiceHistory(customerId);

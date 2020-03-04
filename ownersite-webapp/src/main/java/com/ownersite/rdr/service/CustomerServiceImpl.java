@@ -3,6 +3,7 @@
  */
 package com.ownersite.rdr.service;
 
+import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.entity.CustomerServices;
 import com.ownersite.rdr.entity.CustomerSubscription;
@@ -49,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerServices> getServiceHistory(String customerId) {
+    public List<CustomerServicesDTO> getServiceHistory(String customerId) {
         List<CustomerService> customerServices = customerServicesJpaRepository.findByCustomer();
         return null;
     }

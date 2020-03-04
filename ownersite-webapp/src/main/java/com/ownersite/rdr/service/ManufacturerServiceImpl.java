@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
@@ -78,20 +79,21 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	}
 
 	@Override
-	public void createSubscription(Subscription subscription) {
-		logger.info("creating Subscription for:", subscription);
-		subscriptionJpaRepository.save(subscription);
+	public void createSubscription(CustomerSubscriptionDTO customerSubscriptionDTO) {
+		logger.info("creating Subscription for:", customerSubscriptionDTO);
+		subscriptionJpaRepository.save(customerSubscriptionDTO.convertToEntity());
 	}
 
 	@Override
-	public void updateSubscription(Subscription subscription) {
-		logger.info("updating Subscription for:", subscription);
+	public void updateSubscription(CustomerSubscriptionDTO customerSubscriptionDTO) {
+		logger.info("updating Subscription for:", customerSubscriptionDTO);
 		try {
+			Subscription subscription = customerSubscriptionDTO.convertToEntity();
 			if (subscriptionJpaRepository.findBySubscriptionId(subscription.getId()) != null) {
 				subscriptionJpaRepository.save(subscription);
 			}
 		} catch (Exception e) {
-			logger.error("recieved error while updateing subscription........for:", subscription);
+			logger.error("recieved error while updateing subscription........for:", customerSubscriptionDTO);
 		}
 	}
 
@@ -101,8 +103,8 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
 		try {
 			if (subscriptionJpaRepository.findBySubscriptionId(subscriptionId) != null) {
-				if (customerSubscriptionJpaRepository.findBySubscriptionId(subscriptionId).size() == 0) {
-					if (subscriptionServiceJpaRepository.findBySubscriptionId(subscriptionId).size() > 0) {
+				if (customerSubscriptionJpaRepository.findBySubscriptionId(subscriptionId).isEmpty()) {
+					if (!subscriptionServiceJpaRepository.findBySubscriptionId(subscriptionId).isEmpty()) {
 						subscriptionServiceJpaRepository.deleteBySubscriptionId(subscriptionId);
 					}
 					subscriptionJpaRepository.deleteById(subscriptionId);
@@ -116,15 +118,16 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	}
 
 	@Override
-	public List<Subscription> getAllSubscriptions() {
+	public List<CustomerSubscriptionDTO> getAllSubscriptions() {
 		logger.info("loding Subscriptions==========");
-		return subscriptionJpaRepository.findAll();
+		return subscriptionJpaRepository.findAll().stream().map(CustomerSubscriptionDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public Subscription findBySubscriptionId(long id) {
+	public CustomerSubscriptionDTO findBySubscriptionId(long id) {
 		logger.info("find Subscription id:", id);
-		return subscriptionJpaRepository.findBySubscriptionId(id);
+		return new CustomerSubscriptionDTO(subscriptionJpaRepository.findBySubscriptionId(id));
 	}
 
 }

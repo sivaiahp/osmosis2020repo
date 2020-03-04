@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.ResponseDTO;
 import com.ownersite.rdr.dto.ServiceDTO;
-import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.service.ManufacturerService;
 
 @RestController
@@ -101,8 +101,8 @@ public class ManufacturerController {
 	}
 
 	@GetMapping(value = "/getAllSubscriptions", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Subscription>> getAllSubscriptions() {
-		List<Subscription> subscription = null;
+	public ResponseEntity<List<CustomerSubscriptionDTO>> getAllSubscriptions() {
+		List<CustomerSubscriptionDTO> subscription = null;
 		HttpStatus httpStatus = OK;
 		try {
 			subscription = manufacturerService.getAllSubscriptions();
@@ -113,43 +113,46 @@ public class ManufacturerController {
 	}
 
 	@PostMapping(value = "/addNewSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> addSubscription(@RequestBody Subscription subscription) {
+	public ResponseEntity<ResponseDTO> addSubscription(
+			@RequestBody(required = true) CustomerSubscriptionDTO customerSubscriptionDTO) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			manufacturerService.createSubscription(subscription);
+			manufacturerService.createSubscription(customerSubscriptionDTO);
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;
 		}
-		return new ResponseEntity<>(responseCode, httpStatus);
+		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
 	@DeleteMapping(value = "/deleteSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> deleteSubscription(@RequestBody(required = true) Subscription subscription) {
+	public ResponseEntity<ResponseDTO> deleteSubscription(
+			@RequestBody(required = true) CustomerSubscriptionDTO customerSubscriptionDTO) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			manufacturerService.deleteSubscription(subscription.getId());
+			manufacturerService.deleteSubscription(Long.valueOf(customerSubscriptionDTO.getSubscriptionId()));
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;
 		}
-		return new ResponseEntity<>(responseCode, httpStatus);
+		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
 	@PutMapping(value = "/updateSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> updateSubscription(@RequestBody(required = true) Subscription subscription) {
+	public ResponseEntity<ResponseDTO> updateSubscription(
+			@RequestBody(required = true) CustomerSubscriptionDTO customerSubscriptionDTO) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-				manufacturerService.updateSubscription(subscription);
+			manufacturerService.updateSubscription(customerSubscriptionDTO);
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;
 		}
 
-		return new ResponseEntity<>(responseCode, httpStatus);
+		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
 }

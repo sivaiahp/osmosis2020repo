@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ownersite.rdr.dto.ResponseDTO;
 import com.ownersite.rdr.entity.Service;
 import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.service.ManufacturerService;
@@ -24,12 +25,8 @@ import com.ownersite.rdr.service.ManufacturerService;
 @CrossOrigin(origins = "*")
 public class ManufacturerController {
 
-	// TODO: Service autowiring
-
-	private static List<Service> services;
 	private static final HttpStatus OK = HttpStatus.OK;
 	private static final HttpStatus ERROR = HttpStatus.ACCEPTED;
-	private static Long id = 0L;
 
 	private final ManufacturerService manufacturerService;
 
@@ -53,23 +50,22 @@ public class ManufacturerController {
 	}
 
 	@PostMapping(value = "/addNewService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> add(@RequestBody Service service) {
+	public ResponseEntity<ResponseDTO> add(@RequestBody Service service) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 
 		try {
-			// service.setId(++id);
 			manufacturerService.addService(service);
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;
 		}
 
-		return new ResponseEntity<>(responseCode, httpStatus);
+		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
 	@DeleteMapping(value = "/deleteService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> delete(@RequestBody(required = true) Service service) {
+	public ResponseEntity<ResponseDTO> delete(@RequestBody(required = true) Service service) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 
@@ -85,11 +81,11 @@ public class ManufacturerController {
 			httpStatus = ERROR;
 		}
 
-		return new ResponseEntity<>(responseCode, httpStatus);
+		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
 	@PutMapping(value = "/updateService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> update(@RequestBody(required = true) Service serviceToUpdate) {
+	public ResponseEntity<ResponseDTO> update(@RequestBody(required = true) Service serviceToUpdate) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 
@@ -105,7 +101,7 @@ public class ManufacturerController {
 			httpStatus = ERROR;
 		}
 
-		return new ResponseEntity<>(responseCode, httpStatus);
+		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
 	@GetMapping(value = "/getAllSubscriptions", produces = MediaType.APPLICATION_JSON_VALUE)

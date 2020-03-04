@@ -1,7 +1,13 @@
 package com.ownersite.rdr.entity;
 
 
-import javax.persistence.*;
+import java.util.Date;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Cacheable(false)
@@ -11,7 +17,89 @@ public class CustomerServices extends BaseEntity{
 	private String service_analysis_desc;
 	private String service_repairs_desc;
 	private double service_cost;
-    @ManyToOne
+	private Long customerId;
+	private Long customerSubId;
+	private Long companyServiceId;
+	private Long dealerId;
+	private Long serviceStationId;
+	private Long vin;
+	private String serviceRequestedDate;
+	private Date serviceStartDate;
+	private Date serviceCompletedDate;
+	
+    public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
+
+	public Long getCustomerSubId() {
+		return customerSubId;
+	}
+
+	public void setCustomerSubId(Long customerSubId) {
+		this.customerSubId = customerSubId;
+	}
+
+	public Long getCompanyServiceId() {
+		return companyServiceId;
+	}
+
+	public void setCompanyServiceId(Long companyServiceId) {
+		this.companyServiceId = companyServiceId;
+	}
+
+	public Long getDealerId() {
+		return dealerId;
+	}
+
+	public void setDealerId(Long dealerId) {
+		this.dealerId = dealerId;
+	}
+
+	public Long getServiceStationId() {
+		return serviceStationId;
+	}
+
+	public void setServiceStationId(Long serviceStationId) {
+		this.serviceStationId = serviceStationId;
+	}
+
+	public Long getVin() {
+		return vin;
+	}
+
+	public void setVin(Long vin) {
+		this.vin = vin;
+	}
+
+	public String getServiceRequestedDate() {
+		return serviceRequestedDate;
+	}
+
+	public void setServiceRequestedDate(String serviceRequestedDate) {
+		this.serviceRequestedDate = serviceRequestedDate;
+	}
+
+	public Date getServiceStartDate() {
+		return serviceStartDate;
+	}
+
+	public void setServiceStartDate(Date serviceStartDate) {
+		this.serviceStartDate = serviceStartDate;
+	}
+
+	public Date getServiceCompletedDate() {
+		return serviceCompletedDate;
+	}
+
+	public void setServiceCompletedDate(Date serviceCompletedDate) {
+		this.serviceCompletedDate = serviceCompletedDate;
+	}
+
+	@ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
 	private Customer customer;
 
@@ -81,11 +169,14 @@ public class CustomerServices extends BaseEntity{
 
 	@Override
 	public String toString() {
-		return "CustomerServices{" +
-				"service_cust_complaints='" + service_cust_complaints + '\'' +
-				", service_analysis_desc='" + service_analysis_desc + '\'' +
-				", service_repairs_desc='" + service_repairs_desc + '\'' +
-				", service_cost=" + service_cost +
-				'}';
+		return "CustomerServices [service_cust_complaints=" + service_cust_complaints + ", service_analysis_desc="
+				+ service_analysis_desc + ", service_repairs_desc=" + service_repairs_desc + ", service_cost="
+				+ service_cost + ", customerId=" + customerId + ", customerSubId=" + customerSubId
+				+ ", companyServiceId=" + companyServiceId + ", dealerId=" + dealerId + ", serviceStationId="
+				+ serviceStationId + ", vin=" + vin + ", serviceRequestedDate=" + serviceRequestedDate
+				+ ", serviceStartDate=" + serviceStartDate + ", serviceCompletedDate=" + serviceCompletedDate
+				+ ", customer=" + customer + ", dealer=" + dealer + ", service=" + service + "]";
 	}
+
+	
 }

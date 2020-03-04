@@ -28,7 +28,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping(value = "/getAllSubscriptions", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getAllSubscriptions")
     public ResponseEntity<List<CustomerSubscription>> getAllSubscriptions(@RequestParam  String customerId) {
         List<CustomerSubscription> subscriptions = null;
         HttpStatus httpStatus = OK;

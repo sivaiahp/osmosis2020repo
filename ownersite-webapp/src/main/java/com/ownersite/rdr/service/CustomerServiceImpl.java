@@ -20,6 +20,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     private CustomerServicesJpaRepository customerServicesJpaRepository;
 
+    public CustomerServiceImpl(CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository, CustomerServicesJpaRepository customerServicesJpaRepository) {
+        this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
+        this.customerServicesJpaRepository = customerServicesJpaRepository;
+    }
+
     @Override
     public List<CustomerSubscription> getAllSubscriptions(String customerId) {
         List<CustomerSubscription> subscriptions = customerSubscriptionJpaRepository.findByCustomer();

@@ -12,6 +12,51 @@ public class CustomerSubscription extends BaseEntity{
 	private java.util.Date customer_sub_startdate;
 	private java.util.Date customer_sub_enddate;
 	private String vin;
+	private Double price;
+	private Long customerId;
+	private Long customerSubId;
+	private Long primarySubId;
+	private Long secondarySubId;
+	
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
+
+	public Long getCustomerSubId() {
+		return customerSubId;
+	}
+
+	public void setCustomerSubId(Long customerSubId) {
+		this.customerSubId = customerSubId;
+	}
+
+	public Long getPrimarySubId() {
+		return primarySubId;
+	}
+
+	public void setPrimarySubId(Long primarySubId) {
+		this.primarySubId = primarySubId;
+	}
+
+	public Long getSecondarySubId() {
+		return secondarySubId;
+	}
+
+	public void setSecondarySubId(Long secondarySubId) {
+		this.secondarySubId = secondarySubId;
+	}
 
 	@ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
@@ -79,11 +124,12 @@ public class CustomerSubscription extends BaseEntity{
 
 	@Override
 	public String toString() {
-		return "CustomerSubscription{" +
-				"subscriptionname='" + subscriptionname + '\'' +
-				", subscriptiondec='" + subscriptiondec + '\'' +
-				", customer_sub_startdate=" + customer_sub_startdate +
-				", customer_sub_enddate=" + customer_sub_enddate +
-				'}';
+		return "CustomerSubscription [subscriptionname=" + subscriptionname + ", subscriptiondec=" + subscriptiondec
+				+ ", customer_sub_startdate=" + customer_sub_startdate + ", customer_sub_enddate="
+				+ customer_sub_enddate + ", vin=" + vin + ", price=" + price + ", customerId=" + customerId
+				+ ", customerSubId=" + customerSubId + ", primarySubId=" + primarySubId + ", secondarySubId="
+				+ secondarySubId + ", customer=" + customer + ", subscription=" + subscription + "]";
 	}
+
+	
 }

@@ -7,6 +7,25 @@ import javax.persistence.*;
 @Table(name = "CustomerVinRdr")
 public class CustomerVinRdr extends BaseEntity{
 	private java.util.Date rdr_confirmed_date;
+	
+	private Long customerId;
+	private Long vin;
+	
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
+
+	public Long getVin() {
+		return vin;
+	}
+
+	public void setVin(Long vin) {
+		this.vin = vin;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "customer_id", referencedColumnName = "id")
@@ -30,8 +49,9 @@ public class CustomerVinRdr extends BaseEntity{
 
 	@Override
 	public String toString() {
-		return "CustomerVinRdr{" +
-				"rdr_confirmed_date=" + rdr_confirmed_date +
-				'}';
+		return "CustomerVinRdr [rdr_confirmed_date=" + rdr_confirmed_date + ", customerId=" + customerId + ", vin="
+				+ vin + ", customer=" + customer + "]";
 	}
+
+	
 }

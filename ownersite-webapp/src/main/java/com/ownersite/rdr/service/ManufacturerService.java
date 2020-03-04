@@ -2,20 +2,20 @@ package com.ownersite.rdr.service;
 
 import java.util.List;
 
-import com.ownersite.rdr.entity.Service;
+import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.entity.Subscription;
 
 public interface ManufacturerService {
 	
-	public List<Service> getAllServices();
+	public List<ServiceDTO> getAllServices();
 	
-	public void addService(Service service);
+	public void addService(ServiceDTO serviceDTO);
 	
 	public void deleteService(long serviceId);
 
-	public void updateService(Service service);
+	public void updateService(ServiceDTO serviceDTO);
 	
-	Service findServiceById(long serviceId);
+	ServiceDTO findServiceById(long serviceId);
 	
 	void createSubscription(Subscription subscription);
 	

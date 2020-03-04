@@ -8,15 +8,15 @@ import javax.persistence.*;
 public class CustomerVinRdr extends BaseEntity{
 	private java.util.Date rdr_confirmed_date;
 	
-	private Long customerId;
+	private Long customer_Id;
 	private Long vin;
 	
 	public Long getCustomerId() {
-		return customerId;
+		return customer_Id;
 	}
 
 	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
+		this.customer_Id = customerId;
 	}
 
 	public Long getVin() {
@@ -28,7 +28,7 @@ public class CustomerVinRdr extends BaseEntity{
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "customer_id", referencedColumnName = "id")
+	@JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false, insertable = false)
 	private Customer customer;
 
 	public java.util.Date getRdr_confirmed_date(){
@@ -49,7 +49,7 @@ public class CustomerVinRdr extends BaseEntity{
 
 	@Override
 	public String toString() {
-		return "CustomerVinRdr [rdr_confirmed_date=" + rdr_confirmed_date + ", customerId=" + customerId + ", vin="
+		return "CustomerVinRdr [rdr_confirmed_date=" + rdr_confirmed_date + ", customerId=" + customer_Id + ", vin="
 				+ vin + ", customer=" + customer + "]";
 	}
 

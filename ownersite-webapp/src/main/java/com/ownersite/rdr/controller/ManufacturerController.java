@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ownersite.rdr.dto.ResponseDTO;
-import com.ownersite.rdr.entity.Service;
+import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.service.ManufacturerService;
 
@@ -36,8 +36,8 @@ public class ManufacturerController {
 	}
 
 	@GetMapping(value = "/getAllServices", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Service>> getAllServices() {
-		List<Service> services = null;
+	public ResponseEntity<List<ServiceDTO>> getAllServices() {
+		List<ServiceDTO> services = null;
 		HttpStatus httpStatus = OK;
 
 		try {
@@ -50,7 +50,7 @@ public class ManufacturerController {
 	}
 
 	@PostMapping(value = "/addNewService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO> add(@RequestBody Service service) {
+	public ResponseEntity<ResponseDTO> add(@RequestBody ServiceDTO service) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 
@@ -65,12 +65,12 @@ public class ManufacturerController {
 	}
 
 	@DeleteMapping(value = "/deleteService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO> delete(@RequestBody(required = true) Service service) {
+	public ResponseEntity<ResponseDTO> delete(@RequestBody(required = true) ServiceDTO service) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			if (manufacturerService.findServiceById(service.getId()) != null) {
-				manufacturerService.deleteService(service.getId());
+			if (manufacturerService.findServiceById(service.getServiceId()) != null) {
+				manufacturerService.deleteService(service.getServiceId());
 			} else {
 				responseCode = "1";
 				httpStatus = ERROR;
@@ -83,11 +83,11 @@ public class ManufacturerController {
 	}
 
 	@PutMapping(value = "/updateService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO> update(@RequestBody(required = true) Service serviceToUpdate) {
+	public ResponseEntity<ResponseDTO> update(@RequestBody(required = true) ServiceDTO serviceToUpdate) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			if (manufacturerService.findServiceById(serviceToUpdate.getId()) != null) {
+			if (manufacturerService.findServiceById(serviceToUpdate.getServiceId()) != null) {
 				manufacturerService.updateService(serviceToUpdate);
 			} else {
 				responseCode = "1";
@@ -117,7 +117,6 @@ public class ManufacturerController {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			// service.setId(++id);
 			manufacturerService.createSubscription(subscription);
 		} catch (Exception exception) {
 			responseCode = "1";

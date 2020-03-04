@@ -17,10 +17,10 @@ public class CustomerServices extends BaseEntity{
 	private String service_analysis_desc;
 	private String service_repairs_desc;
 	private double service_cost;
-	private Long customerId;
+	private Long customer_Id;
 	private Long customerSubId;
 	private Long companyServiceId;
-	private Long dealerId;
+	private Long dealer_Id;
 	private Long serviceStationId;
 	private Long vin;
 	private String serviceRequestedDate;
@@ -28,11 +28,11 @@ public class CustomerServices extends BaseEntity{
 	private Date serviceCompletedDate;
 	
     public Long getCustomerId() {
-		return customerId;
+		return customer_Id;
 	}
 
 	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
+		this.customer_Id = customerId;
 	}
 
 	public Long getCustomerSubId() {
@@ -52,11 +52,11 @@ public class CustomerServices extends BaseEntity{
 	}
 
 	public Long getDealerId() {
-		return dealerId;
+		return dealer_Id;
 	}
 
 	public void setDealerId(Long dealerId) {
-		this.dealerId = dealerId;
+		this.dealer_Id = dealerId;
 	}
 
 	public Long getServiceStationId() {
@@ -100,11 +100,11 @@ public class CustomerServices extends BaseEntity{
 	}
 
 	@ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false, insertable = false)
 	private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "dealer_id", referencedColumnName = "id")
+    @JoinColumn(name = "dealer_id", referencedColumnName = "id", updatable = false, insertable = false)
 	private Dealer dealer;
 
     @ManyToOne
@@ -171,8 +171,8 @@ public class CustomerServices extends BaseEntity{
 	public String toString() {
 		return "CustomerServices [service_cust_complaints=" + service_cust_complaints + ", service_analysis_desc="
 				+ service_analysis_desc + ", service_repairs_desc=" + service_repairs_desc + ", service_cost="
-				+ service_cost + ", customerId=" + customerId + ", customerSubId=" + customerSubId
-				+ ", companyServiceId=" + companyServiceId + ", dealerId=" + dealerId + ", serviceStationId="
+				+ service_cost + ", customerId=" + customer_Id + ", customerSubId=" + customerSubId
+				+ ", companyServiceId=" + companyServiceId + ", dealerId=" + dealer_Id + ", serviceStationId="
 				+ serviceStationId + ", vin=" + vin + ", serviceRequestedDate=" + serviceRequestedDate
 				+ ", serviceStartDate=" + serviceStartDate + ", serviceCompletedDate=" + serviceCompletedDate
 				+ ", customer=" + customer + ", dealer=" + dealer + ", service=" + service + "]";

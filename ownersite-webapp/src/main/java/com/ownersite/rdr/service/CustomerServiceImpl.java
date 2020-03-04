@@ -13,16 +13,21 @@ import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * @author polamred
  *
  */
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
     private CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository;
 
     private CustomerServicesJpaRepository customerServicesJpaRepository;
 
+    @Autowired
     public CustomerServiceImpl(CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository, CustomerServicesJpaRepository customerServicesJpaRepository) {
         this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
         this.customerServicesJpaRepository = customerServicesJpaRepository;
@@ -31,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerSubscriptionDTO> getAllSubscriptions(String customerId) {
         List<CustomerSubscriptionDTO> customerSubscriptionDTOs = new ArrayList<>();
-        List<CustomerSubscription> subscriptions = customerSubscriptionJpaRepository.findByCustomer();
+        List<CustomerSubscription> subscriptions = customerSubscriptionJpaRepository.findByCustomer(null);
         for (CustomerSubscription subscription: subscriptions) {
             customerSubscriptionDTOs.add(buildCustomerSubscriptionDTO(subscription));
         }
@@ -51,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerServicesDTO> getServiceHistory(String customerId) {
-        List<CustomerService> customerServices = customerServicesJpaRepository.findByCustomer();
+        List<CustomerService> customerServices = customerServicesJpaRepository.findByCustomer(null);
         return null;
     }
 }

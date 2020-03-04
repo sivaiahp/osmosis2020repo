@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.ResponseDTO;
+import com.ownersite.rdr.dto.SubscriptionServiceDTO;
 import com.ownersite.rdr.service.manufacturer.SubscriptionService;
 
 @RestController
@@ -80,6 +81,21 @@ public class SubscriptionController {
 		HttpStatus httpStatus = OK;
 		try {
 			subscriptionService.updateSubscription(customerSubscriptionDTO);
+		} catch (Exception exception) {
+			responseCode = "1";
+			httpStatus = ERROR;
+		}
+
+		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+	}
+
+	@PostMapping(value = "/updateSubcriptionServices", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseDTO> updateSubscriptionServices(
+			@RequestBody(required = true) SubscriptionServiceDTO subscriptionServiceDTO) {
+		String responseCode = "0";
+		HttpStatus httpStatus = OK;
+		try {
+			subscriptionService.updateSubscriptionServices(subscriptionServiceDTO);
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;

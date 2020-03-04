@@ -57,8 +57,13 @@ public class ServicesServiceImpl implements ServicesService {
 
 	@Override
 	public ServiceDTO findServiceById(long serviceId) {
-
 		return new ServiceDTO(servicesJpaRepository.findByServiceId(serviceId));
 	}
+
+	@Override
+	public List<com.ownersite.rdr.entity.Service> findServicesByIds(List<Long> serviceIds) {
+		return servicesJpaRepository.findAllById(serviceIds);
+	}
+
 
 }

@@ -1,5 +1,6 @@
 package com.ownersite.rdr.service.manufacturer;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.SubscriptionServiceDTO;
 import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
 import com.ownersite.rdr.repository.SubscriptionJpaRepository;
@@ -16,7 +18,7 @@ import com.ownersite.rdr.repository.SubscriptionServiceJpaRepository;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
-	private static final Logger logger = LoggerFactory.getLogger(ServicesServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
 
 	private final SubscriptionJpaRepository subscriptionJpaRepository;
 
@@ -24,13 +26,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	private final CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository;
 
+	private final ServicesService servicesService;
+
 	@Autowired
 	public SubscriptionServiceImpl(SubscriptionJpaRepository subscriptionJpaRepository,
 			SubscriptionServiceJpaRepository subscriptionServiceJpaRepository,
-			CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository) {
+			CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository, ServicesService servicesService) {
 		this.subscriptionJpaRepository = subscriptionJpaRepository;
 		this.subscriptionServiceJpaRepository = subscriptionServiceJpaRepository;
 		this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
+		this.servicesService = servicesService;
 	}
 
 	@Override
@@ -83,6 +88,37 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public CustomerSubscriptionDTO findBySubscriptionId(long id) {
 		logger.info("find Subscription id:", id);
 		return new CustomerSubscriptionDTO(subscriptionJpaRepository.findBySubscriptionId(id));
+	}
+
+	@Override
+	public void updateSubscriptionServices(SubscriptionServiceDTO subscriptionServiceDTO) {
+		try {
+			List<Long> serviceIds = Arrays.asList(subscriptionServiceDTO.getServiceIds().split(",")).stream()
+					.map(String::trim).map(Long::valueOf).collect(Collectors.toList());
+			List<com.ownersite.rdr.entity.Service> services = servicesService.findServicesByIds(serviceIds);
+
+			Subscription subscription = subscriptionJpaRepository
+					.findBySubscriptionId(Long.valueOf(subscriptionServiceDTO.getSubscriptionId()));
+
+			if (serviceIds.size() != services.size() || subscription == null) {
+				throw new Exception("Invalid input");
+			}
+
+			List<com.ownersite.rdr.entity.SubscriptionService> subscriptionServicRegistrations = services.stream()
+					.map(service -> {
+						com.ownersite.rdr.entity.SubscriptionService subscriptionService = new com.ownersite.rdr.entity.SubscriptionService();
+						subscriptionService.setService(service);
+						subscriptionService.setSubscription(subscription);
+
+						return subscriptionService;
+					}).collect(Collectors.toList());
+
+			subscription.setSubscriptionServicRegistrations(subscriptionServicRegistrations);
+
+			subscriptionJpaRepository.save(subscription);
+		} catch (Exception exception) {
+			throw new RuntimeException();
+		}
 	}
 
 }

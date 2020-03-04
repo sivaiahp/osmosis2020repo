@@ -3,8 +3,8 @@
  */
 package com.ownersite.rdr.service;
 
+import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.entity.CustomerServices;
-import com.ownersite.rdr.entity.CustomerSubscription;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface CustomerService {
 
-    List<CustomerSubscription> getAllSubscriptions(String customerId);
+    List<CustomerSubscriptionDTO> getAllSubscriptions(String customerId);
 
-    List<CustomerServices> getServiceHistory(String customerId);
+    List<CustomerServicesDTO> getServiceHistory(String customerId);
 }

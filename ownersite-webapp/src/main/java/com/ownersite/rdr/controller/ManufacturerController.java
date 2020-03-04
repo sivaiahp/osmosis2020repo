@@ -68,7 +68,6 @@ public class ManufacturerController {
 	public ResponseEntity<ResponseDTO> delete(@RequestBody(required = true) Service service) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
-
 		try {
 			if (manufacturerService.findServiceById(service.getId()) != null) {
 				manufacturerService.deleteService(service.getId());
@@ -80,7 +79,6 @@ public class ManufacturerController {
 			responseCode = "1";
 			httpStatus = ERROR;
 		}
-
 		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
@@ -88,7 +86,6 @@ public class ManufacturerController {
 	public ResponseEntity<ResponseDTO> update(@RequestBody(required = true) Service serviceToUpdate) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
-
 		try {
 			if (manufacturerService.findServiceById(serviceToUpdate.getId()) != null) {
 				manufacturerService.updateService(serviceToUpdate);
@@ -100,7 +97,6 @@ public class ManufacturerController {
 			responseCode = "1";
 			httpStatus = ERROR;
 		}
-
 		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
@@ -108,13 +104,11 @@ public class ManufacturerController {
 	public ResponseEntity<List<Subscription>> getAllSubscriptions() {
 		List<Subscription> subscription = null;
 		HttpStatus httpStatus = OK;
-
 		try {
 			subscription = manufacturerService.getAllSubscriptions();
 		} catch (Exception exception) {
 			httpStatus = ERROR;
 		}
-
 		return new ResponseEntity<>(subscription, httpStatus);
 	}
 
@@ -122,7 +116,6 @@ public class ManufacturerController {
 	public ResponseEntity<String> addSubscription(@RequestBody Subscription subscription) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
-
 		try {
 			// service.setId(++id);
 			manufacturerService.createSubscription(subscription);
@@ -130,7 +123,6 @@ public class ManufacturerController {
 			responseCode = "1";
 			httpStatus = ERROR;
 		}
-
 		return new ResponseEntity<>(responseCode, httpStatus);
 	}
 
@@ -138,14 +130,12 @@ public class ManufacturerController {
 	public ResponseEntity<String> deleteSubscription(@RequestBody(required = true) Subscription subscription) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
-
 		try {
 			manufacturerService.deleteSubscription(subscription.getId());
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;
 		}
-
 		return new ResponseEntity<>(responseCode, httpStatus);
 	}
 
@@ -153,10 +143,8 @@ public class ManufacturerController {
 	public ResponseEntity<String> updateSubscription(@RequestBody(required = true) Subscription subscription) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
-
 		try {
 				manufacturerService.updateSubscription(subscription);
-			
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;

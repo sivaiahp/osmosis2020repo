@@ -11,7 +11,9 @@ public class CustomerSubscription extends BaseEntity{
 	private String subscriptiondec;
 	private java.util.Date customer_sub_startdate;
 	private java.util.Date customer_sub_enddate;
-    @ManyToOne
+	private String vin;
+
+	@ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
 	private Customer customer;
     
@@ -57,6 +59,14 @@ public class CustomerSubscription extends BaseEntity{
 
 	public void setCustomer_sub_enddate(java.util.Date customer_sub_enddate){
 		this.customer_sub_enddate=customer_sub_enddate;
+	}
+
+	public String getVin() {
+		return vin;
+	}
+
+	public void setVin(String vin) {
+		this.vin = vin;
 	}
 
 	public Customer getCustomer() {

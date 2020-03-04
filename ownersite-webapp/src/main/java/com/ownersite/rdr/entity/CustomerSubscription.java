@@ -14,6 +14,18 @@ public class CustomerSubscription extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
 	private Customer customer;
+    
+    @ManyToOne
+    @JoinColumn(name = "subscription_id")
+    Subscription subscription;
+
+	public Subscription getSubscription() {
+		return subscription;
+	}
+
+	public void setSubscription(Subscription subscription) {
+		this.subscription = subscription;
+	}
 
 	public String getSubscriptionname(){
 		return subscriptionname;

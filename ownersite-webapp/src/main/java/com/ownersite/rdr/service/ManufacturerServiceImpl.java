@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ownersite.rdr.entity.Subscription;
+import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
 import com.ownersite.rdr.repository.ServicesJpaRepository;
 import com.ownersite.rdr.repository.SubscriptionJpaRepository;
 import com.ownersite.rdr.repository.SubscriptionServiceJpaRepository;
@@ -29,12 +30,15 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
 	private final SubscriptionServiceJpaRepository subscriptionServiceJpaRepository;
 	
+	private final CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository;
+	
 	@Autowired
 	public ManufacturerServiceImpl(ServicesJpaRepository servicesJpaRepository, SubscriptionJpaRepository subscriptionJpaRepository,
-			SubscriptionServiceJpaRepository subscriptionServiceJpaRepository){
+			SubscriptionServiceJpaRepository subscriptionServiceJpaRepository, CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository){
 		this.servicesJpaRepository = servicesJpaRepository;
 		this.subscriptionJpaRepository = subscriptionJpaRepository;
 		this.subscriptionServiceJpaRepository = subscriptionServiceJpaRepository;
+		this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
 	}
 	
 	
@@ -101,10 +105,14 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 		
 		try {
 			if(subscriptionJpaRepository.findBySubscriptionId(subscriptionId) != null){
-				if(subscriptionServiceJpaRepository.findBySubscriptionId(subscriptionId).size() > 0){
-					subscriptionServiceJpaRepository.deleteBySubscriptionId(subscriptionId);
+				if(customerSubscriptionJpaRepository.findBySubscriptionId(subscriptionId).size() == 0) {
+					if(subscriptionServiceJpaRepository.findBySubscriptionId(subscriptionId).size() > 0){
+						subscriptionServiceJpaRepository.deleteBySubscriptionId(subscriptionId);
+					}
+					subscriptionJpaRepository.deleteById(subscriptionId);
+				} else {
+					logger.info("subscription already tagged with customer, hence we can't delete:", subscriptionId);
 				}
-				subscriptionJpaRepository.deleteById(subscriptionId);
 			}
 		} catch (Exception e){
 			logger.error("recieved error while deleting subscription........id:", subscriptionId);

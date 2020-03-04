@@ -21,7 +21,7 @@ public class CustomerSubscriptionDTO {
 		this.subscriptionId = String.valueOf(subscription.getId());
 		this.subscriptionName = subscription.getSubscriptionname();
 		this.subscriptionDesc = subscription.getSubscriptiondec();
-		this.subscriptionPrice = String.valueOf(subscription.getPrice());
+		this.subscriptionPrice = "$" + String.valueOf(subscription.getPrice());
 	}
 
 	public String getSubscriptionId() {
@@ -79,7 +79,7 @@ public class CustomerSubscriptionDTO {
 	public void setSubscriptionEndDate(String subscriptionEndDate) {
 		this.subscriptionEndDate = subscriptionEndDate;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "CustomerSubscriptionDTO{" + "subscriptionId='" + subscriptionId + '\'' + ", subscriptionName='"
@@ -90,10 +90,11 @@ public class CustomerSubscriptionDTO {
 
 	public Subscription convertToEntity() {
 		Subscription subscription = new Subscription();
-		subscription.setId(Long.valueOf(this.getSubscriptionId()));
+		subscription.setId(this.getSubscriptionId() == null ? null : Long.valueOf(this.getSubscriptionId()));
 		subscription.setSubscriptiondec(this.getSubscriptionDesc());
 		subscription.setSubscriptionname(this.getSubscriptionName());
-		subscription.setPrice(Long.valueOf(this.getSubscriptionPrice()));
+		subscription.setPrice(
+				this.getSubscriptionPrice() == null ? null : Long.valueOf(this.getSubscriptionPrice().substring(1)));
 
 		return subscription;
 	}

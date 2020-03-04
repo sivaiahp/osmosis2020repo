@@ -1,4 +1,4 @@
-package com.ownersite.rdr.controller;
+package com.ownersite.rdr.controller.manufacturer;
 
 import java.util.List;
 
@@ -17,87 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.ResponseDTO;
-import com.ownersite.rdr.dto.ServiceDTO;
-import com.ownersite.rdr.service.ManufacturerService;
+import com.ownersite.rdr.service.manufacturer.SubscriptionService;
 
 @RestController
 @RequestMapping("/owner-site/manufacturer")
 @CrossOrigin(origins = "*")
-public class ManufacturerController {
+public class SubscriptionController {
 
+	private final SubscriptionService subscriptionService;
 	private static final HttpStatus OK = HttpStatus.OK;
 	private static final HttpStatus ERROR = HttpStatus.ACCEPTED;
 
-	private final ManufacturerService manufacturerService;
-
 	@Autowired
-	public ManufacturerController(ManufacturerService manufacturerService) {
-		this.manufacturerService = manufacturerService;
-	}
-
-	@GetMapping(value = "/getAllServices", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ServiceDTO>> getAllServices() {
-		List<ServiceDTO> services = null;
-		HttpStatus httpStatus = OK;
-
-		try {
-			services = manufacturerService.getAllServices();
-		} catch (Exception exception) {
-			httpStatus = ERROR;
-		}
-
-		return new ResponseEntity<>(services, httpStatus);
-	}
-
-	@PostMapping(value = "/addNewService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO> add(@RequestBody ServiceDTO service) {
-		String responseCode = "0";
-		HttpStatus httpStatus = OK;
-
-		try {
-			manufacturerService.addService(service);
-		} catch (Exception exception) {
-			responseCode = "1";
-			httpStatus = ERROR;
-		}
-
-		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
-	}
-
-	@DeleteMapping(value = "/deleteService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO> delete(@RequestBody(required = true) ServiceDTO service) {
-		String responseCode = "0";
-		HttpStatus httpStatus = OK;
-		try {
-			if (manufacturerService.findServiceById(service.getServiceId()) != null) {
-				manufacturerService.deleteService(service.getServiceId());
-			} else {
-				responseCode = "1";
-				httpStatus = ERROR;
-			}
-		} catch (Exception exception) {
-			responseCode = "1";
-			httpStatus = ERROR;
-		}
-		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
-	}
-
-	@PutMapping(value = "/updateService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO> update(@RequestBody(required = true) ServiceDTO serviceToUpdate) {
-		String responseCode = "0";
-		HttpStatus httpStatus = OK;
-		try {
-			if (manufacturerService.findServiceById(serviceToUpdate.getServiceId()) != null) {
-				manufacturerService.updateService(serviceToUpdate);
-			} else {
-				responseCode = "1";
-				httpStatus = ERROR;
-			}
-		} catch (Exception exception) {
-			responseCode = "1";
-			httpStatus = ERROR;
-		}
-		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+	public SubscriptionController(SubscriptionService subscriptionService) {
+		this.subscriptionService = subscriptionService;
 	}
 
 	@GetMapping(value = "/getAllSubscriptions", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -105,7 +38,7 @@ public class ManufacturerController {
 		List<CustomerSubscriptionDTO> subscription = null;
 		HttpStatus httpStatus = OK;
 		try {
-			subscription = manufacturerService.getAllSubscriptions();
+			subscription = subscriptionService.getAllSubscriptions();
 		} catch (Exception exception) {
 			httpStatus = ERROR;
 		}
@@ -118,7 +51,7 @@ public class ManufacturerController {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			manufacturerService.createSubscription(customerSubscriptionDTO);
+			subscriptionService.createSubscription(customerSubscriptionDTO);
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;
@@ -132,7 +65,7 @@ public class ManufacturerController {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			manufacturerService.deleteSubscription(Long.valueOf(customerSubscriptionDTO.getSubscriptionId()));
+			subscriptionService.deleteSubscription(Long.valueOf(customerSubscriptionDTO.getSubscriptionId()));
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;
@@ -146,7 +79,7 @@ public class ManufacturerController {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			manufacturerService.updateSubscription(customerSubscriptionDTO);
+			subscriptionService.updateSubscription(customerSubscriptionDTO);
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;

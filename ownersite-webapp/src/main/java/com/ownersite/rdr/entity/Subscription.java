@@ -10,7 +10,8 @@ public class Subscription extends BaseEntity {
 	private String subscriptionname;
 	private String subscriptiondec;
 
-	@OneToMany(mappedBy = "subscription", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "subscription_id")
 	private List<SubscriptionService> subscriptionServicRegistrations;
 
 	private long price;

@@ -3,6 +3,7 @@ package com.ownersite.rdr.controller;
 
 import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.VehiclesDTO;
 import com.ownersite.rdr.entity.CustomerServices;
 import com.ownersite.rdr.entity.CustomerSubscription;
 import com.ownersite.rdr.entity.Service;
@@ -53,6 +54,18 @@ public class CustomerController {
             httpStatus = ERROR;
         }
 
+        return new ResponseEntity<>(customerServices, httpStatus);
+    }
+
+    @GetMapping(value = "/getMyVehicles")
+    public ResponseEntity<List<VehiclesDTO>> getMyVehicles(@RequestParam  String customerId) {
+        List<VehiclesDTO> customerServices = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerServices = customerService.getMyVehicles(customerId);
+        } catch (Exception exception) {
+            httpStatus = ERROR;
+        }
         return new ResponseEntity<>(customerServices, httpStatus);
     }
 }

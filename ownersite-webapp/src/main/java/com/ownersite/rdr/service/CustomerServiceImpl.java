@@ -5,10 +5,12 @@ package com.ownersite.rdr.service;
 
 import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.VehiclesDTO;
+import com.ownersite.rdr.entity.Customer;
 import com.ownersite.rdr.entity.CustomerServices;
 import com.ownersite.rdr.entity.CustomerSubscription;
-import com.ownersite.rdr.repository.CustomerServicesJpaRepository;
-import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
+import com.ownersite.rdr.entity.CustomerVechile;
+import com.ownersite.rdr.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +29,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     private CustomerServicesJpaRepository customerServicesJpaRepository;
 
+    private CustomerJpaRepository customerJpaRepository;
+
+    private VehicleJpaRepository vehicleJpaRepository;
+    private CustomerVehicleJpaRepository customerVehicleJpaRepository;
+
     @Autowired
-    public CustomerServiceImpl(CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository, CustomerServicesJpaRepository customerServicesJpaRepository) {
+    public CustomerServiceImpl(CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository,
+                               CustomerServicesJpaRepository customerServicesJpaRepository,
+                               CustomerJpaRepository customerJpaRepository,
+                               VehicleJpaRepository vehicleJpaRepository,
+                               CustomerVehicleJpaRepository customerVehicleJpaRepository) {
         this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
         this.customerServicesJpaRepository = customerServicesJpaRepository;
+        this.customerJpaRepository = customerJpaRepository;
+        this.vehicleJpaRepository = vehicleJpaRepository;
+        this.customerVehicleJpaRepository = customerVehicleJpaRepository;
     }
 
     @Override
@@ -56,7 +70,23 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerServicesDTO> getServiceHistory(String customerId) {
-        List<CustomerService> customerServices = customerServicesJpaRepository.findByCustomer(null);
+        Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
+        List<CustomerService> customerServices = customerServicesJpaRepository.findByCustomer(customer);
+        List<CustomerServicesDTO> customerServicesDTOs = new ArrayList<>();
+        for (CustomerService customerService:customerServices) {
+            CustomerServicesDTO customerServicesDTO = new CustomerServicesDTO();
+        }
+        return null;
+    }
+
+    @Override
+    public List<VehiclesDTO> getMyVehicles(String customerId) {
+        List<VehiclesDTO> customerServicesDTOs = new ArrayList<>();
+        List<CustomerVechile> vehicles = customerVehicleJpaRepository.findByCustomer(customerId);
+        for (CustomerVechile vehicle :vehicles) {
+            VehiclesDTO vehiclesDTO = new VehiclesDTO();
+            vehiclesDTO.setVehicleId(vehicle.getId().toString());
+        }
         return null;
     }
 }

@@ -3,6 +3,7 @@ package com.ownersite.rdr.controller;
 
 import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.ResponseDTO;
 import com.ownersite.rdr.dto.VehiclesDTO;
 import com.ownersite.rdr.entity.CustomerServices;
 import com.ownersite.rdr.entity.CustomerSubscription;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -68,4 +70,48 @@ public class CustomerController {
         }
         return new ResponseEntity<>(customerServices, httpStatus);
     }
+
+    @GetMapping(value = "/searchVIN")
+    public ResponseEntity<VehiclesDTO> searchVIN(@RequestParam  String vin) {
+        VehiclesDTO customerServices = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerServices = customerService.getVehicle(vin);
+        } catch (Exception exception) {
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(customerServices, httpStatus);
+    }
+
+    @GetMapping(value = "/addVinForCustomer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> addVinForCustomer(
+            @RequestBody(required = true) VehiclesDTO vehiclesDTO) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.addVinForCustomer(vehiclesDTO);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+
+    @GetMapping(value = "/addCustomerSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> addCustomerSubscription(@RequestParam  String customerId,
+                                                               @RequestParam  String subscriptionId,
+                                                               @RequestParam  String vehicleId,
+                                                               @RequestParam String subscriptionStartDate,
+                                                               @RequestParam String subscriptionEndDate) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.addCustomerSubscription(customerId,subscriptionId, vehicleId, subscriptionStartDate, subscriptionEndDate);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+
 }

@@ -9,8 +9,11 @@ import com.ownersite.rdr.dto.VehiclesDTO;
 import com.ownersite.rdr.entity.*;
 import com.ownersite.rdr.repository.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,18 +33,21 @@ public class CustomerServiceImpl implements CustomerService {
 
     private VehicleJpaRepository vehicleJpaRepository;
     private CustomerVehicleJpaRepository customerVehicleJpaRepository;
+    private SubscriptionJpaRepository subscriptionJpaRepository;
 
     @Autowired
     public CustomerServiceImpl(CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository,
                                CustomerServicesJpaRepository customerServicesJpaRepository,
                                CustomerJpaRepository customerJpaRepository,
                                VehicleJpaRepository vehicleJpaRepository,
-                               CustomerVehicleJpaRepository customerVehicleJpaRepository) {
+                               CustomerVehicleJpaRepository customerVehicleJpaRepository,
+                               SubscriptionJpaRepository subscriptionJpaRepository) {
         this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
         this.customerServicesJpaRepository = customerServicesJpaRepository;
         this.customerJpaRepository = customerJpaRepository;
         this.vehicleJpaRepository = vehicleJpaRepository;
         this.customerVehicleJpaRepository = customerVehicleJpaRepository;
+        this.subscriptionJpaRepository = subscriptionJpaRepository;
     }
 
     @Override
@@ -79,7 +85,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<VehiclesDTO> getMyVehicles(String customerId) {
         List<VehiclesDTO> customerServicesDTOs = new ArrayList<>();
-        List<CustomerVechile> customerVechiles = customerVehicleJpaRepository.findByCustomer(customerId);
+        List<CustomerVechile> customerVechiles = customerVehicleJpaRepository.findByCustomerId(customerId);
         for (CustomerVechile customerVechile :customerVechiles) {
             VehiclesDTO vehiclesDTO = new VehiclesDTO();
             vehiclesDTO.setVehicleId(customerVechile.getId().toString());
@@ -92,5 +98,45 @@ public class CustomerServiceImpl implements CustomerService {
             customerServicesDTOs.add(vehiclesDTO);
         }
         return customerServicesDTOs;
+    }
+
+    @Override
+    public VehiclesDTO getVehicle(String vin) {
+        CustomerVechile customerVechile = customerVehicleJpaRepository.findByVin(vin);
+        Vehicle vehicle = vehicleJpaRepository.getOne(customerVechile.getVechileId());
+        VehiclesDTO vehiclesDTO = new VehiclesDTO();
+        vehiclesDTO.setVehicleId(customerVechile.getVechileId().toString());
+        vehiclesDTO.setYear(vehicle.getYear().toString());
+        vehiclesDTO.setRegisteredNumber(customerVechile.getRegisteredNumber());
+        vehiclesDTO.setModel(vehicle.getModel());
+        vehiclesDTO.setMake(vehicle.getMake());
+        vehiclesDTO.setVin(vin);
+        return vehiclesDTO;
+    }
+
+    @Override
+    public void addVinForCustomer(VehiclesDTO vehiclesDTO) {
+        CustomerVechile customerVechile = customerVehicleJpaRepository.findByVin(vehiclesDTO.getVin());
+        customerVechile.setCustomerId(Long.parseLong(vehiclesDTO.getCustomerId()));
+        customerVehicleJpaRepository.save(customerVechile);
+    }
+
+    @Override
+    public void addCustomerSubscription(String customerId, String subscriptionId, String vehicleId,
+                                        String subscriptionStartDate, String subscriptionEndDate) throws ParseException {
+        Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
+        Subscription subscription = subscriptionJpaRepository.getOne(Long.parseLong(subscriptionId));
+        CustomerVechile customerVechile = customerVehicleJpaRepository.getOne(Long.parseLong(vehicleId));
+        CustomerSubscription customerSubscription = new CustomerSubscription();
+        customerSubscription.setCustomer(customer);
+        customerSubscription.setSubscription(subscription);
+        customerSubscription.setCustomer_sub_startdate(new SimpleDateFormat("dd/MM/yyyy").parse(subscriptionStartDate));
+        customerSubscription.setCustomer_sub_enddate(new SimpleDateFormat("dd/MM/yyyy").parse(subscriptionEndDate));
+        customerSubscription.setCustomerId(Long.parseLong(customerId));
+        customerSubscription.setSubscriptionname(subscription.getSubscriptionname());
+        customerSubscription.setSubscriptiondec(subscription.getSubscriptiondec());
+        customerSubscription.setPrice(new Double(subscription.getPrice()));
+        customerSubscription.setVin(customerVechile.getVin());
+        customerSubscriptionJpaRepository.save(customerSubscription);
     }
 }

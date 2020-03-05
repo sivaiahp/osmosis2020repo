@@ -14,6 +14,8 @@ public class VehiclesDTO {
 
     private String registeredNumber;
 
+    private String customerId;
+
     public String getVehicleId() {
         return vehicleId;
     }
@@ -60,6 +62,14 @@ public class VehiclesDTO {
 
     public void setRegisteredNumber(String registeredNumber) {
         this.registeredNumber = registeredNumber;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.VehiclesDTO;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -20,4 +21,11 @@ public interface CustomerService {
     List<CustomerServicesDTO> getServiceHistory(String customerId);
 
     List<VehiclesDTO> getMyVehicles(String customerId);
+
+    VehiclesDTO getVehicle(String vin);
+
+    void addVinForCustomer(VehiclesDTO vehiclesDTO);
+
+    void addCustomerSubscription(String customerId, String subscriptionId, String vehicleId,
+                                 String subscriptionStartDate, String subscriptionEndDate) throws ParseException;
 }

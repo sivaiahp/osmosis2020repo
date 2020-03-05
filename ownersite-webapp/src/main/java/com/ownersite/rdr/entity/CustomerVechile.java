@@ -16,16 +16,20 @@ import javax.persistence.Table;
 @Table(name = "CustomerVechile")
 public class CustomerVechile extends BaseEntity{
 
-	private Long vin;
+	private String vin;
 	private Long vechileId;
 	private Long customerId;
 	private Long dealerId;
-	public Long getVin() {
+	private String registeredNumber;
+
+	public String getVin() {
 		return vin;
 	}
-	public void setVin(Long vin) {
+
+	public void setVin(String vin) {
 		this.vin = vin;
 	}
+
 	public Long getVechileId() {
 		return vechileId;
 	}
@@ -44,6 +48,15 @@ public class CustomerVechile extends BaseEntity{
 	public void setDealerId(Long dealerId) {
 		this.dealerId = dealerId;
 	}
+
+	public String getRegisteredNumber() {
+		return registeredNumber;
+	}
+
+	public void setRegisteredNumber(String registeredNumber) {
+		this.registeredNumber = registeredNumber;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerVechile [vin=" + vin + ", vechileId=" + vechileId + ", customerId=" + customerId + ", dealerId="

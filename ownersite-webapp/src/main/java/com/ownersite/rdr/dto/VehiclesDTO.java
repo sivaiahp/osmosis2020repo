@@ -4,8 +4,6 @@ public class VehiclesDTO {
 
     private String vehicleId;
 
-    private String vehicleName;
-
     private String model;
 
     private String make;
@@ -22,14 +20,6 @@ public class VehiclesDTO {
 
     public void setVehicleId(String vehicleId) {
         this.vehicleId = vehicleId;
-    }
-
-    public String getVehicleName() {
-        return vehicleName;
-    }
-
-    public void setVehicleName(String vehicleName) {
-        this.vehicleName = vehicleName;
     }
 
     public String getModel() {
@@ -76,7 +66,6 @@ public class VehiclesDTO {
     public String toString() {
         return "VehiclesDTO{" +
                 "vehicleId='" + vehicleId + '\'' +
-                ", vehicleName='" + vehicleName + '\'' +
                 ", model='" + model + '\'' +
                 ", make='" + make + '\'' +
                 ", year='" + year + '\'' +

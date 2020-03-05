@@ -6,10 +6,7 @@ package com.ownersite.rdr.service;
 import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.VehiclesDTO;
-import com.ownersite.rdr.entity.Customer;
-import com.ownersite.rdr.entity.CustomerServices;
-import com.ownersite.rdr.entity.CustomerSubscription;
-import com.ownersite.rdr.entity.CustomerVechile;
+import com.ownersite.rdr.entity.*;
 import com.ownersite.rdr.repository.*;
 
 import java.util.ArrayList;
@@ -82,11 +79,18 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<VehiclesDTO> getMyVehicles(String customerId) {
         List<VehiclesDTO> customerServicesDTOs = new ArrayList<>();
-        List<CustomerVechile> vehicles = customerVehicleJpaRepository.findByCustomer(customerId);
-        for (CustomerVechile vehicle :vehicles) {
+        List<CustomerVechile> customerVechiles = customerVehicleJpaRepository.findByCustomer(customerId);
+        for (CustomerVechile customerVechile :customerVechiles) {
             VehiclesDTO vehiclesDTO = new VehiclesDTO();
-            vehiclesDTO.setVehicleId(vehicle.getId().toString());
+            vehiclesDTO.setVehicleId(customerVechile.getId().toString());
+            Vehicle vehicle = vehicleJpaRepository.getOne(customerVechile.getVechileId());
+            vehiclesDTO.setMake(vehicle.getMake());
+            vehiclesDTO.setModel(vehicle.getModel());
+            vehiclesDTO.setVin(customerVechile.getVin());
+            vehiclesDTO.setRegisteredNumber(customerVechile.getRegisteredNumber());
+            vehiclesDTO.setYear(vehicle.getYear().toString());
+            customerServicesDTOs.add(vehiclesDTO);
         }
-        return null;
+        return customerServicesDTOs;
     }
 }

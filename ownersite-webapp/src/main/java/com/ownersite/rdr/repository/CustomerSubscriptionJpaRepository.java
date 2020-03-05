@@ -22,4 +22,8 @@ public interface CustomerSubscriptionJpaRepository extends JpaRepository<Custome
 	@Query(value = "SELECT c from CustomerSubscription c where c.subscription.id =:subscriptionId")
 	List<CustomerSubscription> findBySubscriptionId(@Param("subscriptionId") long subscriptionId);
     List<CustomerSubscription> findByCustomer(Customer customer);
+
+    List<CustomerSubscription> findBySubscriptionIdAndCustomerId(String subscriptionId, String customerId);
+
+    List<CustomerSubscription> findBySubscriptionIdAndCustomerIdAndVin(String subscriptionId, String customerId, String vin);
 }

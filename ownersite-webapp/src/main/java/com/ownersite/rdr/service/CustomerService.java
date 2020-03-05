@@ -28,4 +28,8 @@ public interface CustomerService {
 
     void addCustomerSubscription(String customerId, String subscriptionId, String vehicleId,
                                  String subscriptionStartDate, String subscriptionEndDate) throws ParseException;
+
+    void transferSubscription(String customerId, String subscriptionId, String vin);
+
+    void cancelSubscription(String customerId, String subscriptionId, String vin);
 }

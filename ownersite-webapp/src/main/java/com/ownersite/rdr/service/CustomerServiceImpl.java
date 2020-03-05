@@ -139,4 +139,21 @@ public class CustomerServiceImpl implements CustomerService {
         customerSubscription.setVin(customerVechile.getVin());
         customerSubscriptionJpaRepository.save(customerSubscription);
     }
+
+    @Override
+    public void transferSubscription(String customerId, String subscriptionId, String vin) {
+        List<CustomerSubscription> customerSubscriptions = customerSubscriptionJpaRepository
+                .findBySubscriptionIdAndCustomerId(subscriptionId, customerId);
+        CustomerSubscription customerSubscription = customerSubscriptions.get(0);
+        customerSubscription.setVin(vin);
+        customerSubscriptionJpaRepository.save(customerSubscription);
+    }
+
+    @Override
+    public void cancelSubscription(String customerId, String subscriptionId, String vin) {
+        List<CustomerSubscription> customerSubscriptions = customerSubscriptionJpaRepository
+                .findBySubscriptionIdAndCustomerIdAndVin(subscriptionId, customerId, vin);
+        CustomerSubscription customerSubscription = customerSubscriptions.get(0);
+        customerSubscriptionJpaRepository.delete(customerSubscription);
+    }
 }

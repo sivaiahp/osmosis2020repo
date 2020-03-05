@@ -5,10 +5,6 @@ import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.ResponseDTO;
 import com.ownersite.rdr.dto.VehiclesDTO;
-import com.ownersite.rdr.entity.CustomerServices;
-import com.ownersite.rdr.entity.CustomerSubscription;
-import com.ownersite.rdr.entity.Service;
-import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -114,4 +109,33 @@ public class CustomerController {
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
 
+    @GetMapping(value = "/transferSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> transferSubscription(@RequestParam  String customerId,
+                                                           @RequestParam  String subscriptionId,
+                                                           @RequestParam   String vin) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.transferSubscription(customerId,subscriptionId,vin);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+
+    @GetMapping(value = "/cancelSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> cancelSubscription(@RequestParam  String customerId,
+                                                            @RequestParam  String subscriptionId,
+                                                            @RequestParam   String vin) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.cancelSubscription(customerId,subscriptionId,vin);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
 }

@@ -18,5 +18,5 @@ import java.util.List;
  */
 public interface CustomerServicesJpaRepository  extends JpaRepository<CustomerServices, Long>{
 
-    List<CustomerService> findByCustomer(Customer customer);
+    List<CustomerServices> findByCustomer(Customer customer);
 }

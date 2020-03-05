@@ -41,12 +41,12 @@ public class CustomerController {
         return new ResponseEntity<>(subscriptions, httpStatus);
     }
 
-    @GetMapping(value = "/getServiceHistory")
-    public ResponseEntity<List<CustomerServicesDTO>> getServiceHistory(@RequestParam  String customerId) {
+    @GetMapping(value = "/viewCustomerServices")
+    public ResponseEntity<List<CustomerServicesDTO>> getServiceHistory(@RequestParam  String customerId, @RequestParam  String subscriptionId) {
         List<CustomerServicesDTO> customerServices = null;
         HttpStatus httpStatus = OK;
         try {
-            customerServices = customerService.getServiceHistory(customerId);
+            customerServices = customerService.getServiceHistory(customerId, subscriptionId);
         } catch (Exception exception) {
             httpStatus = ERROR;
         }

@@ -13,7 +13,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,14 +71,30 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerServicesDTO> getServiceHistory(String customerId) {
+    public List<CustomerServicesDTO> getServiceHistory(String customerId, String subscriptionId) {
         Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
-        List<CustomerService> customerServices = customerServicesJpaRepository.findByCustomer(customer);
+        List<CustomerServices> customerServices = customerServicesJpaRepository.findByCustomer(customer);
         List<CustomerServicesDTO> customerServicesDTOs = new ArrayList<>();
-        for (CustomerService customerService:customerServices) {
+        for (CustomerServices customerService:customerServices) {
             CustomerServicesDTO customerServicesDTO = new CustomerServicesDTO();
+            customerServicesDTO.setCustomerId(customerId);
+            customerServicesDTO.setDealerId(customerService.getDealerId().toString());
+            customerServicesDTO.setServicecomplaintAnalysis(customerService.getService_analysis_desc());
+            customerServicesDTO.setServiceCompletedDate(customerService.getServiceCompletedDate().toString());
+            customerServicesDTO.setServiceCustomerComplaints(customerService.getService_cust_complaints());
+            customerServicesDTO.setServicedec(customerService.getService().getServicedec());
+            customerServicesDTO.setServiceId(customerService.getId().toString());
+            customerServicesDTO.setServicename(customerService.getService().getServicename());
+            customerServicesDTO.setServicePrice(Double.toString(customerService.getService_cost()));
+            customerServicesDTO.setServiceRepairsCost(Double.toString(customerService.getService_cost()));
+            customerServicesDTO.setServiceRepairsDesc(customerService.getService_repairs_desc());
+            customerServicesDTO.setServiceRequestedDate(customerService.getServiceStartDate().toString());
+            customerServicesDTO.setVin(customerService.getVin().toString());
+            customerServicesDTO.setServiceStartedDate(customerService.getServiceStartDate().toString());
+            customerServicesDTO.setServiceStationId(customerService.getServiceStationId().toString());
+            customerServicesDTOs.add(customerServicesDTO);
         }
-        return null;
+        return customerServicesDTOs;
     }
 
     @Override

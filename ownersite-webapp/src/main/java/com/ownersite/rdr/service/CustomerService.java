@@ -18,7 +18,7 @@ public interface CustomerService {
 
     List<CustomerSubscriptionDTO> getAllSubscriptions(String customerId);
 
-    List<CustomerServicesDTO> getServiceHistory(String customerId);
+    List<CustomerServicesDTO> getServiceHistory(String customerId, String subscriptionId);
 
     List<VehiclesDTO> getMyVehicles(String customerId);
 

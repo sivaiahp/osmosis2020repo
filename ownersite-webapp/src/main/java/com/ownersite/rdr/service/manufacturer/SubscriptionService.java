@@ -5,6 +5,7 @@ import java.util.List;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.dto.SubscriptionServiceDTO;
+import com.ownersite.rdr.dto.VehiclesDTO;
 import com.ownersite.rdr.exception.OwnerSiteException;
 
 public interface SubscriptionService {
@@ -22,5 +23,7 @@ public interface SubscriptionService {
 	void updateSubscriptionServices(SubscriptionServiceDTO subscriptionServiceDTO) throws OwnerSiteException;
 
 	List<ServiceDTO> getServicesBySubscription(CustomerSubscriptionDTO customerSubscriptionDTO) throws OwnerSiteException;
+
+    List<VehiclesDTO> getAllVehicles();
 
 }

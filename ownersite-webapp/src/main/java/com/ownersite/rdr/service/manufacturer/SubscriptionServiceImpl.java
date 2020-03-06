@@ -1,9 +1,14 @@
 package com.ownersite.rdr.service.manufacturer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ownersite.rdr.dto.VehiclesDTO;
+import com.ownersite.rdr.entity.CustomerVechile;
+import com.ownersite.rdr.entity.Vehicle;
+import com.ownersite.rdr.repository.VehicleJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +36,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	private final ServicesService servicesService;
 
+	private final VehicleJpaRepository vehicleJpaRepository;
+
 	@Autowired
 	public SubscriptionServiceImpl(SubscriptionJpaRepository subscriptionJpaRepository,
 			SubscriptionServiceJpaRepository subscriptionServiceJpaRepository,
-			CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository, ServicesService servicesService) {
+			CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository, ServicesService servicesService,
+								   VehicleJpaRepository vehicleJpaRepository) {
 		this.subscriptionJpaRepository = subscriptionJpaRepository;
 		this.subscriptionServiceJpaRepository = subscriptionServiceJpaRepository;
 		this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
 		this.servicesService = servicesService;
+		this.vehicleJpaRepository = vehicleJpaRepository;
 	}
 
 	@Override
@@ -175,4 +184,20 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return serviceDTOs;
 	}
 
+	@Override
+	public List<VehiclesDTO> getAllVehicles() {
+		List<VehiclesDTO> customerServicesDTOs = new ArrayList<>();
+
+		List<Vehicle> vehicles = vehicleJpaRepository.findAll();
+
+		for (Vehicle vehicle :vehicles) {
+			VehiclesDTO vehiclesDTO = new VehiclesDTO();
+			vehiclesDTO.setVehicleId(vehicle.getId().toString());
+			vehiclesDTO.setMake(vehicle.getMake());
+			vehiclesDTO.setModel(vehicle.getModel());
+			vehiclesDTO.setYear(vehicle.getYear());
+			customerServicesDTOs.add(vehiclesDTO);
+		}
+		return customerServicesDTOs;
+	}
 }

@@ -78,7 +78,7 @@ public class CustomerController {
         return new ResponseEntity<>(customerServices, httpStatus);
     }
 
-    @GetMapping(value = "/addVinForCustomer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/addVinForCustomer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> addVinForCustomer(
             @RequestBody(required = true) VehiclesDTO vehiclesDTO) {
         String responseCode = "0";

@@ -129,6 +129,7 @@ public class CustomerServiceImpl implements CustomerService {
             vehiclesDTO.setVin(customerVechile.getVin());
             vehiclesDTO.setRegisteredNumber(customerVechile.getRegisteredNumber());
             vehiclesDTO.setYear(vehicle.getYear().toString());
+            vehiclesDTO.setCustomerId(customerId);
             customerServicesDTOs.add(vehiclesDTO);
         }
         return customerServicesDTOs;

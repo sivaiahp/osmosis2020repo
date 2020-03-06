@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface CustomerVehicleJpaRepository extends JpaRepository<CustomerVechile, Long>{
 
-	List<CustomerVechile> findByCustomer(String customerId);
+	List<CustomerVechile> findByCustomerId(long customerId);
 }

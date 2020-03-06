@@ -3,17 +3,28 @@
  */
 package com.ownersite.rdr.service;
 
-import com.ownersite.rdr.dto.CustomerServicesDTO;
-import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
-import com.ownersite.rdr.dto.VehiclesDTO;
-import com.ownersite.rdr.entity.*;
-import com.ownersite.rdr.repository.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ownersite.rdr.dto.CustomerDTO;
+import com.ownersite.rdr.dto.CustomerServicesDTO;
+import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.VehiclesDTO;
+import com.ownersite.rdr.entity.Customer;
+import com.ownersite.rdr.entity.CustomerServices;
+import com.ownersite.rdr.entity.CustomerSubscription;
+import com.ownersite.rdr.entity.CustomerVechile;
+import com.ownersite.rdr.entity.Vehicle;
+import com.ownersite.rdr.repository.CustomerJpaRepository;
+import com.ownersite.rdr.repository.CustomerServicesJpaRepository;
+import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
+import com.ownersite.rdr.repository.CustomerVehicleJpaRepository;
+import com.ownersite.rdr.repository.VehicleJpaRepository;
 
 /**
  * @author polamred
@@ -21,6 +32,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CustomerServiceImpl implements CustomerService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     private CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository;
 
@@ -47,7 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerSubscriptionDTO> getAllSubscriptions(String customerId) {
         List<CustomerSubscriptionDTO> customerSubscriptionDTOs = new ArrayList<>();
-        List<CustomerSubscription> subscriptions = customerSubscriptionJpaRepository.findByCustomer(null);
+        List<CustomerSubscription> subscriptions = customerSubscriptionJpaRepository.findByCustomerId(Long.parseLong(customerId));
         for (CustomerSubscription subscription: subscriptions) {
             customerSubscriptionDTOs.add(buildCustomerSubscriptionDTO(subscription));
         }
@@ -68,9 +81,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerServicesDTO> getServiceHistory(String customerId) {
         Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
-        List<CustomerService> customerServices = customerServicesJpaRepository.findByCustomer(customer);
+        List<CustomerServices> customerServices = customerServicesJpaRepository.findByCustomer(customer);
         List<CustomerServicesDTO> customerServicesDTOs = new ArrayList<>();
-        for (CustomerService customerService:customerServices) {
+        for (CustomerServices customerService:customerServices) {
             CustomerServicesDTO customerServicesDTO = new CustomerServicesDTO();
         }
         return null;
@@ -79,7 +92,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<VehiclesDTO> getMyVehicles(String customerId) {
         List<VehiclesDTO> customerServicesDTOs = new ArrayList<>();
-        List<CustomerVechile> customerVechiles = customerVehicleJpaRepository.findByCustomer(customerId);
+        List<CustomerVechile> customerVechiles = customerVehicleJpaRepository.findByCustomerId(Long.parseLong(customerId));
         for (CustomerVechile customerVechile :customerVechiles) {
             VehiclesDTO vehiclesDTO = new VehiclesDTO();
             vehiclesDTO.setVehicleId(customerVechile.getId().toString());
@@ -93,4 +106,45 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return customerServicesDTOs;
     }
+
+	@Override
+	public CustomerDTO getCustomerById(long customerId) {
+		Customer customer = customerJpaRepository.findByCustomerId(customerId);
+		return buildCustomer(customer);
+	}
+
+	@Override
+	public List<CustomerDTO> getAllCustomers(long dealerId) {
+		List<CustomerDTO> customerDTOs = new ArrayList<>();
+		List<CustomerServices> customerServices = customerServicesJpaRepository.findByDealerId(dealerId);
+		for (CustomerServices customerService : customerServices){
+			Customer customer = customerJpaRepository.findByCustomerId(customerService.getCustomerId());
+			customerDTOs.add(buildCustomer(customer));
+		}
+		return customerDTOs;
+	}
+	
+	private CustomerDTO buildCustomer(Customer customer){
+		CustomerDTO customerDTO = new CustomerDTO();
+		customerDTO.setCustomerId(customer.getId());
+		customerDTO.setCity(customer.getCity());
+		customerDTO.setEmail(customer.getEmail());
+		customerDTO.setAddress(customer.getAddress());
+		customerDTO.setCountry(customer.getCountry());
+		customerDTO.setFirstname(customer.getFirstname());
+		customerDTO.setLastname(customer.getLastname());
+		customerDTO.setMobile(customer.getMobile());
+		customerDTO.setState(customer.getState());
+		return customerDTO;
+	}
+
+	@Override
+	public void cancelCustomerSubscription(long customerId) {
+		if(customerSubscriptionJpaRepository.findByCustomerId(customerId).size() > 0){
+			customerSubscriptionJpaRepository.cancelCustomerSubscriptionByCustomerId(customerId);
+			logger.info("customer subscription canceld id:",customerId);
+		} else {
+			logger.info("No subscription for customer Id:", customerId);
+		}
+	}
 }

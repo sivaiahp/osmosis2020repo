@@ -3,6 +3,7 @@
  */
 package com.ownersite.rdr.service;
 
+import com.ownersite.rdr.dto.CustomerDTO;
 import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.VehiclesDTO;
@@ -20,4 +21,10 @@ public interface CustomerService {
     List<CustomerServicesDTO> getServiceHistory(String customerId);
 
     List<VehiclesDTO> getMyVehicles(String customerId);
+    
+    CustomerDTO getCustomerById(long customerId);
+    
+    List<CustomerDTO> getAllCustomers(long dealerId);
+    
+    void cancelCustomerSubscription(long customerId);
 }

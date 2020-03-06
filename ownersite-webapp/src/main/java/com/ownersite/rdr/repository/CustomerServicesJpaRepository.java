@@ -3,14 +3,14 @@
  */
 package com.ownersite.rdr.repository;
 
-import com.ownersite.rdr.service.CustomerService;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.ownersite.rdr.entity.Customer;
 import com.ownersite.rdr.entity.CustomerServices;
-
-import java.util.List;
 
 /**
  * @author polamred
@@ -18,5 +18,8 @@ import java.util.List;
  */
 public interface CustomerServicesJpaRepository  extends JpaRepository<CustomerServices, Long>{
 
-    List<CustomerService> findByCustomer(Customer customer);
+    List<CustomerServices> findByCustomer(Customer customer);
+    
+    @Query(value = "SELECT c from CustomerServices c where dealer_Id =:dealerId")
+    List<CustomerServices> findByDealerId(@Param("dealerId")long dealerId);
 }

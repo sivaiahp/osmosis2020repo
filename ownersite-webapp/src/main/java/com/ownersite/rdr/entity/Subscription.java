@@ -1,6 +1,10 @@
 package com.ownersite.rdr.entity;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.util.List;
 
 @Entity
@@ -12,10 +16,12 @@ public class Subscription extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "subscription_id")
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SubscriptionService> subscriptionServicRegistrations;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "vehicle_id")
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SubscriptionVehicle> subscriptionVehicles;
 
 	private long price;

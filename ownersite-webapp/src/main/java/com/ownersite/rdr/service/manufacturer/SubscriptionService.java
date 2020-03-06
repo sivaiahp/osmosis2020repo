@@ -2,10 +2,7 @@ package com.ownersite.rdr.service.manufacturer;
 
 import java.util.List;
 
-import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
-import com.ownersite.rdr.dto.ServiceDTO;
-import com.ownersite.rdr.dto.SubscriptionServiceDTO;
-import com.ownersite.rdr.dto.VehiclesDTO;
+import com.ownersite.rdr.dto.*;
 import com.ownersite.rdr.exception.OwnerSiteException;
 
 public interface SubscriptionService {
@@ -26,4 +23,5 @@ public interface SubscriptionService {
 
     List<VehiclesDTO> getAllVehicles();
 
+	void updateSubcriptionVehicles(SubscriptionVehicleDTO subscriptionVehicleDTO) throws OwnerSiteException;
 }

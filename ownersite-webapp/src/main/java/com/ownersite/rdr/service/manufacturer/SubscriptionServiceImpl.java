@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ownersite.rdr.dto.VehiclesDTO;
-import com.ownersite.rdr.entity.CustomerVechile;
+import com.ownersite.rdr.dto.*;
 import com.ownersite.rdr.entity.Vehicle;
 import com.ownersite.rdr.repository.VehicleJpaRepository;
 import org.slf4j.Logger;
@@ -15,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
-import com.ownersite.rdr.dto.ServiceDTO;
-import com.ownersite.rdr.dto.SubscriptionServiceDTO;
 import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.exception.OwnerSiteException;
 import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
@@ -200,4 +196,62 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		}
 		return customerServicesDTOs;
 	}
+
+	@Override
+	@Transactional
+	public void updateSubcriptionVehicles(SubscriptionVehicleDTO subscriptionVehicleDTO) throws OwnerSiteException {
+		LOGGER.info("Updating services tagged to subscription");
+
+		List<Long> vehicleIds = Arrays.asList(subscriptionVehicleDTO.getVehicleIds().split(",")).stream()
+				.map(String::trim).map(Long::valueOf).collect(Collectors.toList());
+
+		List<com.ownersite.rdr.entity.Vehicle> updatedVechicles = vehicleJpaRepository.findVehiclesByIds(vehicleIds);
+
+		if (vehicleIds.size() != updatedVechicles.size()) {
+			throw new OwnerSiteException("Invalid service ids");
+		}
+
+		List<Long> updatedVehicleIds = updatedVechicles.stream().map(com.ownersite.rdr.entity.Vehicle::getId)
+				.collect(Collectors.toList());
+
+		Subscription subscription = subscriptionJpaRepository
+				.findBySubscriptionId(Long.valueOf(subscriptionVehicleDTO.getSubscriptionId()));
+
+		if (subscription == null) {
+			throw new OwnerSiteException("Invalid subscription id");
+		}
+
+		List<com.ownersite.rdr.entity.SubscriptionVehicle> existingVehicles = subscription
+				.getSubscriptionVehicles();
+		List<Long> existingVehicleIds = existingVehicles.stream().map(vehicle -> vehicle.getVehicle().getId())
+				.collect(Collectors.toList());
+
+		// Services to be un-tagged from subscription
+		List<com.ownersite.rdr.entity.SubscriptionVehicle> servicesToBeRemoved = existingVehicles.stream()
+				.filter(subscriptionService -> !updatedVehicleIds.contains(subscriptionService.getVehicle().getId()))
+				.collect(Collectors.toList());
+
+		// New services to be tagged to subscription
+		List<com.ownersite.rdr.entity.SubscriptionVehicle> servicesToBeAdded = updatedVechicles.stream()
+				.filter(vehicle -> !existingVehicleIds.contains(vehicle.getId())).map(vehicle -> {
+					com.ownersite.rdr.entity.SubscriptionVehicle subscriptionVehicle = new com.ownersite.rdr.entity.SubscriptionVehicle();
+					subscriptionVehicle.setVehicle(vehicle);
+					subscriptionVehicle.setSubscription(subscription);
+					return subscriptionVehicle;
+				}).collect(Collectors.toList());
+
+		if (!servicesToBeRemoved.isEmpty()) {
+			existingVehicles.removeAll(servicesToBeRemoved);
+		}
+		if (!servicesToBeAdded.isEmpty()) {
+			existingVehicles.addAll(servicesToBeAdded);
+		}
+
+		subscriptionJpaRepository.saveAndFlush(subscription);
+		subscriptionJpaRepository.flush();
+
+		LOGGER.info("Updated services tagged to subscription successfully");
+
+	}
+
 }

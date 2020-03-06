@@ -14,6 +14,10 @@ public class Subscription extends BaseEntity {
 	@JoinColumn(name = "subscription_id")
 	private List<SubscriptionService> subscriptionServicRegistrations;
 
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "vehicle_id")
+	private List<SubscriptionVehicle> subscriptionVehicles;
+
 	private long price;
 
 	public String getSubscriptionname() {
@@ -44,9 +48,19 @@ public class Subscription extends BaseEntity {
 		return price;
 	}
 
+	public List<SubscriptionVehicle> getSubscriptionVehicles() {
+		return subscriptionVehicles;
+	}
+
+	public void setSubscriptionVehicles(List<SubscriptionVehicle> subscriptionVehicles) {
+		this.subscriptionVehicles = subscriptionVehicles;
+	}
+
 	public void setPrice(long price) {
 		this.price = price;
 	}
+
+
 
 	@Override
 	public String toString() {

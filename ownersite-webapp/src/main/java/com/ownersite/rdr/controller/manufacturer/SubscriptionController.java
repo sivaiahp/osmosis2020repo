@@ -140,4 +140,23 @@ public class SubscriptionController {
 		return new ResponseEntity<>(serviceDTOs, httpStatus);
 	}
 
+	@PostMapping(value = "/updateSubcriptionVehicles", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseDTO> updateSubcriptionVehicles(
+			@RequestBody(required = true) SubscriptionVehicleDTO subscriptionVehicleDTO) {
+		String responseCode = "0";
+		HttpStatus httpStatus = OK;
+		Map<String, Object> errors = null;
+
+		try {
+			subscriptionService.updateSubcriptionVehicles(subscriptionVehicleDTO);
+		} catch (Exception exception) {
+			responseCode = "1";
+			httpStatus = ERROR;
+			errors = OwnerSiteUtility.constructErrorResponse(exception);
+		}
+
+		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
+	}
+
+
 }

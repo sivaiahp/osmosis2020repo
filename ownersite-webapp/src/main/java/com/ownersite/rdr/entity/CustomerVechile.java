@@ -6,6 +6,7 @@ package com.ownersite.rdr.entity;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author polamred
@@ -21,6 +22,7 @@ public class CustomerVechile extends BaseEntity{
 	private Long customerId;
 	private Long dealerId;
 	private String registeredNumber;
+	private Date rdrRegisteredDate;
 
 	public String getVin() {
 		return vin;
@@ -55,6 +57,14 @@ public class CustomerVechile extends BaseEntity{
 
 	public void setRegisteredNumber(String registeredNumber) {
 		this.registeredNumber = registeredNumber;
+	}
+
+	public Date getRdrRegisteredDate() {
+		return rdrRegisteredDate;
+	}
+
+	public void setRdrRegisteredDate(Date rdrRegisteredDate) {
+		this.rdrRegisteredDate = rdrRegisteredDate;
 	}
 
 	@Override

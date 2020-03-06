@@ -1,5 +1,7 @@
 package com.ownersite.rdr.dto;
 
+import java.util.Date;
+
 public class VehiclesDTO {
 
     private String vehicleId;
@@ -15,6 +17,8 @@ public class VehiclesDTO {
     private String registeredNumber;
 
     private String customerId;
+
+    private Date rdrRegisteredDate;
 
     public String getVehicleId() {
         return vehicleId;
@@ -70,6 +74,14 @@ public class VehiclesDTO {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public Date getRdrRegisteredDate() {
+        return rdrRegisteredDate;
+    }
+
+    public void setRdrRegisteredDate(Date rdrRegisteredDate) {
+        this.rdrRegisteredDate = rdrRegisteredDate;
     }
 
     @Override

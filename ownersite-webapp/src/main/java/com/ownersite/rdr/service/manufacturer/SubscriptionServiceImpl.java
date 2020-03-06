@@ -205,7 +205,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		List<Long> vehicleIds = Arrays.asList(subscriptionVehicleDTO.getVehicleIds().split(",")).stream()
 				.map(String::trim).map(Long::valueOf).collect(Collectors.toList());
 
-		List<com.ownersite.rdr.entity.Vehicle> updatedVechicles = vehicleJpaRepository.findVehiclesByIds(vehicleIds);
+		List<com.ownersite.rdr.entity.Vehicle> updatedVechicles = vehicleJpaRepository.findAllById(vehicleIds);
 
 		if (vehicleIds.size() != updatedVechicles.size()) {
 			throw new OwnerSiteException("Invalid service ids");

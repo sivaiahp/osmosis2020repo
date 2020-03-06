@@ -91,11 +91,11 @@ public class DealerController {
 	}
 
 	@PostMapping(value = "/cancelCustomerSubscriptions")
-	public ResponseEntity<ResponseDTO> cancelCustomerSubscriptions(@RequestParam long customerId) {
+	public ResponseEntity<ResponseDTO> cancelCustomerSubscriptions(@RequestParam String customerId, @RequestParam String subscriptionId, @RequestParam String vin) {
 		String responseCode = "0";
 		HttpStatus httpStatus = OK;
 		try {
-			customerService.cancelCustomerSubscription(customerId);
+			customerService.cancelSubscription(customerId, subscriptionId, vin);
 		} catch (Exception exception) {
 			responseCode = "1";
 			httpStatus = ERROR;
@@ -103,12 +103,12 @@ public class DealerController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
 	}
 
-	@GetMapping(value = "/getServiceHistory/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CustomerServicesDTO>> getServiceHistory(@PathVariable  String customerId) {
+	@GetMapping(value = "/getServiceHistory/{customerId}/{subscriptionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CustomerServicesDTO>> getServiceHistory(@PathVariable  String customerId, @PathVariable  String subscriptionId) {
         List<CustomerServicesDTO> customerServices = null;
         HttpStatus httpStatus = OK;
         try {
-            customerServices = customerService.getServiceHistory(customerId);
+            customerServices = customerService.getServiceHistory(customerId, subscriptionId);
         } catch (Exception exception) {
             httpStatus = ERROR;
         }
@@ -116,12 +116,12 @@ public class DealerController {
         return new ResponseEntity<>(customerServices, httpStatus);
     }
 	
-	@GetMapping(value = "/getServiceDetails/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CustomerServicesDTO>> getServiceDetails(@PathVariable  String customerId) {
+	@GetMapping(value = "/getServiceDetails/{customerId}/{subscriptionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CustomerServicesDTO>> getServiceDetails(@PathVariable  String customerId, @PathVariable  String subscriptionId) {
         List<CustomerServicesDTO> customerServices = null;
         HttpStatus httpStatus = OK;
         try {
-            customerServices = customerService.getServiceHistory(customerId);
+            customerServices = customerService.getServiceHistory(customerId, subscriptionId);
         } catch (Exception exception) {
             httpStatus = ERROR;
         }
@@ -129,4 +129,17 @@ public class DealerController {
         return new ResponseEntity<>(customerServices, httpStatus);
     }
 
+	@PostMapping(value = "/transferSubscriptions")
+    public ResponseEntity<ResponseDTO> getServiceDetails(@RequestParam  String customerId, @RequestParam  String subscriptionId, @RequestParam  String vin) {
+		String responseCode = "0";
+		HttpStatus httpStatus = OK;
+        try {
+            customerService.transferSubscription(customerId, subscriptionId, vin);
+        } catch (Exception exception) {
+        	responseCode = "1";
+            httpStatus = ERROR;
+        }
+
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.entity.Service;
+import com.ownersite.rdr.exception.OwnerSiteException;
 
 public interface ServicesService {
 
@@ -11,9 +12,9 @@ public interface ServicesService {
 
 	void addService(ServiceDTO serviceDTO);
 
-	void deleteService(long serviceId);
+	void deleteService(long serviceId) throws OwnerSiteException;
 
-	void updateService(ServiceDTO serviceDTO);
+	void updateService(ServiceDTO serviceDTO) throws OwnerSiteException;
 
 	ServiceDTO findServiceById(long serviceId);
 

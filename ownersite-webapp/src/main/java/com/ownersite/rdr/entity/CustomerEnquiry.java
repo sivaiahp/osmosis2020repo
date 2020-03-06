@@ -10,32 +10,31 @@ public class CustomerEnquiry extends BaseEntity{
 	private java.util.Date enquiry_resolved_date;
 	private String enquiry_question;
 	private String enquiry_answer;
-	private Long customer_Id;
-	private Long dealer_Id;
-	
+	private Long customerId;
+	private Long dealerId;
 
 	public Long getCustomerId() {
-		return customer_Id;
+		return customerId;
 	}
 
 	public void setCustomerId(Long customerId) {
-		this.customer_Id = customerId;
+		this.customerId = customerId;
 	}
 
 	public Long getDealerId() {
-		return dealer_Id;
+		return dealerId;
 	}
 
 	public void setDealerId(Long dealerId) {
-		this.dealer_Id = dealerId;
+		this.dealerId = dealerId;
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false, insertable = false)
+	@JoinColumn(name = "customerId", referencedColumnName = "id", updatable = false, insertable = false)
 	private Customer customer;
 
 	@ManyToOne
-	@JoinColumn(name = "dealer_id", referencedColumnName = "id", updatable = false, insertable = false)
+	@JoinColumn(name = "dealerId", referencedColumnName = "id", updatable = false, insertable = false)
 	private Dealer dealer;
 
 	public java.util.Date getEnquiry_created_date(){
@@ -90,7 +89,7 @@ public class CustomerEnquiry extends BaseEntity{
 	public String toString() {
 		return "CustomerEnquiry [enquiry_created_date=" + enquiry_created_date + ", enquiry_resolved_date="
 				+ enquiry_resolved_date + ", enquiry_question=" + enquiry_question + ", enquiry_answer="
-				+ enquiry_answer + ", customerId=" + customer_Id + ", dealerId=" + dealer_Id + ", customer=" + customer
+				+ enquiry_answer + ", customerId=" + customerId + ", dealerId=" + dealerId + ", customer=" + customer
 				+ ", dealer=" + dealer + "]";
 	}
 

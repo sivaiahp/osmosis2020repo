@@ -13,7 +13,7 @@ public class CustomerSubscription extends BaseEntity{
 	private java.util.Date customer_sub_enddate;
 	private String vin;
 	private Double price;
-	private Long customer_Id;
+	private Long customerId;
 	private Long customerSubId;
 	private Long primarySubId;
 	private Long secondarySubId;
@@ -26,12 +26,13 @@ public class CustomerSubscription extends BaseEntity{
 		this.price = price;
 	}
 
+
 	public Long getCustomerId() {
-		return customer_Id;
+		return customerId;
 	}
 
 	public void setCustomerId(Long customerId) {
-		this.customer_Id = customerId;
+		this.customerId = customerId;
 	}
 
 	public Long getCustomerSubId() {
@@ -59,7 +60,7 @@ public class CustomerSubscription extends BaseEntity{
 	}
 
 	@ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "customerId", referencedColumnName = "id", updatable = false, insertable = false)
 	private Customer customer;
     
     @ManyToOne
@@ -126,7 +127,7 @@ public class CustomerSubscription extends BaseEntity{
 	public String toString() {
 		return "CustomerSubscription [subscriptionname=" + subscriptionname + ", subscriptiondec=" + subscriptiondec
 				+ ", customer_sub_startdate=" + customer_sub_startdate + ", customer_sub_enddate="
-				+ customer_sub_enddate + ", vin=" + vin + ", price=" + price + ", customerId=" + customer_Id
+				+ customer_sub_enddate + ", vin=" + vin + ", price=" + price + ", customerId=" + customerId
 				+ ", customerSubId=" + customerSubId + ", primarySubId=" + primarySubId + ", secondarySubId="
 				+ secondarySubId + ", customer=" + customer + ", subscription=" + subscription + "]";
 	}

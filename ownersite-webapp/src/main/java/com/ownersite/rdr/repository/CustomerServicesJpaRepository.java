@@ -19,7 +19,8 @@ import com.ownersite.rdr.entity.CustomerServices;
 public interface CustomerServicesJpaRepository  extends JpaRepository<CustomerServices, Long>{
 
     List<CustomerServices> findByCustomer(Customer customer);
-    
-    @Query(value = "SELECT c from CustomerServices c where dealer_Id =:dealerId")
+
+    @Query(value = "SELECT c from CustomerServices c where dealerId =:dealerId")
     List<CustomerServices> findByDealerId(@Param("dealerId")long dealerId);
+
 }

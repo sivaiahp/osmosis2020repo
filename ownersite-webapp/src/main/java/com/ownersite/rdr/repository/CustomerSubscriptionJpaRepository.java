@@ -21,12 +21,17 @@ public interface CustomerSubscriptionJpaRepository extends JpaRepository<Custome
 
 	@Query(value = "SELECT c from CustomerSubscription c where c.subscription.id =:subscriptionId")
 	List<CustomerSubscription> findBySubscriptionId(@Param("subscriptionId") long subscriptionId);
+
 	
-	@Query(value = "SELECT c from CustomerSubscription c where customer_Id =:customerId")
+	@Query(value = "SELECT c from CustomerSubscription c where customerId =:customerId")
     List<CustomerSubscription> findByCustomerId(@Param("customerId") long customerId);
     
 	@Transactional
 	@Modifying
-	@Query(value = "DELETE FROM CustomerSubscription c where customer_Id =:customerId")
+	@Query(value = "DELETE FROM CustomerSubscription c where customerId =:customerId")
 	void cancelCustomerSubscriptionByCustomerId(@Param("customerId") long customerId);
+
+    List<CustomerSubscription> findBySubscriptionIdAndCustomerId(String subscriptionId, String customerId);
+
+    List<CustomerSubscription> findBySubscriptionIdAndCustomerIdAndVin(String subscriptionId, String customerId, String vin);
 }

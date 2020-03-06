@@ -14,5 +14,11 @@ import java.util.List;
  */
 public interface CustomerVehicleJpaRepository extends JpaRepository<CustomerVechile, Long>{
 
+
 	List<CustomerVechile> findByCustomerId(long customerId);
+
+	List<CustomerVechile> findByCustomerId(String customerId);
+
+	CustomerVechile findByVin(String vin);
+
 }

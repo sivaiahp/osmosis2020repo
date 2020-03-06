@@ -12,7 +12,7 @@ public class Vehicle extends BaseEntity{
 	private String make;
 	private String model;
 	private String submodel;
-	private java.util.Date year;
+	private String year;
 
 	public String getMake(){
 		return make;
@@ -38,12 +38,12 @@ public class Vehicle extends BaseEntity{
 		this.submodel=submodel;
 	}
 
-	public java.util.Date getYear(){
+	public String getYear() {
 		return year;
 	}
 
-	public void setYear(java.util.Date year){
-		this.year=year;
+	public void setYear(String year) {
+		this.year = year;
 	}
 
 	@Override

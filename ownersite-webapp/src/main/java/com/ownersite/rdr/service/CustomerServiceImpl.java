@@ -203,7 +203,11 @@ public class CustomerServiceImpl implements CustomerService {
                                         String subscriptionStartDate, String subscriptionEndDate) throws ParseException {
         Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
         Subscription subscription = subscriptionJpaRepository.getOne(Long.parseLong(subscriptionId));
-        CustomerVechile customerVechile = customerVehicleJpaRepository.getOne(Long.parseLong(vehicleId));
+        CustomerVechile customerVechile = null;
+        if(!vehicleId.equals("-1")) {
+        	 customerVechile = customerVehicleJpaRepository.getOne(Long.parseLong(vehicleId));
+        }
+       
         CustomerSubscription customerSubscription = new CustomerSubscription();
         customerSubscription.setCustomer(customer);
         customerSubscription.setSubscription(subscription);
@@ -213,7 +217,9 @@ public class CustomerServiceImpl implements CustomerService {
         customerSubscription.setSubscriptionname(subscription.getSubscriptionname());
         customerSubscription.setSubscriptiondec(subscription.getSubscriptiondec());
         customerSubscription.setPrice(new Double(subscription.getPrice()));
+        if(!vehicleId.equals("-1")) {
         customerSubscription.setVin(customerVechile.getVin());
+        }        
         customerSubscriptionJpaRepository.save(customerSubscription);
     }
 

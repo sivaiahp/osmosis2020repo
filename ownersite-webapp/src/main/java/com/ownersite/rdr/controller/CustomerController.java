@@ -92,7 +92,7 @@ public class CustomerController {
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
 
-    @GetMapping(value = "/addCustomerSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/addCustomerSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> addCustomerSubscription(@RequestParam  String customerId,
                                                                @RequestParam  String subscriptionId,
                                                                @RequestParam  String vehicleId,

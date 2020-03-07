@@ -25,5 +25,4 @@ public interface SubscriptionService {
 
 	void updateSubcriptionVehicles(SubscriptionVehicleDTO subscriptionVehicleDTO) throws OwnerSiteException;
 
-	List<ServiceDTO> getVehiclesBySubscription(CustomerSubscriptionDTO customerSubscriptionDTO);
 }

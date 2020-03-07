@@ -179,6 +179,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		return serviceDTOs;
 	}
+	
+	
 
 	@Override
 	public List<VehiclesDTO> getAllVehicles() {

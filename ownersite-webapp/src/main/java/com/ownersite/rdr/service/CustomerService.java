@@ -40,4 +40,6 @@ public interface CustomerService {
 
     void cancelSubscription(String customerId, String subscriptionId, String vin);
 
+	void addVinForSubscription(String subscriptionId, String vin);
+
 }

@@ -48,11 +48,15 @@ public class CustomerController {
         try {
             customerServices = customerService.getServiceHistory(customerId, subscriptionId);
         } catch (Exception exception) {
+        	exception.printStackTrace();
+        	System.out.println(exception);
             httpStatus = ERROR;
         }
 
         return new ResponseEntity<>(customerServices, httpStatus);
     }
+    
+    
 
     @GetMapping(value = "/getMyVehicles")
     public ResponseEntity<List<VehiclesDTO>> getMyVehicles(@RequestParam  String customerId) {
@@ -85,6 +89,20 @@ public class CustomerController {
         HttpStatus httpStatus = OK;
         try {
             customerService.addVinForCustomer(vehiclesDTO);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+
+    @PostMapping(value = "/addVinForSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> addVinForSubscription(
+    		@RequestParam  String custsubscriptionId, String vin) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.addVinForSubscription(custsubscriptionId, vin);
         } catch (Exception exception) {
             responseCode = "1";
             httpStatus = ERROR;

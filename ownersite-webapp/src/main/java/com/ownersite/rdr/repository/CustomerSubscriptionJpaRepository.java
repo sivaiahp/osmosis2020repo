@@ -31,7 +31,7 @@ public interface CustomerSubscriptionJpaRepository extends JpaRepository<Custome
 	@Query(value = "DELETE FROM CustomerSubscription c where customerId =:customerId")
 	void cancelCustomerSubscriptionByCustomerId(@Param("customerId") long customerId);
 
-    List<CustomerSubscription> findBySubscriptionIdAndCustomerId(String subscriptionId, String customerId);
+    List<CustomerSubscription> findBySubscriptionIdAndCustomerId(Long subscriptionId, Long customerId);
 
     List<CustomerSubscription> findBySubscriptionIdAndCustomerIdAndVin(String subscriptionId, String customerId, String vin);
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -300,7 +301,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void transferSubscription(String customerId, String subscriptionId, String vin) {
         List<CustomerSubscription> customerSubscriptions = customerSubscriptionJpaRepository
-                .findBySubscriptionIdAndCustomerId(subscriptionId, customerId);
+                .findBySubscriptionIdAndCustomerId(Long.valueOf(subscriptionId), Long.valueOf(customerId));
         CustomerSubscription customerSubscription = customerSubscriptions.get(0);
         customerSubscription.setVin(vin);
         customerSubscriptionJpaRepository.save(customerSubscription);
@@ -308,10 +309,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void cancelSubscription(String customerId, String subscriptionId, String vin) {
-        List<CustomerSubscription> customerSubscriptions = customerSubscriptionJpaRepository
-                .findBySubscriptionIdAndCustomerIdAndVin(subscriptionId, customerId, vin);
-        CustomerSubscription customerSubscription = customerSubscriptions.get(0);
-        customerSubscriptionJpaRepository.delete(customerSubscription);
+    	try {
+    		
+        customerSubscriptionJpaRepository.deleteById(Long.valueOf(subscriptionId));
+        }
+    	catch(Exception ex) {
+    		ex.printStackTrace();
+    	}
     }
 
 }

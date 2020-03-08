@@ -2,6 +2,9 @@ package com.ownersite.rdr.dto;
 
 import java.util.Date;
 
+import com.ownersite.rdr.entity.Service;
+import com.ownersite.rdr.entity.Vehicle;
+
 public class VehiclesDTO {
 
     private String vehicleId;
@@ -19,6 +22,18 @@ public class VehiclesDTO {
     private String customerId;
 
     private Date rdrRegisteredDate;
+
+    public VehiclesDTO() {
+		super();
+	}
+
+	public VehiclesDTO(Vehicle vehicle) {
+		super();
+		this.setModel(vehicle.getModel());
+		this.setMake(vehicle.getMake());
+		this.setYear(vehicle.getYear());
+		
+	}
 
     public String getVehicleId() {
         return vehicleId;

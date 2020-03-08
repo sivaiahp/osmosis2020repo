@@ -23,6 +23,7 @@ import com.ownersite.rdr.dto.SubscriptionVehicleDTO;
 import com.ownersite.rdr.dto.VehiclesDTO;
 import com.ownersite.rdr.entity.MonthlySubscribers;
 import com.ownersite.rdr.entity.Subscription;
+import com.ownersite.rdr.entity.SubscriptionVehicle;
 import com.ownersite.rdr.entity.Vehicle;
 import com.ownersite.rdr.exception.OwnerSiteException;
 import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
@@ -191,7 +192,23 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return serviceDTOs;
 	}
 	
-	
+	@Override
+	public List<VehiclesDTO> getVehiclesBySubscription(CustomerSubscriptionDTO customerSubscriptionDTO) {
+		LOGGER.info("Getting all the services tagged to a subscription");
+
+		List<VehiclesDTO> vehiclesDTOs = null;
+
+		Subscription subscription = subscriptionJpaRepository
+				.findBySubscriptionId(Long.valueOf(customerSubscriptionDTO.getSubscriptionId()));
+
+		vehiclesDTOs = subscription.getSubscriptionVehicles().stream()
+				.map(com.ownersite.rdr.entity.SubscriptionVehicle::getVehicle).map(VehiclesDTO::new)
+				.collect(Collectors.toList());
+
+		LOGGER.info("Got all the services tagged to a subscription successfully");
+
+		return vehiclesDTOs;
+	}
 
 	@Override
 	public List<VehiclesDTO> getAllVehicles() {

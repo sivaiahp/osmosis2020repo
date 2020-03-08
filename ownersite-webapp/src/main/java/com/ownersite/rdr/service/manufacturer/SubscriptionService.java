@@ -35,4 +35,6 @@ public interface SubscriptionService {
 
 	ReportDTO generateMonthlySubscriptionsPerSubcriptionReport();
 
+	List<VehiclesDTO> getVehiclesBySubscription(CustomerSubscriptionDTO customerSubscriptionDTO);
+
 }

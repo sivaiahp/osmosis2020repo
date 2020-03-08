@@ -2,23 +2,34 @@ package com.ownersite.rdr.service.manufacturer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.ownersite.rdr.dto.*;
-import com.ownersite.rdr.entity.Vehicle;
-import com.ownersite.rdr.repository.VehicleJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.ReportDTO;
+import com.ownersite.rdr.dto.ReportDataSeriesDTO;
+import com.ownersite.rdr.dto.ServiceDTO;
+import com.ownersite.rdr.dto.SubscriptionServiceDTO;
+import com.ownersite.rdr.dto.SubscriptionVehicleDTO;
+import com.ownersite.rdr.dto.VehiclesDTO;
+import com.ownersite.rdr.entity.MonthlySubscribers;
 import com.ownersite.rdr.entity.Subscription;
+import com.ownersite.rdr.entity.Vehicle;
 import com.ownersite.rdr.exception.OwnerSiteException;
 import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
 import com.ownersite.rdr.repository.SubscriptionJpaRepository;
 import com.ownersite.rdr.repository.SubscriptionServiceJpaRepository;
+import com.ownersite.rdr.repository.VehicleJpaRepository;
+import com.ownersite.rdr.util.OwnerSiteUtility;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -38,7 +49,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public SubscriptionServiceImpl(SubscriptionJpaRepository subscriptionJpaRepository,
 			SubscriptionServiceJpaRepository subscriptionServiceJpaRepository,
 			CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository, ServicesService servicesService,
-								   VehicleJpaRepository vehicleJpaRepository) {
+			VehicleJpaRepository vehicleJpaRepository) {
 		this.subscriptionJpaRepository = subscriptionJpaRepository;
 		this.subscriptionServiceJpaRepository = subscriptionServiceJpaRepository;
 		this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
@@ -188,7 +199,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		List<Vehicle> vehicles = vehicleJpaRepository.findAll();
 
-		for (Vehicle vehicle :vehicles) {
+		for (Vehicle vehicle : vehicles) {
 			VehiclesDTO vehiclesDTO = new VehiclesDTO();
 			vehiclesDTO.setVehicleId(vehicle.getId().toString());
 			vehiclesDTO.setMake(vehicle.getMake());
@@ -223,8 +234,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 			throw new OwnerSiteException("Invalid subscription id");
 		}
 
-		List<com.ownersite.rdr.entity.SubscriptionVehicle> existingVehicles = subscription
-				.getSubscriptionVehicles();
+		List<com.ownersite.rdr.entity.SubscriptionVehicle> existingVehicles = subscription.getSubscriptionVehicles();
 		List<Long> existingVehicleIds = existingVehicles.stream().map(vehicle -> vehicle.getVehicle().getId())
 				.collect(Collectors.toList());
 
@@ -254,6 +264,44 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		LOGGER.info("Updated services tagged to subscription successfully");
 
+	}
+
+	@Override
+	public ReportDTO generateSubscriptionsPerMonthReport() {
+		Map<String, String> subscribers = new LinkedHashMap<>();
+		customerSubscriptionJpaRepository.generateMonthlySubscriptionsReport().stream()
+				.forEach(subscriber -> subscribers.put(subscriber.getPeriod(), subscriber.getSubscribers()));
+
+		List<String> months = OwnerSiteUtility.getTwelveMonthsFromToday();
+		return new ReportDTO(months,
+				Arrays.asList(new ReportDataSeriesDTO("Subscriptions", months.stream()
+						.map(month -> Integer.parseInt(subscribers.containsKey(month) ? subscribers.get(month) : "0"))
+						.collect(Collectors.toList()))));
+	}
+
+	@Override
+	public ReportDTO generateMonthlySubscriptionsPerSubcriptionReport() {
+		List<String> months = OwnerSiteUtility.getTwelveMonthsFromToday();
+
+		Map<String, List<MonthlySubscribers>> subscribers = customerSubscriptionJpaRepository
+				.generateMonthlySubscriptionsPerSubscriptionReport().stream()
+				.collect(Collectors.groupingBy(MonthlySubscribers::getSubscriptionname));
+
+		List<ReportDataSeriesDTO> reportDataSeries = new LinkedList<>();
+
+		subscribers.forEach((subscriptionName, subscription) -> {
+			Map<String, String> subscribersPerMonth = new LinkedHashMap<>();
+			subscription.stream().forEach(
+					subscriber -> subscribersPerMonth.put(subscriber.getPeriod(), subscriber.getSubscribers()));
+
+			reportDataSeries
+					.add(new ReportDataSeriesDTO(subscriptionName,
+							months.stream().map(month -> Integer.parseInt(
+									subscribersPerMonth.containsKey(month) ? subscribersPerMonth.get(month) : "0"))
+									.collect(Collectors.toList())));
+		});
+
+		return new ReportDTO(months, reportDataSeries);
 	}
 
 }

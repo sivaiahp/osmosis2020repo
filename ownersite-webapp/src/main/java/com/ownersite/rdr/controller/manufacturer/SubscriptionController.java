@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.ReportDTO;
 import com.ownersite.rdr.dto.ResponseDTO;
 import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.dto.SubscriptionServiceDTO;
@@ -170,5 +171,32 @@ public class SubscriptionController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
 	}
 
+	@GetMapping(value = "/monthlySubscriptionsReport", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ReportDTO> generateMontlyScubscriptionsReport() {
+		ReportDTO report = null;
+		HttpStatus httpStatus = OK;
+
+		try {
+			report = subscriptionService.generateSubscriptionsPerMonthReport();
+		} catch (Exception e) {
+			httpStatus = ERROR;
+		}
+
+		return new ResponseEntity<>(report, httpStatus);
+	}
+
+	@GetMapping(value = "/monthlySubscriptionsPerSubscriptionReport", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ReportDTO> generateMontlyScubscriptionsPerSubscriptionReport() {
+		ReportDTO report = null;
+		HttpStatus httpStatus = OK;
+
+		try {
+			report = subscriptionService.generateMonthlySubscriptionsPerSubcriptionReport();
+		} catch (Exception e) {
+			httpStatus = ERROR;
+		}
+
+		return new ResponseEntity<>(report, httpStatus);
+	}
 
 }

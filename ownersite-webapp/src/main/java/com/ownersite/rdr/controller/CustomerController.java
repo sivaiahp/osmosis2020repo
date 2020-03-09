@@ -157,7 +157,7 @@ public class CustomerController {
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
 
-    @GetMapping(value = "/confirmRDR", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/confirmRDR", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> confirmRDR(@RequestParam  String customerId,
                                                           @RequestParam  String rdrCustConfirmedDate,
                                                           @RequestParam   String vin) {

@@ -317,9 +317,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void confirmRDR(String customerId, String rdrCustConfirmedDate, String vin) {
         CustomerVechile customerVechile = customerVehicleJpaRepository.findByVin(vin);
-        if(customerVechile.getCustomerId().equals(customerId)){
+        System.out.println(customerVechile.getCustomerId());
+        if(customerVechile.getCustomerId().toString().equals(customerId)){
             try {
                 customerVechile.setRdrRegisteredDate(new SimpleDateFormat("dd/MM/yyyy").parse(rdrCustConfirmedDate));
+                System.out.println(customerVechile.getRdrRegisteredDate());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

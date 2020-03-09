@@ -22,7 +22,7 @@ public class CustomerServices extends BaseEntity{
 	private Long companyServiceId;
 	private Long dealerId;
 	private Long serviceStationId;
-	private Long vin;
+	private String vin;
 	private String serviceRequestedDate;
 	private Date serviceStartDate;
 	private Date serviceCompletedDate;
@@ -69,11 +69,11 @@ public class CustomerServices extends BaseEntity{
 		this.serviceStationId = serviceStationId;
 	}
 
-	public Long getVin() {
+	public String getVin() {
 		return vin;
 	}
 
-	public void setVin(Long vin) {
+	public void setVin(String vin) {
 		this.vin = vin;
 	}
 

@@ -156,4 +156,66 @@ public class CustomerController {
         }
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
+
+    @GetMapping(value = "/confirmRDR", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> confirmRDR(@RequestParam  String customerId,
+                                                          @RequestParam  String rdrCustConfirmedDate,
+                                                          @RequestParam   String vin) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.confirmRDR(customerId,rdrCustConfirmedDate,vin);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+
+    @GetMapping(value = "/beginService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> beginService(@RequestParam  String customerId,
+                                                  @RequestParam  String serviceId,
+                                                  @RequestParam   String vin,
+                                                    @RequestParam   String dealerId) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.addCustomerService(customerId,serviceId,vin, dealerId);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+
+
+    @GetMapping(value = "/addCustomerEnquiry", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> addCustomerEnquiry (@RequestParam String enquiry_created_date, @RequestParam String enquiry_resolved_date,
+                                                           @RequestParam String enquiry_question, @RequestParam String enquiry_answer,
+                                                           @RequestParam String customerId, @RequestParam String dealerId) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.addCustomerEnquiry(enquiry_created_date, enquiry_resolved_date, enquiry_question, enquiry_answer, customerId, dealerId);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+
+    @GetMapping(value = "/addCustomerFeedback", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> addCustomerFeedback (@RequestParam String enquiry_created_date, @RequestParam String enquiry_resolved_date,
+                                                           @RequestParam String enquiry_question, @RequestParam String enquiry_answer,
+                                                           @RequestParam String customerId, @RequestParam String dealerId) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.addCustomerFeedback(enquiry_created_date, enquiry_resolved_date, enquiry_question, enquiry_answer, customerId, dealerId);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
 }

@@ -42,4 +42,13 @@ public interface CustomerService {
 
 	void addVinForSubscription(String subscriptionId, String vin);
 
+    void confirmRDR(String customerId, String rdrCustConfirmedDate, String vin);
+
+    void addCustomerService(String customerId, String serviceId, String vin, String dealerId);
+
+    void addCustomerEnquiry(String enquiry_created_date, String enquiry_resolved_date, String enquiry_question,
+                            String enquiry_answer, String customerId, String dealerId);
+
+    void addCustomerFeedback(String enquiry_created_date, String enquiry_resolved_date, String enquiry_question,
+                             String enquiry_answer, String customerId, String dealerId);
 }

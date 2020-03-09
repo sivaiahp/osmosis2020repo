@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.ownersite.rdr.entity.*;
+import com.ownersite.rdr.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +24,6 @@ import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
 import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.dto.VehiclesDTO;
-import com.ownersite.rdr.entity.Customer;
-import com.ownersite.rdr.entity.CustomerServices;
-import com.ownersite.rdr.entity.CustomerSubscription;
-import com.ownersite.rdr.entity.CustomerVechile;
-import com.ownersite.rdr.entity.Subscription;
-import com.ownersite.rdr.entity.Vehicle;
-import com.ownersite.rdr.repository.CustomerJpaRepository;
-import com.ownersite.rdr.repository.CustomerServicesJpaRepository;
-import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
-import com.ownersite.rdr.repository.CustomerVehicleJpaRepository;
-import com.ownersite.rdr.repository.ServicesJpaRepository;
-import com.ownersite.rdr.repository.SubscriptionJpaRepository;
-import com.ownersite.rdr.repository.VehicleJpaRepository;
 
 /**
  * @author polamred
@@ -55,7 +44,9 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerVehicleJpaRepository customerVehicleJpaRepository;
     private SubscriptionJpaRepository subscriptionJpaRepository;
     private ServicesJpaRepository servicesJpaRepository;
-  
+    private DealerJpaRepository dealerJpaRepository;
+    private CustomerEnquiryJpaRepository customerEnquiryJpaRepository;
+    private CustomerFeedbackJpaRepository customerFeedbackJpaRepository;
 
     @Autowired
     public CustomerServiceImpl(CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository,
@@ -64,7 +55,9 @@ public class CustomerServiceImpl implements CustomerService {
                                VehicleJpaRepository vehicleJpaRepository,
                                CustomerVehicleJpaRepository customerVehicleJpaRepository,
                                SubscriptionJpaRepository subscriptionJpaRepository,
-                               ServicesJpaRepository servicesJpaRepository) {
+                               ServicesJpaRepository servicesJpaRepository,
+                               DealerJpaRepository dealerJpaRepository,
+                               CustomerEnquiryJpaRepository customerEnquiryJpaRepository) {
         this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
         this.customerServicesJpaRepository = customerServicesJpaRepository;
         this.customerJpaRepository = customerJpaRepository;
@@ -72,6 +65,8 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerVehicleJpaRepository = customerVehicleJpaRepository;
         this.subscriptionJpaRepository = subscriptionJpaRepository;
         this.servicesJpaRepository = servicesJpaRepository;
+        this.dealerJpaRepository = dealerJpaRepository;
+        this.customerEnquiryJpaRepository = customerEnquiryJpaRepository;
     }
 
     @Override
@@ -318,4 +313,69 @@ public class CustomerServiceImpl implements CustomerService {
     	}
     }
 
+
+    @Override
+    public void confirmRDR(String customerId, String rdrCustConfirmedDate, String vin) {
+        CustomerVechile customerVechile = customerVehicleJpaRepository.findByVin(vin);
+        if(customerVechile.getCustomerId().equals(customerId)){
+            try {
+                customerVechile.setRdrRegisteredDate(new SimpleDateFormat("dd/MM/yyyy").parse(rdrCustConfirmedDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            customerVehicleJpaRepository.save(customerVechile);
+        }
+    }
+
+    @Override
+    public void addCustomerService(String customerId, String serviceId, String vin, String dealerId) {
+        Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
+        com.ownersite.rdr.entity.Service service = servicesJpaRepository.getOne(Long.parseLong(serviceId));
+        Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
+        CustomerServices customerServices = new CustomerServices();
+        customerServices.setCustomer(customer);
+        customerServices.setService(service);
+        customerServices.setServiceRequestedDate(new SimpleDateFormat("DD/MM/yyyy").format( new java.util.Date()));
+        customerServices.setDealer(dealer);
+        customerServices.setVin(vin);
+        customerServicesJpaRepository.save(customerServices);
+    }
+
+    @Override
+    public void addCustomerEnquiry(String enquiry_created_date, String enquiry_resolved_date,
+                                   String enquiry_question, String enquiry_answer, String customerId, String dealerId) {
+        try {
+            Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
+            CustomerEnquiry customerEnquiry = new CustomerEnquiry();
+            Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
+            customerEnquiry.setCustomer(customer);
+            customerEnquiry.setDealer(dealer);
+            customerEnquiry.setEnquiry_question(enquiry_question);
+            customerEnquiry.setEnquiry_answer(enquiry_answer);
+            customerEnquiry.setEnquiry_created_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_created_date));
+            customerEnquiry.setEnquiry_resolved_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_resolved_date));
+            customerEnquiryJpaRepository.save(customerEnquiry);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addCustomerFeedback(String enquiry_created_date, String enquiry_resolved_date, String enquiry_question,
+                                    String enquiry_answer, String customerId, String dealerId) {
+        try {
+            Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
+            CustomerFeedback customerFeedback = new CustomerFeedback();
+            Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
+            customerFeedback.setCustomer(customer);
+            customerFeedback.setDealer(dealer);
+            customerFeedback.setEnquiry_question(enquiry_question);
+            customerFeedback.setEnquiry_answer(enquiry_answer);
+            customerFeedback.setEnquiry_created_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_created_date));
+            customerFeedback.setEnquiry_resolved_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_resolved_date));
+            customerFeedbackJpaRepository.save(customerFeedback);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }

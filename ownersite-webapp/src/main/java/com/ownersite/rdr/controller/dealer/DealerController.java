@@ -26,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ownersite.rdr.dto.CustomerDTO;
 import com.ownersite.rdr.dto.CustomerServicesDTO;
 import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
+import com.ownersite.rdr.dto.DealerDTO;
 import com.ownersite.rdr.dto.ResponseDTO;
 import com.ownersite.rdr.service.CustomerService;
+import com.ownersite.rdr.service.DealerService;
 
 @RestController
 @RequestMapping("/owner-site/dealer")
@@ -41,10 +43,13 @@ public class DealerController {
 	//private final ServicesService servicesService;
 	
 	private final CustomerService customerService;
+	
+	private final DealerService dealerService;
 
 	@Autowired
-	public DealerController(CustomerService customerService) {
+	public DealerController(CustomerService customerService,DealerService dealerService) {
 		this.customerService = customerService;
+		this.dealerService = dealerService;
 	}
 
 	@GetMapping(value = "/searchAllCustomers/{dealerId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -142,4 +147,34 @@ public class DealerController {
 
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
+	
+	@GetMapping(value = "/getAllDealers", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DealerDTO>> getAllDealers() {
+		logger.info("loading available dealers");
+		List<DealerDTO> dealers = null;
+		HttpStatus httpStatus = OK;
+
+		try {
+			dealers = dealerService.getAllDealers();
+		} catch (Exception exception) {
+			httpStatus = ERROR;
+		}
+
+		return new ResponseEntity<>(dealers, httpStatus);
+	}
+	
+	@GetMapping(value = "/getDealer", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<DealerDTO> getDealer(@RequestParam("dealerId") long dealerId) {
+		logger.info("loading details for dealer:", dealerId);
+		DealerDTO dealer = null;
+		HttpStatus httpStatus = OK;
+
+		try {
+			dealer = dealerService.getDealerById(dealerId);
+		} catch (Exception exception) {
+			httpStatus = ERROR;
+		}
+
+		return new ResponseEntity<>(dealer, httpStatus);
+	}
 }

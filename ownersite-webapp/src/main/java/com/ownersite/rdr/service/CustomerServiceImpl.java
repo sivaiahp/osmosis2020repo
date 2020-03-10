@@ -9,21 +9,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.ownersite.rdr.dto.*;
 import com.ownersite.rdr.entity.*;
 import com.ownersite.rdr.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ownersite.rdr.dto.CustomerDTO;
-import com.ownersite.rdr.dto.CustomerServicesDTO;
-import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
-import com.ownersite.rdr.dto.ServiceDTO;
-import com.ownersite.rdr.dto.VehiclesDTO;
 
 /**
  * @author polamred
@@ -57,7 +51,8 @@ public class CustomerServiceImpl implements CustomerService {
                                SubscriptionJpaRepository subscriptionJpaRepository,
                                ServicesJpaRepository servicesJpaRepository,
                                DealerJpaRepository dealerJpaRepository,
-                               CustomerEnquiryJpaRepository customerEnquiryJpaRepository) {
+                               CustomerEnquiryJpaRepository customerEnquiryJpaRepository,
+                               CustomerFeedbackJpaRepository customerFeedbackJpaRepository) {
         this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
         this.customerServicesJpaRepository = customerServicesJpaRepository;
         this.customerJpaRepository = customerJpaRepository;
@@ -67,6 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
         this.servicesJpaRepository = servicesJpaRepository;
         this.dealerJpaRepository = dealerJpaRepository;
         this.customerEnquiryJpaRepository = customerEnquiryJpaRepository;
+        this.customerFeedbackJpaRepository =  customerFeedbackJpaRepository;
     }
 
     @Override
@@ -379,5 +375,73 @@ public class CustomerServiceImpl implements CustomerService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<CustomerEnquiryDTO> getAllEnquiriesForCustomerId(String customerId) {
+        List<CustomerEnquiryDTO> customerEnquiryDTOList = new ArrayList<>();
+        List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByCustomerId(customerId);
+        for(CustomerEnquiry customerEnquiry : customerEnquiries){
+            CustomerEnquiryDTO customerEnquiryDTO = new CustomerEnquiryDTO();
+            customerEnquiryDTO.setCustomerId(customerEnquiry.getCustomer().getId().toString());
+            customerEnquiryDTO.setDealerId(customerEnquiry.getDealer().getId().toString());
+            customerEnquiryDTO.setEnquiryQuestion(customerEnquiry.getEnquiry_question());
+            customerEnquiryDTO.setEnquiryAnswer(customerEnquiry.getEnquiry_answer());
+            customerEnquiryDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_created_date()));
+            customerEnquiryDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_resolved_date()));
+            customerEnquiryDTOList.add(customerEnquiryDTO);
+        }
+        return customerEnquiryDTOList;
+    }
+
+    @Override
+    public List<CustomerEnquiryDTO> getAllEnquiriesForDealerId(String dealerId) {
+        List<CustomerEnquiryDTO> customerEnquiryDTOList = new ArrayList<>();
+        List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByDealerId(dealerId);
+        for(CustomerEnquiry customerEnquiry : customerEnquiries){
+            CustomerEnquiryDTO customerEnquiryDTO = new CustomerEnquiryDTO();
+            customerEnquiryDTO.setCustomerId(customerEnquiry.getCustomer().getId().toString());
+            customerEnquiryDTO.setDealerId(customerEnquiry.getDealer().getId().toString());
+            customerEnquiryDTO.setEnquiryQuestion(customerEnquiry.getEnquiry_question());
+            customerEnquiryDTO.setEnquiryAnswer(customerEnquiry.getEnquiry_answer());
+            customerEnquiryDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_created_date()));
+            customerEnquiryDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_resolved_date()));
+            customerEnquiryDTOList.add(customerEnquiryDTO);
+        }
+        return customerEnquiryDTOList;
+    }
+
+    @Override
+    public List<CustomerFeedbackDTO> getAllFeedbackForCustomerId(String customerId) {
+        List<CustomerFeedbackDTO> customerFeedbackDTOList = new ArrayList<>();
+        List<CustomerFeedback> customerEnquiries = customerFeedbackJpaRepository.findByCustomerId(customerId);
+        for(CustomerFeedback customerFeedback : customerEnquiries){
+            CustomerFeedbackDTO customerFeedbackDTO = new CustomerFeedbackDTO();
+            customerFeedbackDTO.setCustomerId(customerFeedback.getCustomer().getId().toString());
+            customerFeedbackDTO.setDealerId(customerFeedback.getDealer().getId().toString());
+            customerFeedbackDTO.setEnquiryQuestion(customerFeedback.getEnquiry_question());
+            customerFeedbackDTO.setEnquiryAnswer(customerFeedback.getEnquiry_answer());
+            customerFeedbackDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_created_date()));
+            customerFeedbackDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_resolved_date()));
+            customerFeedbackDTOList.add(customerFeedbackDTO);
+        }
+        return customerFeedbackDTOList;
+    }
+
+    @Override
+    public List<CustomerFeedbackDTO> getAllFeedbackForDealerId(String dealerId) {
+        List<CustomerFeedbackDTO> customerFeedbackDTOList = new ArrayList<>();
+        List<CustomerFeedback> customerEnquiries = customerFeedbackJpaRepository.findByDealerId(dealerId);
+        for(CustomerFeedback customerFeedback : customerEnquiries){
+            CustomerFeedbackDTO customerFeedbackDTO = new CustomerFeedbackDTO();
+            customerFeedbackDTO.setCustomerId(customerFeedback.getCustomer().getId().toString());
+            customerFeedbackDTO.setDealerId(customerFeedback.getDealer().getId().toString());
+            customerFeedbackDTO.setEnquiryQuestion(customerFeedback.getEnquiry_question());
+            customerFeedbackDTO.setEnquiryAnswer(customerFeedback.getEnquiry_answer());
+            customerFeedbackDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_created_date()));
+            customerFeedbackDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_resolved_date()));
+            customerFeedbackDTOList.add(customerFeedbackDTO);
+        }
+        return customerFeedbackDTOList;
     }
 }

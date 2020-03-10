@@ -3,10 +3,7 @@
  */
 package com.ownersite.rdr.service;
 
-import com.ownersite.rdr.dto.CustomerDTO;
-import com.ownersite.rdr.dto.CustomerServicesDTO;
-import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
-import com.ownersite.rdr.dto.VehiclesDTO;
+import com.ownersite.rdr.dto.*;
 
 import java.text.ParseException;
 import java.util.List;
@@ -51,4 +48,13 @@ public interface CustomerService {
 
     void addCustomerFeedback(String enquiry_created_date, String enquiry_resolved_date, String enquiry_question,
                              String enquiry_answer, String customerId, String dealerId);
+
+    List<CustomerEnquiryDTO> getAllEnquiriesForCustomerId(String customerId);
+
+    List<CustomerEnquiryDTO> getAllEnquiriesForDealerId(String  dealerId);
+
+    List<CustomerFeedbackDTO> getAllFeedbackForCustomerId(String customerId);
+
+    List<CustomerFeedbackDTO> getAllFeedbackForDealerId(String dealerId);
+
 }

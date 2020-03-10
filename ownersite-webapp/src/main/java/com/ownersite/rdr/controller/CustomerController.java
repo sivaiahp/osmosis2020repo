@@ -1,10 +1,7 @@
 package com.ownersite.rdr.controller;
 
 
-import com.ownersite.rdr.dto.CustomerServicesDTO;
-import com.ownersite.rdr.dto.CustomerSubscriptionDTO;
-import com.ownersite.rdr.dto.ResponseDTO;
-import com.ownersite.rdr.dto.VehiclesDTO;
+import com.ownersite.rdr.dto.*;
 import com.ownersite.rdr.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -204,8 +201,8 @@ public class CustomerController {
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
 
-    @GetMapping(value = "/addCustomerFeedback", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO> addCustomerFeedback (@RequestParam String enquiry_created_date, @RequestParam String enquiry_resolved_date,
+    @GetMapping(value = "/submitFeedback", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> submitFeedback(@RequestParam String enquiry_created_date, @RequestParam String enquiry_resolved_date,
                                                            @RequestParam String enquiry_question, @RequestParam String enquiry_answer,
                                                            @RequestParam String customerId, @RequestParam String dealerId) {
         String responseCode = "0";
@@ -217,5 +214,80 @@ public class CustomerController {
             httpStatus = ERROR;
         }
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+
+    @GetMapping(value = "/getAllEnquiriesForCustomerId")
+    public ResponseEntity<List<CustomerEnquiryDTO>> getAllEnquiriesForCustomerId(@RequestParam String customerId) {
+        List<CustomerEnquiryDTO> customerEnquiries = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerEnquiries = customerService.getAllEnquiriesForCustomerId(customerId);
+        } catch (Exception exception) {
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(customerEnquiries, httpStatus);
+    }
+
+
+    @GetMapping(value = "/getAllEnquiriesForDealerId")
+    public ResponseEntity<List<CustomerEnquiryDTO>> getAllEnquiriesForDealerId(@RequestParam String dealerId) {
+        List<CustomerEnquiryDTO> customerEnquiries = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerEnquiries = customerService.getAllEnquiriesForDealerId(dealerId);
+        } catch (Exception exception) {
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(customerEnquiries, httpStatus);
+    }
+
+    @GetMapping(value = "/getAllEnquiriesForManufacturer")
+    public ResponseEntity<List<CustomerEnquiryDTO>> getAllEnquiriesForManufacturer() {
+        List<CustomerEnquiryDTO> customerEnquiries = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerEnquiries = customerService.getAllEnquiriesForDealerId(null);
+        } catch (Exception exception) {
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(customerEnquiries, httpStatus);
+    }
+
+
+    @GetMapping(value = "/getAllFeedbackForCustomerId")
+    public ResponseEntity<List<CustomerFeedbackDTO>> getAllFeedbackForCustomerId(@RequestParam String customerId) {
+        List<CustomerFeedbackDTO> customerFeedbacks = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerFeedbacks = customerService.getAllFeedbackForCustomerId(customerId);
+        } catch (Exception exception) {
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(customerFeedbacks, httpStatus);
+    }
+
+
+    @GetMapping(value = "/getAllFeedbackForDealerId")
+    public ResponseEntity<List<CustomerFeedbackDTO>> getAllFeedbackForDealerId(@RequestParam String dealerId) {
+        List<CustomerFeedbackDTO> customerFeedbacks = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerFeedbacks = customerService.getAllFeedbackForDealerId(dealerId);
+        } catch (Exception exception) {
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(customerFeedbacks, httpStatus);
+    }
+
+    @GetMapping(value = "/getAllFeedbackForManufacturer")
+    public ResponseEntity<List<CustomerFeedbackDTO>> getAllFeedbackForManufacturer() {
+        List<CustomerFeedbackDTO> customerFeedbacks = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerFeedbacks = customerService.getAllFeedbackForDealerId(null);
+        } catch (Exception exception) {
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(customerFeedbacks, httpStatus);
     }
 }

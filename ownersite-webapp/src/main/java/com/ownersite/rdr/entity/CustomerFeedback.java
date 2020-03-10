@@ -10,31 +10,13 @@ public class  CustomerFeedback extends BaseEntity{
 	private java.util.Date enquiry_resolved_date;
 	private String enquiry_question;
 	private String enquiry_answer;
-	private Long customerId;
-	private Long dealerId;
-	
-	public Long getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
-
-	public Long getDealerId() {
-		return dealerId;
-	}
-
-	public void setDealerId(Long dealerId) {
-		this.dealerId = dealerId;
-	}
 
 	@ManyToOne
-	@JoinColumn(name = "customerId", referencedColumnName = "id", updatable = false, insertable = false)
+	@JoinColumn(name = "customer_Id", referencedColumnName = "id", updatable = false, insertable = false)
 	private Customer customer;
 
 	@ManyToOne
-	@JoinColumn(name = "dealerId", referencedColumnName = "id", updatable = false, insertable = false)
+	@JoinColumn(name = "dealer_Id", referencedColumnName = "id", updatable = false, insertable = false)
 	private Dealer dealer;
 
 	public java.util.Date getEnquiry_created_date(){
@@ -89,7 +71,7 @@ public class  CustomerFeedback extends BaseEntity{
 	public String toString() {
 		return "CustomerFeedback [enquiry_created_date=" + enquiry_created_date + ", enquiry_resolved_date="
 				+ enquiry_resolved_date + ", enquiry_question=" + enquiry_question + ", enquiry_answer="
-				+ enquiry_answer + ", customerId=" + customerId + ", dealerId=" + dealerId + ", customer=" + customer
+				+ enquiry_answer + ", customer=" + customer
 				+ ", dealer=" + dealer + "]";
 	}
 

@@ -11,6 +11,7 @@ public class CustomerSubscriptionDTO {
 	private String vin;
 	private String subscriptionStartDate;
 	private String subscriptionEndDate;
+	private String season;
 
 	public CustomerSubscriptionDTO() {
 		super();
@@ -22,6 +23,7 @@ public class CustomerSubscriptionDTO {
 		this.subscriptionName = subscription.getSubscriptionname();
 		this.subscriptionDesc = subscription.getSubscriptiondec();
 		this.subscriptionPrice = "$" + String.valueOf(subscription.getPrice());
+		this.season = season;
 	}
 
 	public String getSubscriptionId() {
@@ -79,7 +81,15 @@ public class CustomerSubscriptionDTO {
 	public void setSubscriptionEndDate(String subscriptionEndDate) {
 		this.subscriptionEndDate = subscriptionEndDate;
 	}
-	
+
+	public String getSeason() {
+		return season;
+	}
+
+	public void setSeason(String season) {
+		this.season = season;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerSubscriptionDTO{" + "subscriptionId='" + subscriptionId + '\'' + ", subscriptionName='"

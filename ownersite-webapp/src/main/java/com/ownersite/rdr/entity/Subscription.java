@@ -26,6 +26,8 @@ public class Subscription extends BaseEntity {
 
 	private long price;
 
+	private String season;
+
 	public String getSubscriptionname() {
 		return subscriptionname;
 	}
@@ -66,11 +68,23 @@ public class Subscription extends BaseEntity {
 		this.price = price;
 	}
 
+	public String getSeason() {
+		return season;
+	}
 
+	public void setSeason(String season) {
+		this.season = season;
+	}
 
 	@Override
 	public String toString() {
-		return "Subscription{" + "subscriptionname='" + subscriptionname + '\'' + ", subscriptiondec='"
-				+ subscriptiondec + '\'' + '}';
+		return "Subscription{" +
+				"subscriptionname='" + subscriptionname + '\'' +
+				", subscriptiondec='" + subscriptiondec + '\'' +
+				", subscriptionServicRegistrations=" + subscriptionServicRegistrations +
+				", subscriptionVehicles=" + subscriptionVehicles +
+				", price=" + price +
+				", season='" + season + '\'' +
+				'}';
 	}
 }

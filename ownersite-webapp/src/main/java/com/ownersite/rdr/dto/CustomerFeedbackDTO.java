@@ -9,6 +9,7 @@ public class CustomerFeedbackDTO {
     private String enquiryAnswer;
     private String customerId;
     private String dealerId;
+    private String customerFeedbackId;
 
     public String getEnquiryCreatedDate() {
         return enquiryCreatedDate;
@@ -56,6 +57,14 @@ public class CustomerFeedbackDTO {
 
     public void setDealerId(String dealerId) {
         this.dealerId = dealerId;
+    }
+
+    public String getCustomerFeedbackId() {
+        return customerFeedbackId;
+    }
+
+    public void setCustomerFeedbackId(String customerFeedbackId) {
+        this.customerFeedbackId = customerFeedbackId;
     }
 
     @Override

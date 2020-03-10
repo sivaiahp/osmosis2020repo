@@ -4,6 +4,7 @@
 package com.ownersite.rdr.service;
 
 import com.ownersite.rdr.dto.*;
+import com.ownersite.rdr.exception.OwnerSiteException;
 
 import java.text.ParseException;
 import java.util.List;
@@ -57,4 +58,5 @@ public interface CustomerService {
 
     List<CustomerFeedbackDTO> getAllFeedbackForDealerId(String dealerId);
 
+    void updateEnquiry(CustomerEnquiryDTO customerEnquiryDTO) throws OwnerSiteException;
 }

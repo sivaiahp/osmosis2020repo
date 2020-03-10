@@ -3,6 +3,7 @@ package com.ownersite.rdr.controller;
 
 import com.ownersite.rdr.dto.*;
 import com.ownersite.rdr.service.CustomerService;
+import com.ownersite.rdr.util.OwnerSiteUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/owner-site/customer")
@@ -290,4 +292,23 @@ public class CustomerController {
         }
         return new ResponseEntity<>(customerFeedbacks, httpStatus);
     }
+
+    @PutMapping(value = "/updateEnquiry", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> updateEnquiry(
+            @RequestBody(required = true) CustomerEnquiryDTO customerEnquiryDTO) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        Map<String, Object> errors = null;
+
+        try {
+            customerService.updateEnquiry(customerEnquiryDTO);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+            errors = OwnerSiteUtility.constructErrorResponse(exception);
+        }
+
+        return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
+    }
+
 }

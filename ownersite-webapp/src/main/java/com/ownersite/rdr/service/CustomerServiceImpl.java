@@ -345,13 +345,17 @@ public class CustomerServiceImpl implements CustomerService {
         try {
             Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
             CustomerEnquiry customerEnquiry = new CustomerEnquiry();
-            Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
+            
             customerEnquiry.setCustomer(customer);
-            customerEnquiry.setDealer(dealer);
+            if(!dealerId.equals("-1")) {
+            	 Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
+                 customerEnquiry.setDealer(dealer);
+            }
+           
             customerEnquiry.setEnquiry_question(enquiry_question);
-            customerEnquiry.setEnquiry_answer(enquiry_answer);
+            //customerEnquiry.setEnquiry_answer(enquiry_answer);
             customerEnquiry.setEnquiry_created_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_created_date));
-            customerEnquiry.setEnquiry_resolved_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_resolved_date));
+            //customerEnquiry.setEnquiry_resolved_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_resolved_date));
             customerEnquiryJpaRepository.save(customerEnquiry);
         } catch (ParseException e) {
             e.printStackTrace();

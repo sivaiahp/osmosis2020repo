@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import com.ownersite.rdr.dto.*;
 import com.ownersite.rdr.entity.*;
+import com.ownersite.rdr.exception.OwnerSiteException;
 import com.ownersite.rdr.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author polamred
+ * @author balamurugan Jothilingam
  *
  */
 @Service
@@ -42,6 +43,19 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerEnquiryJpaRepository customerEnquiryJpaRepository;
     private CustomerFeedbackJpaRepository customerFeedbackJpaRepository;
 
+    /**
+     *
+     * @param customerSubscriptionJpaRepository
+     * @param customerServicesJpaRepository
+     * @param customerJpaRepository
+     * @param vehicleJpaRepository
+     * @param customerVehicleJpaRepository
+     * @param subscriptionJpaRepository
+     * @param servicesJpaRepository
+     * @param dealerJpaRepository
+     * @param customerEnquiryJpaRepository
+     * @param customerFeedbackJpaRepository
+     */
     @Autowired
     public CustomerServiceImpl(CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository,
                                CustomerServicesJpaRepository customerServicesJpaRepository,
@@ -65,6 +79,12 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerFeedbackJpaRepository =  customerFeedbackJpaRepository;
     }
 
+
+    /**
+     *
+     * @param customerId
+     * @return
+     */
     @Override
     public List<CustomerSubscriptionDTO> getAllSubscriptions(String customerId) {
         List<CustomerSubscriptionDTO> customerSubscriptionDTOs = new ArrayList<>();
@@ -75,6 +95,11 @@ public class CustomerServiceImpl implements CustomerService {
         return customerSubscriptionDTOs;
     }
 
+    /**
+     *
+     * @param subscription
+     * @return
+     */
     private CustomerSubscriptionDTO buildCustomerSubscriptionDTO(CustomerSubscription subscription) {
         CustomerSubscriptionDTO subscriptionDTO = new CustomerSubscriptionDTO();
         subscriptionDTO.setSubscriptionId(subscription.getId().toString());
@@ -87,6 +112,12 @@ public class CustomerServiceImpl implements CustomerService {
         return subscriptionDTO;
     }
 
+    /**
+     *
+     * @param customerId
+     * @param subscriptionId
+     * @return
+     */
     @Override
     public List<CustomerServicesDTO> getServiceHistory(String customerId, String subscriptionId) {
         Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
@@ -150,6 +181,11 @@ public class CustomerServiceImpl implements CustomerService {
         return customerServicesDTOs;
     }
 
+    /**
+     *
+     * @param customerId
+     * @return
+     */
     @Override
     public List<VehiclesDTO> getMyVehicles(String customerId) {
         List<VehiclesDTO> customerServicesDTOs = new ArrayList<>();
@@ -174,6 +210,11 @@ public class CustomerServiceImpl implements CustomerService {
         return customerServicesDTOs;
     }
 
+    /**
+     *
+     * @param customerId
+     * @return
+     */
 	@Override
 	public CustomerDTO getCustomerById(long customerId) {
 		Customer customer = customerJpaRepository.findByCustomerId(customerId);
@@ -190,7 +231,12 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		return customerDTOs;
 	}
-	
+
+    /**
+     *
+     * @param customer
+     * @return
+     */
 	private CustomerDTO buildCustomer(Customer customer){
 		CustomerDTO customerDTO = new CustomerDTO();
 		customerDTO.setCustomerId(customer.getId());
@@ -205,6 +251,10 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDTO;
 	}
 
+    /**
+     *
+     * @param customerId
+     */
 	@Override
 	public void cancelCustomerSubscription(long customerId) {
 		if(customerSubscriptionJpaRepository.findByCustomerId(customerId).size() > 0){
@@ -215,6 +265,11 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 	}
 
+    /**
+     *
+     * @param vin
+     * @return
+     */
     @Override
     public VehiclesDTO getVehicle(String vin) {
         CustomerVechile customerVechile = customerVehicleJpaRepository.findByVin(vin);
@@ -229,13 +284,22 @@ public class CustomerServiceImpl implements CustomerService {
         return vehiclesDTO;
     }
 
+    /**
+     *
+     * @param vehiclesDTO
+     */
     @Override
     public void addVinForCustomer(VehiclesDTO vehiclesDTO) {
         CustomerVechile customerVechile = customerVehicleJpaRepository.findByVin(vehiclesDTO.getVin());
         customerVechile.setCustomerId(Long.parseLong(vehiclesDTO.getCustomerId()));
         customerVehicleJpaRepository.save(customerVechile);
     }
-    
+
+    /**
+     *
+     * @param subscriptionId
+     * @param vin
+     */
     @Override
     public void addVinForSubscription(String subscriptionId, String vin) {
     	CustomerSubscription customerSubscription = customerSubscriptionJpaRepository.getOne(Long.parseLong(subscriptionId));
@@ -248,6 +312,15 @@ public class CustomerServiceImpl implements CustomerService {
     	customerSubscriptionJpaRepository.save(customerSubscription);
     }
 
+    /**
+     *
+     * @param customerId
+     * @param subscriptionId
+     * @param vehicleId
+     * @param subscriptionStartDate
+     * @param subscriptionEndDate
+     * @throws ParseException
+     */
     @Override
     public void addCustomerSubscription(String customerId, String subscriptionId, String vehicleId,
                                         String subscriptionStartDate, String subscriptionEndDate) throws ParseException {
@@ -257,19 +330,8 @@ public class CustomerServiceImpl implements CustomerService {
         if(!vehicleId.equals("-1")) {
         	 customerVechile = customerVehicleJpaRepository.getOne(Long.parseLong(vehicleId));
         }
-       
-        CustomerSubscription customerSubscription = new CustomerSubscription();
-        customerSubscription.setCustomer(customer);
-        customerSubscription.setSubscription(subscription);
-        customerSubscription.setCustomer_sub_startdate(new SimpleDateFormat("dd/MM/yyyy").parse(subscriptionStartDate));
-        customerSubscription.setCustomer_sub_enddate(new SimpleDateFormat("dd/MM/yyyy").parse(subscriptionEndDate));
-        customerSubscription.setCustomerId(Long.parseLong(customerId));
-        customerSubscription.setSubscriptionname(subscription.getSubscriptionname());
-        customerSubscription.setSubscriptiondec(subscription.getSubscriptiondec());
-        customerSubscription.setPrice(new Double(subscription.getPrice()));
-        if(!vehicleId.equals("-1")) {
-        customerSubscription.setVin(customerVechile.getVin());
-        }        
+
+        CustomerSubscription customerSubscription = buildCustomerSubscription(customerId, vehicleId, subscriptionStartDate, subscriptionEndDate, customer, subscription, customerVechile);
         CustomerSubscription savedCustomerSub = customerSubscriptionJpaRepository.save(customerSubscription);
         
 		List<ServiceDTO> serviceDTOs = null;
@@ -289,6 +351,41 @@ public class CustomerServiceImpl implements CustomerService {
         
     }
 
+    /**
+     *
+     * @param customerId
+     * @param vehicleId
+     * @param subscriptionStartDate
+     * @param subscriptionEndDate
+     * @param customer
+     * @param subscription
+     * @param customerVechile
+     * @return
+     * @throws ParseException
+     */
+    private CustomerSubscription buildCustomerSubscription(String customerId, String vehicleId, String subscriptionStartDate, String subscriptionEndDate,
+                                                           Customer customer, Subscription subscription, CustomerVechile customerVechile) throws ParseException {
+        CustomerSubscription customerSubscription = new CustomerSubscription();
+        customerSubscription.setCustomer(customer);
+        customerSubscription.setSubscription(subscription);
+        customerSubscription.setCustomer_sub_startdate(new SimpleDateFormat("dd/MM/yyyy").parse(subscriptionStartDate));
+        customerSubscription.setCustomer_sub_enddate(new SimpleDateFormat("dd/MM/yyyy").parse(subscriptionEndDate));
+        customerSubscription.setCustomerId(Long.parseLong(customerId));
+        customerSubscription.setSubscriptionname(subscription.getSubscriptionname());
+        customerSubscription.setSubscriptiondec(subscription.getSubscriptiondec());
+        customerSubscription.setPrice(new Double(subscription.getPrice()));
+        if(!vehicleId.equals("-1")) {
+        customerSubscription.setVin(customerVechile.getVin());
+        }
+        return customerSubscription;
+    }
+
+    /**
+     *
+     * @param customerId
+     * @param subscriptionId
+     * @param vin
+     */
     @Override
     public void transferSubscription(String customerId, String subscriptionId, String vin) {
         List<CustomerSubscription> customerSubscriptions = customerSubscriptionJpaRepository
@@ -298,6 +395,12 @@ public class CustomerServiceImpl implements CustomerService {
         customerSubscriptionJpaRepository.save(customerSubscription);
     }
 
+    /**
+     *
+     * @param customerId
+     * @param subscriptionId
+     * @param vin
+     */
     @Override
     public void cancelSubscription(String customerId, String subscriptionId, String vin) {
     	try {
@@ -310,6 +413,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
+    /**
+     *
+     * @param customerId
+     * @param rdrCustConfirmedDate
+     * @param vin
+     */
     @Override
     public void confirmRDR(String customerId, String rdrCustConfirmedDate, String vin) {
         CustomerVechile customerVechile = customerVehicleJpaRepository.findByVin(vin);
@@ -325,6 +434,13 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    /**
+     *
+     * @param customerId
+     * @param serviceId
+     * @param vin
+     * @param dealerId
+     */
     @Override
     public void addCustomerService(String customerId, String serviceId, String vin, String dealerId) {
         Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
@@ -339,6 +455,15 @@ public class CustomerServiceImpl implements CustomerService {
         customerServicesJpaRepository.save(customerServices);
     }
 
+    /**
+     *
+     * @param enquiry_created_date
+     * @param enquiry_resolved_date
+     * @param enquiry_question
+     * @param enquiry_answer
+     * @param customerId
+     * @param dealerId
+     */
     @Override
     public void addCustomerEnquiry(String enquiry_created_date, String enquiry_resolved_date,
                                    String enquiry_question, String enquiry_answer, String customerId, String dealerId) {
@@ -362,6 +487,15 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    /**
+     *
+     * @param enquiry_created_date
+     * @param enquiry_resolved_date
+     * @param enquiry_question
+     * @param enquiry_answer
+     * @param customerId
+     * @param dealerId
+     */
     @Override
     public void addCustomerFeedback(String enquiry_created_date, String enquiry_resolved_date, String enquiry_question,
                                     String enquiry_answer, String customerId, String dealerId) {
@@ -381,12 +515,28 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    /**
+     *
+     * @param customerId
+     * @return
+     */
     @Override
     public List<CustomerEnquiryDTO> getAllEnquiriesForCustomerId(String customerId) {
         List<CustomerEnquiryDTO> customerEnquiryDTOList = new ArrayList<>();
         List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByCustomerId(customerId);
-        for(CustomerEnquiry customerEnquiry : customerEnquiries){
+        buildCustomerEnquiry(customerEnquiryDTOList, customerEnquiries);
+        return customerEnquiryDTOList;
+    }
+
+    /**
+     *
+     * @param customerEnquiryDTOList
+     * @param customerEnquiries
+     */
+    private void buildCustomerEnquiry(List<CustomerEnquiryDTO> customerEnquiryDTOList, List<CustomerEnquiry> customerEnquiries) {
+        for (CustomerEnquiry customerEnquiry : customerEnquiries) {
             CustomerEnquiryDTO customerEnquiryDTO = new CustomerEnquiryDTO();
+            customerEnquiryDTO.setEnquiryId(customerEnquiry.getId().toString());
             customerEnquiryDTO.setCustomerId(customerEnquiry.getCustomer().getId().toString());
             customerEnquiryDTO.setDealerId(customerEnquiry.getDealer().getId().toString());
             customerEnquiryDTO.setEnquiryQuestion(customerEnquiry.getEnquiry_question());
@@ -395,49 +545,44 @@ public class CustomerServiceImpl implements CustomerService {
             customerEnquiryDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_resolved_date()));
             customerEnquiryDTOList.add(customerEnquiryDTO);
         }
-        return customerEnquiryDTOList;
     }
 
+    /**
+     *
+     * @param dealerId
+     * @return
+     */
     @Override
     public List<CustomerEnquiryDTO> getAllEnquiriesForDealerId(String dealerId) {
         List<CustomerEnquiryDTO> customerEnquiryDTOList = new ArrayList<>();
         List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByDealerId(dealerId);
-        for(CustomerEnquiry customerEnquiry : customerEnquiries){
-            CustomerEnquiryDTO customerEnquiryDTO = new CustomerEnquiryDTO();
-            customerEnquiryDTO.setCustomerId(customerEnquiry.getCustomer().getId().toString());
-            customerEnquiryDTO.setDealerId(customerEnquiry.getDealer().getId().toString());
-            customerEnquiryDTO.setEnquiryQuestion(customerEnquiry.getEnquiry_question());
-            customerEnquiryDTO.setEnquiryAnswer(customerEnquiry.getEnquiry_answer());
-            customerEnquiryDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_created_date()));
-            customerEnquiryDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_resolved_date()));
-            customerEnquiryDTOList.add(customerEnquiryDTO);
-        }
+        buildCustomerEnquiry(customerEnquiryDTOList, customerEnquiries);
         return customerEnquiryDTOList;
     }
 
+    /**
+     * gets all feedback for customer
+     * @param customerId - customerId
+     * @return customerFeedbackDTOList
+     */
     @Override
     public List<CustomerFeedbackDTO> getAllFeedbackForCustomerId(String customerId) {
+        logger.info("getting feedback for customer: {}", customerId);
         List<CustomerFeedbackDTO> customerFeedbackDTOList = new ArrayList<>();
         List<CustomerFeedback> customerEnquiries = customerFeedbackJpaRepository.findByCustomerId(customerId);
-        for(CustomerFeedback customerFeedback : customerEnquiries){
-            CustomerFeedbackDTO customerFeedbackDTO = new CustomerFeedbackDTO();
-            customerFeedbackDTO.setCustomerId(customerFeedback.getCustomer().getId().toString());
-            customerFeedbackDTO.setDealerId(customerFeedback.getDealer().getId().toString());
-            customerFeedbackDTO.setEnquiryQuestion(customerFeedback.getEnquiry_question());
-            customerFeedbackDTO.setEnquiryAnswer(customerFeedback.getEnquiry_answer());
-            customerFeedbackDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_created_date()));
-            customerFeedbackDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_resolved_date()));
-            customerFeedbackDTOList.add(customerFeedbackDTO);
-        }
+        buildCustomerFeedback(customerFeedbackDTOList, customerEnquiries);
         return customerFeedbackDTOList;
     }
 
-    @Override
-    public List<CustomerFeedbackDTO> getAllFeedbackForDealerId(String dealerId) {
-        List<CustomerFeedbackDTO> customerFeedbackDTOList = new ArrayList<>();
-        List<CustomerFeedback> customerEnquiries = customerFeedbackJpaRepository.findByDealerId(dealerId);
-        for(CustomerFeedback customerFeedback : customerEnquiries){
+    /**
+     * Builds customer feedback entity
+     * @param customerFeedbackDTOList - customerFeedbackDTOList
+     * @param customerEnquiries - customerEnquiries
+     */
+    private void buildCustomerFeedback(List<CustomerFeedbackDTO> customerFeedbackDTOList, List<CustomerFeedback> customerEnquiries) {
+        for (CustomerFeedback customerFeedback : customerEnquiries) {
             CustomerFeedbackDTO customerFeedbackDTO = new CustomerFeedbackDTO();
+            customerFeedbackDTO.setCustomerFeedbackId(customerFeedback.getId().toString());
             customerFeedbackDTO.setCustomerId(customerFeedback.getCustomer().getId().toString());
             customerFeedbackDTO.setDealerId(customerFeedback.getDealer().getId().toString());
             customerFeedbackDTO.setEnquiryQuestion(customerFeedback.getEnquiry_question());
@@ -446,6 +591,40 @@ public class CustomerServiceImpl implements CustomerService {
             customerFeedbackDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_resolved_date()));
             customerFeedbackDTOList.add(customerFeedbackDTO);
         }
+    }
+
+    /**
+     * gets all the feedback for the dealer
+     * @param dealerId - dealer id
+     * @return list of feedback
+     */
+    @Override
+    public List<CustomerFeedbackDTO> getAllFeedbackForDealerId(String dealerId) {
+        logger.info("getting feedback for dealer: {}", dealerId);
+        List<CustomerFeedbackDTO> customerFeedbackDTOList = new ArrayList<>();
+        List<CustomerFeedback> customerFeedback = customerFeedbackJpaRepository.findByDealerId(dealerId);
+        buildCustomerFeedback(customerFeedbackDTOList, customerFeedback);
+        logger.info("customerFeedback retrieved successfully");
         return customerFeedbackDTOList;
+    }
+
+    /**
+     * Updates enquiry
+     * @param customerEnquiryDTO - customerEnquiryDTO
+     * @throws OwnerSiteException when error occurs
+     */
+    @Override
+    public void updateEnquiry(CustomerEnquiryDTO customerEnquiryDTO) throws OwnerSiteException {
+        logger.info("updating customerEnquiryDTO for {}", customerEnquiryDTO);
+
+        CustomerEnquiry customerEnquiry = customerEnquiryDTO.convertToEntity();
+        if (subscriptionJpaRepository.findBySubscriptionId(customerEnquiry.getId()) == null) {
+            logger.error("Invalid CustomerEnquiry");
+            throw new OwnerSiteException("Invalid CustomerEnquiry");
+        } else {
+            customerEnquiryJpaRepository.save(customerEnquiry);
+        }
+
+        logger.info("customerEnquiry updated successfully");
     }
 }

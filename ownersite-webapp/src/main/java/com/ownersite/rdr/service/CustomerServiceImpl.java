@@ -565,7 +565,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerEnquiryDTO> getAllEnquiriesForDealerId(String dealerId) {
         List<CustomerEnquiryDTO> customerEnquiryDTOList = new ArrayList<>();
-        List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByDealerId(Long.parseLong(dealerId));
+        List<CustomerEnquiry> customerEnquiries = null;
+        if(dealerId!=null) {
+        	customerEnquiries = customerEnquiryJpaRepository.findByDealerId(Long.parseLong(dealerId));	
+        }else {
+        	customerEnquiries = customerEnquiryJpaRepository.findByDealerId(null);	
+        }
+        
+        
         buildCustomerEnquiry(customerEnquiryDTOList, customerEnquiries);
         return customerEnquiryDTOList;
     }

@@ -251,7 +251,9 @@ public class CustomerController {
         try {
             customerEnquiries = customerService.getAllEnquiriesForDealerId(null);
         } catch (Exception exception) {
+        	exception.printStackTrace();
             httpStatus = ERROR;
+            
         }
         return new ResponseEntity<>(customerEnquiries, httpStatus);
     }

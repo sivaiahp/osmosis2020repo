@@ -111,9 +111,14 @@ public class CustomerEnquiryDTO {
             customerEnquiry.setEnquiry_question(this.enquiryQuestion);
             customerEnquiry.setEnquiry_answer(this.enquiryAnswer);
             customerEnquiry.setEnquiry_resolved_date(new SimpleDateFormat("dd/MM/yyyy").parse(this.enquiryResolvedDate));
-            Dealer dealer = new Dealer();
-            dealer.setId(Long.parseLong(this.dealerId));
-            customerEnquiry.setDealer(dealer);
+            
+            if(!this.dealerId.equals("-1")) {
+            	Dealer dealer = new Dealer();
+                dealer.setId(Long.parseLong(this.dealerId));
+                customerEnquiry.setDealer(dealer);
+            }
+            
+            
             Customer customer = new Customer();
             customer.setId(Long.parseLong(this.customerId));
             customerEnquiry.setCustomer(customer);

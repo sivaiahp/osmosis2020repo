@@ -475,8 +475,8 @@ public class CustomerServiceImpl implements CustomerService {
             if(dealerId != null && !dealerId.equals("-1")) {
             	 Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
                  customerEnquiry.setDealer(dealer);
+                 customerEnquiry.setDealerId(Long.parseLong(dealerId));
             }
-            customerEnquiry.setDealerId(Long.parseLong(dealerId));
             customerEnquiry.setEnquiry_question(enquiry_question);
             if (enquiry_created_date != null && enquiry_created_date != "NA"){
                 customerEnquiry.setEnquiry_created_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_created_date));
@@ -632,14 +632,38 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void updateEnquiry(CustomerEnquiryDTO customerEnquiryDTO) throws OwnerSiteException {
         logger.info("updating customerEnquiryDTO for {}", customerEnquiryDTO);
+        
+        
+        try {
+            Customer customer = customerJpaRepository.getOne(Long.parseLong(customerEnquiryDTO.getCustomerId()));
+            CustomerEnquiry customerEnquiry = 
+            		customerEnquiryJpaRepository.getOne(Long.parseLong(customerEnquiryDTO.getEnquiryId()));
+            customerEnquiry.setCustomerId(Long.parseLong(customerEnquiryDTO.getCustomerId()));
+            customerEnquiry.setCustomer(customer);
+            String dealerId = customerEnquiryDTO.getDealerId();
+            if(dealerId != null && !dealerId.equals("-1")) {
+            	 Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
+                 customerEnquiry.setDealer(dealer);
+                 customerEnquiry.setDealerId(Long.parseLong(dealerId));
+            }
+            customerEnquiry.setEnquiry_question(customerEnquiryDTO.getEnquiryQuestion());
+            customerEnquiry.setEnquiry_answer(customerEnquiryDTO.getEnquiryAnswer());
+            String enquiry_created_date = customerEnquiryDTO.getEnquiryCreatedDate();
+            if (enquiry_created_date != null && enquiry_created_date != "NA"){
+                customerEnquiry.setEnquiry_created_date(new SimpleDateFormat("dd/MM/yyyy").parse(
+                		enquiry_created_date));
 
-        CustomerEnquiry customerEnquiry = customerEnquiryDTO.convertToEntity();
-        if (subscriptionJpaRepository.findBySubscriptionId(customerEnquiry.getId()) == null) {
-            logger.error("Invalid CustomerEnquiry");
-            throw new OwnerSiteException("Invalid CustomerEnquiry");
-        } else {
+            }
+            String enquiry_resolved_date = customerEnquiryDTO.getEnquiryResolvedDate();
+            if (enquiry_resolved_date != null && enquiry_resolved_date != "NA"){
+                customerEnquiry.setEnquiry_resolved_date(new SimpleDateFormat("dd/MM/yyyy").parse(
+                		enquiry_resolved_date));
+            
             customerEnquiryJpaRepository.save(customerEnquiry);
+        }} catch (ParseException e) {
+            e.printStackTrace();
         }
+        
 
         logger.info("customerEnquiry updated successfully");
     }

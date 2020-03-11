@@ -214,4 +214,18 @@ public class SubscriptionController {
 		return new ResponseEntity<>(report, httpStatus);
 	}
 
+	@GetMapping(value = "/subscriptionsReport", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ReportDTO> generateSubscriptionsReport() {
+		ReportDTO report = null;
+		HttpStatus httpStatus = OK;
+
+		try {
+			report = subscriptionService.generateSubscriptions();
+		} catch (Exception e) {
+			httpStatus = ERROR;
+		}
+
+		return new ResponseEntity<>(report, httpStatus);
+	}
+
 }

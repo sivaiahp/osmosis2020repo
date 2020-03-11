@@ -23,7 +23,6 @@ import com.ownersite.rdr.dto.SubscriptionVehicleDTO;
 import com.ownersite.rdr.dto.VehiclesDTO;
 import com.ownersite.rdr.entity.MonthlySubscribers;
 import com.ownersite.rdr.entity.Subscription;
-import com.ownersite.rdr.entity.SubscriptionVehicle;
 import com.ownersite.rdr.entity.Vehicle;
 import com.ownersite.rdr.exception.OwnerSiteException;
 import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
@@ -285,11 +284,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Override
 	public ReportDTO generateSubscriptionsPerMonthReport() {
+		LOGGER.info("Generating monthly subscriptions report");
+
 		Map<String, String> subscribers = new LinkedHashMap<>();
 		customerSubscriptionJpaRepository.generateMonthlySubscriptionsReport().stream()
 				.forEach(subscriber -> subscribers.put(subscriber.getPeriod(), subscriber.getSubscribers()));
 
 		List<String> months = OwnerSiteUtility.getTwelveMonthsFromToday();
+
+		LOGGER.info("Generated monthly subscriptions report successfully");
+
 		return new ReportDTO(months,
 				Arrays.asList(new ReportDataSeriesDTO("Subscriptions", months.stream()
 						.map(month -> Integer.parseInt(subscribers.containsKey(month) ? subscribers.get(month) : "0"))
@@ -298,6 +302,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Override
 	public ReportDTO generateMonthlySubscriptionsPerSubcriptionReport() {
+		LOGGER.info("Generating monthly subscriptions per subscription report");
+
 		List<String> months = OwnerSiteUtility.getTwelveMonthsFromToday();
 
 		Map<String, List<MonthlySubscribers>> subscribers = customerSubscriptionJpaRepository
@@ -318,7 +324,25 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 									.collect(Collectors.toList())));
 		});
 
+		LOGGER.info("Generated monthly subscriptions per subscription report successfully");
+
 		return new ReportDTO(months, reportDataSeries);
+	}
+
+	@Override
+	public ReportDTO generateSubscriptions() {
+		LOGGER.info("Generating subscriptions report");
+
+		List<String> categories = new ArrayList<>();
+		List<Number> data = new ArrayList<>();
+
+		subscriptionJpaRepository.countSubscriptions().forEach(subscription -> {
+			categories.add(subscription.getSubscriptionname());
+			data.add(Integer.valueOf(subscription.getSubscribers()));
+		});
+
+		LOGGER.info("Generated subscriptions report successfully");
+		return new ReportDTO(categories, Arrays.asList(new ReportDataSeriesDTO("Subscriptions", data)));
 	}
 
 }

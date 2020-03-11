@@ -15,6 +15,8 @@ public class CustomerEnquiryDTO {
     private String enquiryAnswer;
     private String customerId;
     private String dealerId;
+    private String dealerFirstName;
+    private String dealerLastName;
     private String enquiryId;
 
     public String getEnquiryCreatedDate() {
@@ -71,6 +73,22 @@ public class CustomerEnquiryDTO {
 
     public void setEnquiryId(String enquiryId) {
         this.enquiryId = enquiryId;
+    }
+
+    public String getDealerFirstName() {
+        return dealerFirstName;
+    }
+
+    public void setDealerFirstName(String dealerFirstName) {
+        this.dealerFirstName = dealerFirstName;
+    }
+
+    public String getDealerLastName() {
+        return dealerLastName;
+    }
+
+    public void setDealerLastName(String dealerLastName) {
+        this.dealerLastName = dealerLastName;
     }
 
     @Override

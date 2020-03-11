@@ -470,17 +470,19 @@ public class CustomerServiceImpl implements CustomerService {
         try {
             Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
             CustomerEnquiry customerEnquiry = new CustomerEnquiry();
-            
+            customerEnquiry.setCustomerId(Long.parseLong(customerId));
             customerEnquiry.setCustomer(customer);
             if(!dealerId.equals("-1")) {
             	 Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
                  customerEnquiry.setDealer(dealer);
             }
-           
+            customerEnquiry.setDealerId(Long.parseLong(dealerId));
             customerEnquiry.setEnquiry_question(enquiry_question);
             //customerEnquiry.setEnquiry_answer(enquiry_answer);
+            if (enquiry_created_date != null && enquiry_created_date != "NA"){
+
+            }
             customerEnquiry.setEnquiry_created_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_created_date));
-            //customerEnquiry.setEnquiry_resolved_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_resolved_date));
             customerEnquiryJpaRepository.save(customerEnquiry);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -541,7 +543,8 @@ public class CustomerServiceImpl implements CustomerService {
             
             if(customerEnquiry.getDealer()!=null)
             customerEnquiryDTO.setDealerId(customerEnquiry.getDealer().getId().toString());
-            
+            customerEnquiryDTO.setDealerFirstName(customerEnquiry.getDealer()!= null ? customerEnquiry.getDealer().getFirstname() : "");
+            customerEnquiryDTO.setDealerLastName(customerEnquiry.getDealer()!= null ? customerEnquiry.getDealer().getLastname() : "");
             customerEnquiryDTO.setEnquiryQuestion(customerEnquiry.getEnquiry_question());
             customerEnquiryDTO.setEnquiryAnswer(customerEnquiry.getEnquiry_answer());
             

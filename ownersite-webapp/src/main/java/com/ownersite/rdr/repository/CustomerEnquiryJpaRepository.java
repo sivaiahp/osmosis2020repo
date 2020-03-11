@@ -15,8 +15,8 @@ import java.util.List;
  */
 public interface CustomerEnquiryJpaRepository extends JpaRepository<CustomerEnquiry, Long>{
 
-    List<CustomerEnquiry> findByCustomerId(String customerId);
+    List<CustomerEnquiry> findByCustomerId(Long customerId);
 
 
-    List<CustomerEnquiry> findByDealerId(String dealerId);
+    List<CustomerEnquiry> findByDealerId(Long dealerId);
 }

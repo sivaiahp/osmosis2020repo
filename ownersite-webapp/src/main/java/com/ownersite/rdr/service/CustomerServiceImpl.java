@@ -523,7 +523,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerEnquiryDTO> getAllEnquiriesForCustomerId(String customerId) {
         List<CustomerEnquiryDTO> customerEnquiryDTOList = new ArrayList<>();
-        List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByCustomerId(customerId);
+        List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByCustomerId(Long.parseLong(customerId));
         buildCustomerEnquiry(customerEnquiryDTOList, customerEnquiries);
         return customerEnquiryDTOList;
     }
@@ -538,10 +538,17 @@ public class CustomerServiceImpl implements CustomerService {
             CustomerEnquiryDTO customerEnquiryDTO = new CustomerEnquiryDTO();
             customerEnquiryDTO.setEnquiryId(customerEnquiry.getId().toString());
             customerEnquiryDTO.setCustomerId(customerEnquiry.getCustomer().getId().toString());
+            
+            if(customerEnquiry.getDealer()!=null)
             customerEnquiryDTO.setDealerId(customerEnquiry.getDealer().getId().toString());
+            
             customerEnquiryDTO.setEnquiryQuestion(customerEnquiry.getEnquiry_question());
             customerEnquiryDTO.setEnquiryAnswer(customerEnquiry.getEnquiry_answer());
+            
+            if(customerEnquiry.getEnquiry_created_date()!=null)
             customerEnquiryDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_created_date()));
+            
+            if(customerEnquiry.getEnquiry_resolved_date()!=null)
             customerEnquiryDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_resolved_date()));
             customerEnquiryDTOList.add(customerEnquiryDTO);
         }
@@ -555,7 +562,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerEnquiryDTO> getAllEnquiriesForDealerId(String dealerId) {
         List<CustomerEnquiryDTO> customerEnquiryDTOList = new ArrayList<>();
-        List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByDealerId(dealerId);
+        List<CustomerEnquiry> customerEnquiries = customerEnquiryJpaRepository.findByDealerId(Long.parseLong(dealerId));
         buildCustomerEnquiry(customerEnquiryDTOList, customerEnquiries);
         return customerEnquiryDTOList;
     }

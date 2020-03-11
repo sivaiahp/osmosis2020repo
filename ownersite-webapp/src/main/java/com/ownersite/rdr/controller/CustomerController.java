@@ -195,7 +195,7 @@ public class CustomerController {
         String responseCode = "0";
         HttpStatus httpStatus = OK;
         try {
-            customerService.addCustomerEnquiry(enquiry_created_date, enquiry_resolved_date, enquiry_question, enquiry_answer, customerId, dealerId);
+        customerService.addCustomerEnquiry(enquiry_created_date, enquiry_resolved_date, enquiry_question, enquiry_answer, customerId, dealerId);
         } catch (Exception exception) {
             responseCode = "1";
             httpStatus = ERROR;
@@ -225,6 +225,7 @@ public class CustomerController {
         try {
             customerEnquiries = customerService.getAllEnquiriesForCustomerId(customerId);
         } catch (Exception exception) {
+        	exception.printStackTrace();
             httpStatus = ERROR;
         }
         return new ResponseEntity<>(customerEnquiries, httpStatus);

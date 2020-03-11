@@ -472,17 +472,16 @@ public class CustomerServiceImpl implements CustomerService {
             CustomerEnquiry customerEnquiry = new CustomerEnquiry();
             customerEnquiry.setCustomerId(Long.parseLong(customerId));
             customerEnquiry.setCustomer(customer);
-            if(!dealerId.equals("-1")) {
+            if(dealerId != null && !dealerId.equals("-1")) {
             	 Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
                  customerEnquiry.setDealer(dealer);
             }
             customerEnquiry.setDealerId(Long.parseLong(dealerId));
             customerEnquiry.setEnquiry_question(enquiry_question);
-            //customerEnquiry.setEnquiry_answer(enquiry_answer);
             if (enquiry_created_date != null && enquiry_created_date != "NA"){
+                customerEnquiry.setEnquiry_created_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_created_date));
 
             }
-            customerEnquiry.setEnquiry_created_date(new SimpleDateFormat("dd/MM/yyyy").parse(enquiry_created_date));
             customerEnquiryJpaRepository.save(customerEnquiry);
         } catch (ParseException e) {
             e.printStackTrace();

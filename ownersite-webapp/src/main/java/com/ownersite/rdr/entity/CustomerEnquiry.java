@@ -12,11 +12,11 @@ public class CustomerEnquiry extends BaseEntity{
 	private String enquiry_answer;
 
 	@ManyToOne
-	@JoinColumn(name = "customer_Id", referencedColumnName = "id", updatable = false, insertable = false)
+	@JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false, insertable = false)
 	private Customer customer;
 
 	@ManyToOne
-	@JoinColumn(name = "dealer_Id", referencedColumnName = "id", updatable = false, insertable = false)
+	@JoinColumn(name = "dealer_id", referencedColumnName = "id", updatable = false, insertable = false)
 	private Dealer dealer;
 
 	public java.util.Date getEnquiry_created_date(){

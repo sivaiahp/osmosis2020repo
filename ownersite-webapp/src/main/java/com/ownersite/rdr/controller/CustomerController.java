@@ -188,14 +188,14 @@ public class CustomerController {
     }
 
 
-    @GetMapping(value = "/addCustomerEnquiry", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/addCustomerEnquiry", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> addCustomerEnquiry (@RequestParam String enquiry_created_date, @RequestParam String enquiry_resolved_date,
                                                            @RequestParam String enquiry_question, @RequestParam String enquiry_answer,
                                                            @RequestParam String customerId, @RequestParam String dealerId) {
         String responseCode = "0";
         HttpStatus httpStatus = OK;
         try {
-            customerService.addCustomerEnquiry(enquiry_created_date, enquiry_resolved_date, enquiry_question, enquiry_answer, customerId, dealerId);
+        customerService.addCustomerEnquiry(enquiry_created_date, enquiry_resolved_date, enquiry_question, enquiry_answer, customerId, dealerId);
         } catch (Exception exception) {
             responseCode = "1";
             httpStatus = ERROR;
@@ -203,7 +203,7 @@ public class CustomerController {
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
 
-    @GetMapping(value = "/submitFeedback", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/submitFeedback", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> submitFeedback(@RequestParam String enquiry_created_date, @RequestParam String enquiry_resolved_date,
                                                            @RequestParam String enquiry_question, @RequestParam String enquiry_answer,
                                                            @RequestParam String customerId, @RequestParam String dealerId) {
@@ -225,6 +225,7 @@ public class CustomerController {
         try {
             customerEnquiries = customerService.getAllEnquiriesForCustomerId(customerId);
         } catch (Exception exception) {
+        	exception.printStackTrace();
             httpStatus = ERROR;
         }
         return new ResponseEntity<>(customerEnquiries, httpStatus);

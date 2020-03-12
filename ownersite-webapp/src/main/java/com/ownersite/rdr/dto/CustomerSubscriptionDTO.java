@@ -23,7 +23,7 @@ public class CustomerSubscriptionDTO {
 		this.subscriptionName = subscription.getSubscriptionname();
 		this.subscriptionDesc = subscription.getSubscriptiondec();
 		this.subscriptionPrice = "$" + String.valueOf(subscription.getPrice());
-		this.season = season;
+		this.season = subscription.getSeason();
 	}
 
 	public String getSubscriptionId() {
@@ -103,6 +103,7 @@ public class CustomerSubscriptionDTO {
 		subscription.setId(this.getSubscriptionId() == null ? null : Long.valueOf(this.getSubscriptionId()));
 		subscription.setSubscriptiondec(this.getSubscriptionDesc());
 		subscription.setSubscriptionname(this.getSubscriptionName());
+		subscription.setSeason(this.getSeason());
 		subscription.setPrice(
 				this.getSubscriptionPrice() == null ? null : Long.valueOf(this.getSubscriptionPrice().substring(1)));
 

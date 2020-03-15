@@ -100,7 +100,7 @@ public class ServicesServiceImpl implements ServicesService {
 	public void updateService(ServiceDTO serviceDTO) throws OwnerSiteException {
 		LOGGER.info("Updating service {}", serviceDTO);
 
-		if (this.findServiceById(serviceDTO.getServiceId()) == null) {
+		if (this.servicesJpaRepository.findByServiceId(serviceDTO.getServiceId()) == null) {
 			throw new OwnerSiteException("Invalid service id");
 		}
 

@@ -5,6 +5,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+/**
+ * The configuration class extending {@link WebSecurityConfigurerAdapter}
+ * 
+ * @author basridha
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class AuthTokenSecurityConfig extends WebSecurityConfigurerAdapter {

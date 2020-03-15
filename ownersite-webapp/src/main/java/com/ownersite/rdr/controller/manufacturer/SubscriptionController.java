@@ -26,6 +26,13 @@ import com.ownersite.rdr.dto.VehiclesDTO;
 import com.ownersite.rdr.service.manufacturer.SubscriptionService;
 import com.ownersite.rdr.util.OwnerSiteUtility;
 
+/**
+ * The REST controller class for managaing the Subscriptions provided by the
+ * manufacturer and also for generating reports for analytics
+ * 
+ * @author basridha
+ *
+ */
 @RestController
 @RequestMapping("/owner-site/manufacturer")
 @CrossOrigin(origins = "*")
@@ -40,6 +47,12 @@ public class SubscriptionController {
 		this.subscriptionService = subscriptionService;
 	}
 
+	/**
+	 * Fetches all the subscriptions
+	 * 
+	 * @return the {@link List} of {@link CustomerSubscriptionDTO} as
+	 *         {@link ResponseEntity} object
+	 */
 	@GetMapping(value = "/getAllSubscriptions", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<CustomerSubscriptionDTO>> getAllSubscriptions() {
 		List<CustomerSubscriptionDTO> subscription = null;
@@ -54,6 +67,12 @@ public class SubscriptionController {
 		return new ResponseEntity<>(subscription, httpStatus);
 	}
 
+	/**
+	 * Fetch all the vehicles
+	 * 
+	 * @return the {@link List} of {@link VehiclesDTO} as {@link ResponseEntity}
+	 *         object
+	 */
 	@GetMapping(value = "/getAllVehicles")
 	public ResponseEntity<List<VehiclesDTO>> getAllVehicles() {
 		List<VehiclesDTO> customerServices = null;
@@ -66,6 +85,13 @@ public class SubscriptionController {
 		return new ResponseEntity<>(customerServices, httpStatus);
 	}
 
+	/**
+	 * Adds the new subscription
+	 * 
+	 * @param customerSubscriptionDTO the subscription to be added
+	 * @return the status as {@link ResponseEntity} returns 0 if subscription is
+	 *         successfully added, else 1
+	 */
 	@PostMapping(value = "/addNewSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> addSubscription(
 			@RequestBody(required = true) CustomerSubscriptionDTO customerSubscriptionDTO) {
@@ -84,6 +110,14 @@ public class SubscriptionController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
 	}
 
+	/**
+	 * 
+	 * Deletes the existing subscription
+	 * 
+	 * @param customerSubscriptionDTO the subscription to be deleted
+	 * @return the status as {@link ResponseEntity} returns 0 if subscription is
+	 *         successfully deleted, else 1
+	 */
 	@DeleteMapping(value = "/deleteSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> deleteSubscription(
 			@RequestBody(required = true) CustomerSubscriptionDTO customerSubscriptionDTO) {
@@ -102,6 +136,13 @@ public class SubscriptionController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
 	}
 
+	/**
+	 * Updates the existing subscription
+	 * 
+	 * @param customerSubscriptionDTO the subscription to be updated
+	 * @return the status as {@link ResponseEntity} returns 0 if subscription is
+	 *         successfully updated, else 1
+	 */
 	@PutMapping(value = "/updateSubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> updateSubscription(
 			@RequestBody(required = true) CustomerSubscriptionDTO customerSubscriptionDTO) {
@@ -120,6 +161,16 @@ public class SubscriptionController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
 	}
 
+	/**
+	 * Updates (adding and deleting of services) the services associated to a
+	 * subscription
+	 * 
+	 * @param subscriptionServiceDTO the subscription for which services to be
+	 *                               updated. The services to be updated will be
+	 *                               available as part of this object
+	 * @return the status as {@link ResponseEntity} returns 0 if subscription's
+	 *         services are successfully updated, else 1
+	 */
 	@PostMapping(value = "/updateSubcriptionServices", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> updateSubscriptionServices(
 			@RequestBody(required = true) SubscriptionServiceDTO subscriptionServiceDTO) {
@@ -138,6 +189,13 @@ public class SubscriptionController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
 	}
 
+	/**
+	 * Fetches the list of services associated to the given subscription
+	 * 
+	 * @param customerSubscriptionDTO the subscription for which services has to be
+	 *                                retrieved
+	 * @return all the services associated to the given subscription
+	 */
 	@PostMapping(value = "/getServicesBySubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ServiceDTO>> getServicesBySubscription(
 			@RequestBody(required = true) CustomerSubscriptionDTO customerSubscriptionDTO) {
@@ -152,7 +210,14 @@ public class SubscriptionController {
 
 		return new ResponseEntity<>(serviceDTOs, httpStatus);
 	}
-	
+
+	/**
+	 * Fetches the vehicles associated to a subscription
+	 * 
+	 * @param customerSubscriptionDTO the subscription for which vehicles are
+	 *                                associated
+	 * @return all the vehicles associated to the given subscription
+	 */
 	@PostMapping(value = "/getVehiclesBySubscription", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<VehiclesDTO>> getVehiclesBySubscription(
 			@RequestBody(required = true) CustomerSubscriptionDTO customerSubscriptionDTO) {
@@ -168,6 +233,14 @@ public class SubscriptionController {
 		return new ResponseEntity<>(vehiclesDTOs, httpStatus);
 	}
 
+	/**
+	 * Updates the vehicles associated to the subscription
+	 * 
+	 * @param subscriptionVehicleDTO the vehicle to be updated against the
+	 *                               subscription
+	 * @return the status as {@link ResponseEntity} returns 0 if subscription's
+	 *         vehicle is successfully updated, else 1
+	 */
 	@PostMapping(value = "/updateSubcriptionVehicles", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> updateSubcriptionVehicles(
 			@RequestBody(required = true) SubscriptionVehicleDTO subscriptionVehicleDTO) {
@@ -186,6 +259,11 @@ public class SubscriptionController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
 	}
 
+	/**
+	 * Generates the report data for the number subscriptions availed monthly
+	 * 
+	 * @return the data for constructing the report
+	 */
 	@GetMapping(value = "/monthlySubscriptionsReport", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ReportDTO> generateMontlyScubscriptionsReport() {
 		ReportDTO report = null;
@@ -200,6 +278,12 @@ public class SubscriptionController {
 		return new ResponseEntity<>(report, httpStatus);
 	}
 
+	/**
+	 * Generates the report data for the number subscriptions availed monthly per
+	 * subscription basis
+	 * 
+	 * @return the data for constructing the report
+	 */
 	@GetMapping(value = "/monthlySubscriptionsPerSubscriptionReport", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ReportDTO> generateMontlyScubscriptionsPerSubscriptionReport() {
 		ReportDTO report = null;
@@ -214,6 +298,12 @@ public class SubscriptionController {
 		return new ResponseEntity<>(report, httpStatus);
 	}
 
+	/**
+	 * Generates the report data for the number subscriptions availed monthly for
+	 * all the subscriptions
+	 * 
+	 * @return the data for constructing the report
+	 */
 	@GetMapping(value = "/subscriptionsReport", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ReportDTO> generateSubscriptionsReport() {
 		ReportDTO report = null;

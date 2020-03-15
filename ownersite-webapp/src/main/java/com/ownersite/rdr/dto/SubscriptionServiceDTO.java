@@ -1,5 +1,11 @@
 package com.ownersite.rdr.dto;
 
+/**
+ * The DTO for id of the services associated with a subscription
+ * 
+ * @author basridha
+ *
+ */
 public class SubscriptionServiceDTO {
 
 	private String subscriptionId;

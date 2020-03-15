@@ -3,6 +3,12 @@ package com.ownersite.rdr.dto;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The Response DTO for sending the response to client
+ * 
+ * @author basridha
+ *
+ */
 public class ResponseDTO {
 
 	private String resultCode;

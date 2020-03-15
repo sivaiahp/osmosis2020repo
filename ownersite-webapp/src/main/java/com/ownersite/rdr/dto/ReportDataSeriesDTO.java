@@ -2,6 +2,12 @@ package com.ownersite.rdr.dto;
 
 import java.util.List;
 
+/**
+ * The DTO for storing the series data in a report
+ * 
+ * @author basridha
+ *
+ */
 public class ReportDataSeriesDTO {
 
 	private String name;

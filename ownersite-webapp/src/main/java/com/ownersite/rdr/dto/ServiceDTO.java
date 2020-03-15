@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ownersite.rdr.entity.Service;
 
 /**
+ * The service DTO
+ * 
  * @author polamred
  *
  */

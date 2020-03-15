@@ -16,7 +16,10 @@ import com.ownersite.rdr.exception.OwnerSiteException;
 import com.ownersite.rdr.repository.ServicesJpaRepository;
 
 /**
+ * The implementation class of {@link ServicesService}
+ * 
  * @author polamred
+ * @author basridha
  *
  */
 @Service
@@ -30,6 +33,11 @@ public class ServicesServiceImpl implements ServicesService {
 		this.servicesJpaRepository = servicesJpaRepository;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.ServicesService#getAllServices()
+	 */
 	@Override
 	public List<ServiceDTO> getAllServices() {
 		LOGGER.info("Fetching all servcies");
@@ -41,6 +49,12 @@ public class ServicesServiceImpl implements ServicesService {
 		return listservices.stream().map(ServiceDTO::new).collect(Collectors.toList());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.ServicesService#addService(com.
+	 * ownersite.rdr.dto.ServiceDTO)
+	 */
 	@Override
 	public void addService(ServiceDTO serviceDTO) {
 		LOGGER.info("Creating service for {}", serviceDTO);
@@ -50,6 +64,12 @@ public class ServicesServiceImpl implements ServicesService {
 		LOGGER.info("Created service {} successfully", serviceDTO);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ownersite.rdr.service.manufacturer.ServicesService#deleteService(long)
+	 */
 	@Override
 	public void deleteService(long serviceId) throws OwnerSiteException {
 		LOGGER.info("Deleting service by id {}", serviceId);
@@ -69,6 +89,13 @@ public class ServicesServiceImpl implements ServicesService {
 		LOGGER.info("Deleted servcie by id {} successfully", serviceId);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ownersite.rdr.service.manufacturer.ServicesService#updateService(com.
+	 * ownersite.rdr.dto.ServiceDTO)
+	 */
 	@Override
 	public void updateService(ServiceDTO serviceDTO) throws OwnerSiteException {
 		LOGGER.info("Updating service {}", serviceDTO);
@@ -82,6 +109,12 @@ public class ServicesServiceImpl implements ServicesService {
 		LOGGER.info("Updated servcie {} successfully", serviceDTO);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ownersite.rdr.service.manufacturer.ServicesService#findServiceById(long)
+	 */
 	@Override
 	public ServiceDTO findServiceById(long serviceId) {
 		LOGGER.info("Fetch service by id {}", serviceId);
@@ -89,6 +122,13 @@ public class ServicesServiceImpl implements ServicesService {
 		return new ServiceDTO(servicesJpaRepository.findByServiceId(serviceId));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ownersite.rdr.service.manufacturer.ServicesService#findServicesByIds(java
+	 * .util.List)
+	 */
 	@Override
 	public List<com.ownersite.rdr.entity.Service> findServicesByIds(List<Long> serviceIds) {
 		LOGGER.info("Fetch services by ids {}", serviceIds);

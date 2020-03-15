@@ -23,6 +23,12 @@ import com.ownersite.rdr.dto.ServiceDTO;
 import com.ownersite.rdr.service.manufacturer.ServicesService;
 import com.ownersite.rdr.util.OwnerSiteUtility;
 
+/**
+ * The REST controller for managing the Services provided by the manufacturer
+ * 
+ * @author basridha
+ *
+ */
 @RestController
 @RequestMapping("/owner-site/manufacturer")
 @CrossOrigin(origins = "*")
@@ -40,6 +46,11 @@ public class ServicesController {
 		this.servicesService = servicesService;
 	}
 
+	/**
+	 * Fetch all the services
+	 * 
+	 * @return the list of {@link ServiceDTO} as {@link ResponseEntity}
+	 */
 	@GetMapping(value = "/getAllServices", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ServiceDTO>> getAllServices() {
 		LOGGER.info("Fetching all services");
@@ -58,6 +69,13 @@ public class ServicesController {
 		return new ResponseEntity<>(services, httpStatus);
 	}
 
+	/**
+	 * Adds the new service
+	 * 
+	 * @param service the {@link ServiceDTO} to be added
+	 * @return the status as {@link ResponseEntity} returns 0 if service is
+	 *         successfully added, else 1
+	 */
 	@PostMapping(value = "/addNewService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> add(@RequestBody ServiceDTO service) {
 		LOGGER.info("Adding service");
@@ -79,6 +97,13 @@ public class ServicesController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
 	}
 
+	/**
+	 * Delete the service
+	 * 
+	 * @param service the {@link ServiceDTO} to be deleted
+	 * @return the status as {@link ResponseEntity} returns 0 if service is
+	 *         successfully deleted, else 1
+	 */
 	@DeleteMapping(value = "/deleteService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> delete(@RequestBody(required = true) ServiceDTO service) {
 		LOGGER.info("Deleting service");
@@ -100,6 +125,13 @@ public class ServicesController {
 		return new ResponseEntity<>(new ResponseDTO(responseCode, errors), httpStatus);
 	}
 
+	/**
+	 * Updated the existing service
+	 * 
+	 * @param serviceToUpdate the {@link ServiceDTO} to be updated
+	 * @return the status as {@link ResponseEntity} returns 0 if service is
+	 *         successfully updated, else 1
+	 */
 	@PutMapping(value = "/updateService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> update(@RequestBody(required = true) ServiceDTO serviceToUpdate) {
 		LOGGER.info("Updating service");

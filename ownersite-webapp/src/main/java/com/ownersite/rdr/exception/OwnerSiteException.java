@@ -1,5 +1,10 @@
 package com.ownersite.rdr.exception;
 
+/**
+ * The custom exception class for holding exception details
+ * @author basridha
+ *
+ */
 public class OwnerSiteException extends Exception {
 
 	private static final long serialVersionUID = -3461066109907600889L;

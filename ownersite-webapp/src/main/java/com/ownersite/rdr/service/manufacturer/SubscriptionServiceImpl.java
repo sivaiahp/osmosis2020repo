@@ -31,6 +31,12 @@ import com.ownersite.rdr.repository.SubscriptionServiceJpaRepository;
 import com.ownersite.rdr.repository.VehicleJpaRepository;
 import com.ownersite.rdr.util.OwnerSiteUtility;
 
+/**
+ * The implementation class for {@link SubscriptionService}
+ * 
+ * @author basridha
+ *
+ */
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
@@ -57,6 +63,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		this.vehicleJpaRepository = vehicleJpaRepository;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ownersite.rdr.service.manufacturer.SubscriptionService#createSubscription
+	 * (com.ownersite.rdr.dto.CustomerSubscriptionDTO)
+	 */
 	@Override
 	public void createSubscription(CustomerSubscriptionDTO customerSubscriptionDTO) {
 		LOGGER.info("creating Subscription for {}", customerSubscriptionDTO);
@@ -66,6 +79,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		LOGGER.info("Subscription added successfully");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ownersite.rdr.service.manufacturer.SubscriptionService#updateSubscription
+	 * (com.ownersite.rdr.dto.CustomerSubscriptionDTO)
+	 */
 	@Override
 	public void updateSubscription(CustomerSubscriptionDTO customerSubscriptionDTO) throws OwnerSiteException {
 		LOGGER.info("updating Subscription for {}", customerSubscriptionDTO);
@@ -80,6 +100,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		LOGGER.info("Subscription updated successfully");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ownersite.rdr.service.manufacturer.SubscriptionService#deleteSubscription
+	 * (long)
+	 */
 	@Override
 	public void deleteSubscription(long subscriptionId) throws OwnerSiteException {
 		LOGGER.info("delete Subscription for {}", subscriptionId);
@@ -100,6 +127,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		LOGGER.info("Subscription deleted successfully");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * getAllSubscriptions()
+	 */
 	@Override
 	public List<CustomerSubscriptionDTO> getAllSubscriptions() {
 		LOGGER.info("Getting all subscriptions");
@@ -108,6 +141,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 				.collect(Collectors.toList());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * findBySubscriptionId(long)
+	 */
 	@Override
 	public CustomerSubscriptionDTO findBySubscriptionId(long id) {
 		LOGGER.info("Find Subscription by id {}", id);
@@ -115,6 +154,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return new CustomerSubscriptionDTO(subscriptionJpaRepository.findBySubscriptionId(id));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * updateSubscriptionServices(com.ownersite.rdr.dto.SubscriptionServiceDTO)
+	 */
 	@Override
 	@Transactional
 	public void updateSubscriptionServices(SubscriptionServiceDTO subscriptionServiceDTO) throws OwnerSiteException {
@@ -173,6 +218,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * getServicesBySubscription(com.ownersite.rdr.dto.CustomerSubscriptionDTO)
+	 */
 	@Override
 	public List<ServiceDTO> getServicesBySubscription(CustomerSubscriptionDTO customerSubscriptionDTO) {
 		LOGGER.info("Getting all the services tagged to a subscription");
@@ -191,6 +242,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return serviceDTOs;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * getVehiclesBySubscription(com.ownersite.rdr.dto.CustomerSubscriptionDTO)
+	 */
 	@Override
 	public List<VehiclesDTO> getVehiclesBySubscription(CustomerSubscriptionDTO customerSubscriptionDTO) {
 		LOGGER.info("Getting all the services tagged to a subscription");
@@ -209,6 +266,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return vehiclesDTOs;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ownersite.rdr.service.manufacturer.SubscriptionService#getAllVehicles()
+	 */
 	@Override
 	public List<VehiclesDTO> getAllVehicles() {
 		List<VehiclesDTO> customerServicesDTOs = new ArrayList<>();
@@ -226,6 +289,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return customerServicesDTOs;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * updateSubcriptionVehicles(com.ownersite.rdr.dto.SubscriptionVehicleDTO)
+	 */
 	@Override
 	@Transactional
 	public void updateSubcriptionVehicles(SubscriptionVehicleDTO subscriptionVehicleDTO) throws OwnerSiteException {
@@ -282,6 +351,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * generateSubscriptionsPerMonthReport()
+	 */
 	@Override
 	public ReportDTO generateSubscriptionsPerMonthReport() {
 		LOGGER.info("Generating monthly subscriptions report");
@@ -300,6 +375,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 						.collect(Collectors.toList()))));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * generateMonthlySubscriptionsPerSubcriptionReport()
+	 */
 	@Override
 	public ReportDTO generateMonthlySubscriptionsPerSubcriptionReport() {
 		LOGGER.info("Generating monthly subscriptions per subscription report");
@@ -329,6 +410,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return new ReportDTO(months, reportDataSeries);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * generateSubscriptions()
+	 */
 	@Override
 	public ReportDTO generateSubscriptions() {
 		LOGGER.info("Generating subscriptions report");

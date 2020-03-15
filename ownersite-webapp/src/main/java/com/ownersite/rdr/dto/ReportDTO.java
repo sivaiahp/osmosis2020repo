@@ -2,6 +2,12 @@ package com.ownersite.rdr.dto;
 
 import java.util.List;
 
+/**
+ * The DTO for storing the report data
+ * 
+ * @author basridha
+ *
+ */
 public class ReportDTO {
 
 	private List<String> categories;

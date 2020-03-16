@@ -131,4 +131,12 @@ public interface SubscriptionService {
 	 */
 	ReportDTO generateSubscriptions();
 
+	/**
+	 * Generates the report data for the average day differences between customer
+	 * RDR and dealer RDR in a month for last 12 months
+	 * 
+	 * @return the report data
+	 */
+	ReportDTO generateRDRReport();
+
 }

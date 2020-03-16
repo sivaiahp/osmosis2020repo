@@ -23,6 +23,7 @@ public class CustomerVechile extends BaseEntity{
 	private Long dealerId;
 	private String registeredNumber;
 	private Date rdrRegisteredDate;
+	private Date dealerRdrRegistereDate;
 
 	public String getVin() {
 		return vin;
@@ -67,10 +68,19 @@ public class CustomerVechile extends BaseEntity{
 		this.rdrRegisteredDate = rdrRegisteredDate;
 	}
 
+	public Date getDealerRdrRegistereDate() {
+		return dealerRdrRegistereDate;
+	}
+
+	public void setDealerRdrRegistereDate(Date dealerRdrRegistereDate) {
+		this.dealerRdrRegistereDate = dealerRdrRegistereDate;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerVechile [vin=" + vin + ", vechileId=" + vechileId + ", customerId=" + customerId + ", dealerId="
-				+ dealerId + "]";
+				+ dealerId + ", registeredNumber=" + registeredNumber + ", rdrRegisteredDate=" + rdrRegisteredDate
+				+ ", dealerRdrRegistereDate=" + dealerRdrRegistereDate + "]";
 	}
 	
 }

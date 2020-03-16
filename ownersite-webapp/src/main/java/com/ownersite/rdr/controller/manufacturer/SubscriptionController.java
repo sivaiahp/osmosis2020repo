@@ -318,4 +318,24 @@ public class SubscriptionController {
 		return new ResponseEntity<>(report, httpStatus);
 	}
 
+	/**
+	 * Generates the report data for the average day differences between customer
+	 * RDR and dealer RDR in a month for last 12 months
+	 * 
+	 * @return the data for constructing the report
+	 */
+	@GetMapping(value = "/rdrReport", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ReportDTO> generateRDRReport() {
+		ReportDTO report = null;
+		HttpStatus httpStatus = OK;
+
+		try {
+			report = subscriptionService.generateRDRReport();
+		} catch (Exception e) {
+			httpStatus = ERROR;
+		}
+
+		return new ResponseEntity<>(report, httpStatus);
+	}
+
 }

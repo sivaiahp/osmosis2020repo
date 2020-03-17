@@ -518,7 +518,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerServices.setServiceRequestedDate(new SimpleDateFormat("dd/MM/yyyy").format( new java.util.Date()));
         customerServices.setDealer(dealer);
         customerServices.setDealerId(Long.parseLong(dealerId));
-        //customerServices.setVin(vin);
+        customerServices.setVin(vin);
         customerServices.setService_cust_complaints(complaints);
         customerServicesJpaRepository.save(customerServices);}
     	catch(Exception ex) {

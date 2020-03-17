@@ -2,6 +2,7 @@ package com.ownersite.rdr.service.manufacturer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -445,8 +446,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	@Override
 	public ReportDTO generateRDRReport() {
 		LOGGER.info("Generating RDR report");
+		
+		Calendar startDate = Calendar.getInstance();
+		startDate.set(Calendar.MONTH, Calendar.JANUARY);
+		startDate.set(Calendar.DAY_OF_MONTH, 1);
 
-		List<String> months = OwnerSiteUtility.getTwelveMonthsFromToday();
+		List<String> months = OwnerSiteUtility.getTwelveMonthsFromToday(startDate);
 
 		Map<String, List<CustomerVehicleJpaRepository.RDRReport>> averageDays = customerVehicleJpaRepository
 				.generateRDRReport().stream()

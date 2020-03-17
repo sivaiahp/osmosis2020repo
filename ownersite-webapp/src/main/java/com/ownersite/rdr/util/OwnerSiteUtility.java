@@ -56,4 +56,22 @@ public final class OwnerSiteUtility {
 		return twelveMonths;
 	}
 
+	public static List<String> getTwelveMonthsFromToday(Calendar startDate) {
+		LOGGER.info("Getting twelve months from today");
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM-yyyy");
+		Calendar date = Calendar.getInstance();
+		List<String> twelveMonths = new ArrayList<>();
+		int iterate = 12;
+		do {
+			twelveMonths.add(dateFormat.format(date.getTime()));
+			date.add(Calendar.MONTH, -1);
+		} while (--iterate != 0 && date.after(startDate));
+
+		Collections.reverse(twelveMonths);
+
+		LOGGER.info("Got twelve months from today successfully");
+
+		return twelveMonths;
+	}
 }

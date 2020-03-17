@@ -513,15 +513,20 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public void updateCustomerService(String customerId, String serviceId, String vin, String dealerId, String complaints) {
+    	try {
         Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
         CustomerServices customerServices = customerServicesJpaRepository.getOne(Long.parseLong(serviceId));
         Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
         customerServices.setCustomer(customer);
-        customerServices.setServiceRequestedDate(new SimpleDateFormat("DD/MM/yyyy").format( new java.util.Date()));
+        customerServices.setServiceRequestedDate(new SimpleDateFormat("dd/MM/yyyy").format( new java.util.Date()));
         customerServices.setDealer(dealer);
-        customerServices.setVin(vin);
+        customerServices.setDealerId(Long.parseLong(dealerId));
+        //customerServices.setVin(vin);
         customerServices.setService_cust_complaints(complaints);
-        customerServicesJpaRepository.save(customerServices);
+        customerServicesJpaRepository.save(customerServices);}
+    	catch(Exception ex) {
+    		ex.printStackTrace();
+    	}
     }
 
     /**
@@ -617,10 +622,10 @@ public class CustomerServiceImpl implements CustomerService {
             customerEnquiryDTO.setEnquiryAnswer(customerEnquiry.getEnquiry_answer());
             
             if(customerEnquiry.getEnquiry_created_date()!=null)
-            customerEnquiryDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_created_date()));
+            customerEnquiryDTO.setEnquiryCreatedDate(new SimpleDateFormat("dd/MM/yyyy").format(customerEnquiry.getEnquiry_created_date()));
             
             if(customerEnquiry.getEnquiry_resolved_date()!=null)
-            customerEnquiryDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerEnquiry.getEnquiry_resolved_date()));
+            customerEnquiryDTO.setEnquiryResolvedDate(new SimpleDateFormat("dd/MM/yyyy").format(customerEnquiry.getEnquiry_resolved_date()));
             customerEnquiryDTOList.add(customerEnquiryDTO);
         }
     }
@@ -679,10 +684,10 @@ public class CustomerServiceImpl implements CustomerService {
            customerFeedbackDTO.setEnquiryAnswer(customerFeedback.getEnquiry_answer());
            
            if(customerFeedback.getEnquiry_created_date()!=null)
-        	   customerFeedbackDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_created_date()));
+        	   customerFeedbackDTO.setEnquiryCreatedDate(new SimpleDateFormat("dd/MM/yyyy").format(customerFeedback.getEnquiry_created_date()));
            
            if(customerFeedback.getEnquiry_resolved_date()!=null)
-        	   customerFeedbackDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_resolved_date()));
+        	   customerFeedbackDTO.setEnquiryResolvedDate(new SimpleDateFormat("dd/MM/yyyy").format(customerFeedback.getEnquiry_resolved_date()));
            customerFeedbackDTOList.add(customerFeedbackDTO);
        }
    }

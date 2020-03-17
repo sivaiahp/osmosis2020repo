@@ -186,7 +186,7 @@ public class CustomerController {
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
 
-    @GetMapping(value = "/beginService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/requestService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> beginService(@RequestParam  String customerId,
                                                   @RequestParam  String serviceId,
                                                   @RequestParam   String vin,

@@ -5,10 +5,7 @@ package com.ownersite.rdr.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.ownersite.rdr.dto.*;
@@ -748,5 +745,23 @@ public class CustomerServiceImpl implements CustomerService {
         
 
         logger.info("customerEnquiry updated successfully");
+    }
+
+    @Override
+    public void updateCustomerServiceForDealer(String serviceId, String analysis, String repairs, String cost, String serviceStartDate) {
+        logger.info("Updating customer service");
+        try {
+            CustomerServices customerServices = customerServicesJpaRepository.getOne(Long.parseLong(serviceId));
+            customerServices.setService_analysis_desc(analysis);
+            customerServices.setService_cost(Double.parseDouble(cost));
+            customerServices.setService_repairs_desc(repairs);
+            customerServices.setServiceStartDate(new SimpleDateFormat("dd/MM/yyyy").parse(
+                    serviceStartDate));
+            customerServices.setServiceCompletedDate(new Date());
+            customerServicesJpaRepository.save(customerServices);}
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        logger.info("customer service updated successfully");
     }
 }

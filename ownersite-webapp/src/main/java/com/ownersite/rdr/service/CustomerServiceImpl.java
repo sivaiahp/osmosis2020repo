@@ -440,18 +440,18 @@ public class CustomerServiceImpl implements CustomerService {
      * @param serviceId
      * @param vin
      * @param dealerId
+     * @param complaints
      */
     @Override
-    public void addCustomerService(String customerId, String serviceId, String vin, String dealerId) {
+    public void updateCustomerService(String customerId, String serviceId, String vin, String dealerId, String complaints) {
         Customer customer = customerJpaRepository.getOne(Long.parseLong(customerId));
-        com.ownersite.rdr.entity.Service service = servicesJpaRepository.getOne(Long.parseLong(serviceId));
+        CustomerServices customerServices = customerServicesJpaRepository.getOne(Long.parseLong(serviceId));
         Dealer dealer = dealerJpaRepository.getOne(Long.parseLong(dealerId));
-        CustomerServices customerServices = new CustomerServices();
         customerServices.setCustomer(customer);
-        customerServices.setService(service);
         customerServices.setServiceRequestedDate(new SimpleDateFormat("DD/MM/yyyy").format( new java.util.Date()));
         customerServices.setDealer(dealer);
         customerServices.setVin(vin);
+        customerServices.setService_cust_complaints(complaints);
         customerServicesJpaRepository.save(customerServices);
     }
 

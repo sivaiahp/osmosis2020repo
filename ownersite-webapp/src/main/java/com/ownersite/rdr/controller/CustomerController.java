@@ -175,11 +175,12 @@ public class CustomerController {
     public ResponseEntity<ResponseDTO> beginService(@RequestParam  String customerId,
                                                   @RequestParam  String serviceId,
                                                   @RequestParam   String vin,
-                                                    @RequestParam   String dealerId) {
+                                                    @RequestParam   String dealerId,
+                                                    @RequestParam String complaints) {
         String responseCode = "0";
         HttpStatus httpStatus = OK;
         try {
-            customerService.addCustomerService(customerId,serviceId,vin, dealerId);
+            customerService.updateCustomerService(customerId,serviceId,vin, dealerId, complaints);
         } catch (Exception exception) {
             responseCode = "1";
             httpStatus = ERROR;

@@ -42,8 +42,6 @@ public interface CustomerService {
 
     void confirmRDR(String customerId, String rdrCustConfirmedDate, String vin);
 
-    void addCustomerService(String customerId, String serviceId, String vin, String dealerId);
-
     void addCustomerEnquiry(String enquiry_created_date, String enquiry_resolved_date, String enquiry_question,
                             String enquiry_answer, String customerId, String dealerId);
 
@@ -59,4 +57,7 @@ public interface CustomerService {
     List<CustomerFeedbackDTO> getAllFeedbackForDealerId(String dealerId);
 
     void updateEnquiry(CustomerEnquiryDTO customerEnquiryDTO) throws OwnerSiteException;
+
+    void updateCustomerService(String customerId, String serviceId, String vin, String dealerId, String complaints);
+
 }

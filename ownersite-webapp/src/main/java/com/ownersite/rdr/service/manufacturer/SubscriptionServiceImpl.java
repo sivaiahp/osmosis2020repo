@@ -26,6 +26,7 @@ import com.ownersite.rdr.entity.Subscription;
 import com.ownersite.rdr.entity.Vehicle;
 import com.ownersite.rdr.exception.OwnerSiteException;
 import com.ownersite.rdr.repository.CustomerSubscriptionJpaRepository;
+import com.ownersite.rdr.repository.CustomerVehicleJpaRepository;
 import com.ownersite.rdr.repository.SubscriptionJpaRepository;
 import com.ownersite.rdr.repository.SubscriptionServiceJpaRepository;
 import com.ownersite.rdr.repository.VehicleJpaRepository;
@@ -50,17 +51,20 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	private final ServicesService servicesService;
 
 	private final VehicleJpaRepository vehicleJpaRepository;
+	
+	private final CustomerVehicleJpaRepository customerVehicleJpaRepository;
 
 	@Autowired
 	public SubscriptionServiceImpl(SubscriptionJpaRepository subscriptionJpaRepository,
 			SubscriptionServiceJpaRepository subscriptionServiceJpaRepository,
 			CustomerSubscriptionJpaRepository customerSubscriptionJpaRepository, ServicesService servicesService,
-			VehicleJpaRepository vehicleJpaRepository) {
+			VehicleJpaRepository vehicleJpaRepository, CustomerVehicleJpaRepository customerVehicleJpaRepository) {
 		this.subscriptionJpaRepository = subscriptionJpaRepository;
 		this.subscriptionServiceJpaRepository = subscriptionServiceJpaRepository;
 		this.customerSubscriptionJpaRepository = customerSubscriptionJpaRepository;
 		this.servicesService = servicesService;
 		this.vehicleJpaRepository = vehicleJpaRepository;
+		this.customerVehicleJpaRepository = customerVehicleJpaRepository;
 	}
 
 	/*
@@ -430,6 +434,41 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		LOGGER.info("Generated subscriptions report successfully");
 		return new ReportDTO(categories, Arrays.asList(new ReportDataSeriesDTO("Subscriptions", data)));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ownersite.rdr.service.manufacturer.SubscriptionService#
+	 * generateRDRReport()
+	 */
+	@Override
+	public ReportDTO generateRDRReport() {
+		LOGGER.info("Generating RDR report");
+
+		List<String> months = OwnerSiteUtility.getTwelveMonthsFromToday();
+
+		Map<String, List<CustomerVehicleJpaRepository.RDRReport>> averageDays = customerVehicleJpaRepository
+				.generateRDRReport().stream()
+				.collect(Collectors.groupingBy(CustomerVehicleJpaRepository.RDRReport::getName));
+
+		List<ReportDataSeriesDTO> reportDataSeries = new LinkedList<>();
+
+		averageDays.forEach((dealerName, averageDay) -> {
+			Map<String, String> subscribersPerMonth = new LinkedHashMap<>();
+			averageDay.stream().forEach(
+					subscriber -> subscribersPerMonth.put(subscriber.getPeriod(), subscriber.getDays()));
+
+			reportDataSeries
+					.add(new ReportDataSeriesDTO(dealerName,
+							months.stream().map(month -> Integer.parseInt(
+									subscribersPerMonth.containsKey(month) ? subscribersPerMonth.get(month) : "0"))
+									.collect(Collectors.toList())));
+		});
+
+		LOGGER.info("Generated RDR report successfully");
+
+		return new ReportDTO(months, reportDataSeries);
 	}
 
 }

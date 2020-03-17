@@ -56,6 +56,21 @@ public class CustomerController {
     }
     
     
+    @GetMapping(value = "/viewDealerServices")
+    public ResponseEntity<List<CustomerServicesDTO>> getServiceHistoryDealer(@RequestParam  String dealerId, @RequestParam  String subscriptionId) {
+        List<CustomerServicesDTO> customerServices = null;
+        HttpStatus httpStatus = OK;
+        try {
+            customerServices = customerService.getServiceHistoryDealer(dealerId, subscriptionId);
+        } catch (Exception exception) {
+        	exception.printStackTrace();
+        	System.out.println(exception);
+            httpStatus = ERROR;
+        }
+
+        return new ResponseEntity<>(customerServices, httpStatus);
+    }
+    
 
     @GetMapping(value = "/getMyVehicles")
     public ResponseEntity<List<VehiclesDTO>> getMyVehicles(@RequestParam  String customerId) {

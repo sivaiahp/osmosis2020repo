@@ -180,6 +180,75 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return customerServicesDTOs;
     }
+    
+    /**
+    *
+    * @param customerId
+    * @param subscriptionId
+    * @return
+    */
+   @Override
+   public List<CustomerServicesDTO> getServiceHistoryDealer(String dealerId, String subscriptionId) {
+       
+       List<com.ownersite.rdr.entity.Service> listservices = servicesJpaRepository.findAll();
+       Map<Long,String> serviceNameHm = new HashMap<Long,String>();
+       Map<Long,String> serviceDescHm = new HashMap<Long,String>();
+       
+       
+       for(com.ownersite.rdr.entity.Service service: listservices) {
+       	serviceNameHm.put(service.getId(), service.getServicename());
+       	serviceDescHm.put(service.getId(), service.getServicedec());
+       	
+       }
+       
+       if(dealerId == null) {
+       	System.out.println("--------No dealer found----");
+       }
+       List<CustomerServices> customerServices = customerServicesJpaRepository.findByDealerId(Long.parseLong(dealerId));
+       if(customerServices == null || customerServices.size() ==0) {
+       	System.out.println("--------No customer found----");
+       }
+       List<CustomerServicesDTO> customerServicesDTOs = new ArrayList<>();
+       try {
+       for (CustomerServices customerService:customerServices) {
+           CustomerServicesDTO customerServicesDTO = new CustomerServicesDTO();
+           //customerServicesDTO.setCustomerId(customerId);
+           if(customerService.getDealerId() != null) {
+           	 customerServicesDTO.setDealerId(customerService.getDealerId().toString());
+           }
+          
+           customerServicesDTO.setServicecomplaintAnalysis(customerService.getService_analysis_desc());
+           customerServicesDTO.setServiceCompletedDate(String.valueOf(customerService.getServiceCompletedDate()));
+           customerServicesDTO.setServiceCustomerComplaints(customerService.getService_cust_complaints());
+           
+           customerServicesDTO.setServicedec(serviceDescHm.get(customerService.getId()));
+           customerServicesDTO.setServicename(serviceNameHm.get(customerService.getId()));
+           
+           customerServicesDTO.setServiceId(customerService.getId().toString());
+           
+           if(new Double(customerService.getService_cost()) != null) {
+           	  customerServicesDTO.setServicePrice(Double.toString(customerService.getService_cost()));
+           }
+         
+           if(new Double(customerService.getService_cost()) != null) {
+           customerServicesDTO.setServiceRepairsCost(Double.toString(customerService.getService_cost()));
+           }
+          
+           customerServicesDTO.setServiceRepairsDesc(customerService.getService_repairs_desc());
+           
+         
+           customerServicesDTO.setServiceRequestedDate(String.valueOf(customerService.getServiceStartDate()));
+           customerServicesDTO.setVin(String.valueOf(customerService.getVin()));
+           customerServicesDTO.setServiceStartedDate(String.valueOf(customerService.getServiceStartDate()));
+           customerServicesDTO.setServiceStationId(String.valueOf(customerService.getServiceStationId()));
+           
+           customerServicesDTOs.add(customerServicesDTO);
+       }}
+       catch(Exception ex) {
+       	ex.printStackTrace();
+       }
+       return customerServicesDTOs;
+   }
 
     /**
      *

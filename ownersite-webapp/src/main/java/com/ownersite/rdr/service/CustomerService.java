@@ -60,4 +60,6 @@ public interface CustomerService {
 
     void updateCustomerService(String customerId, String serviceId, String vin, String dealerId, String complaints);
 
+	List<CustomerServicesDTO> getServiceHistoryDealer(String dealerId, String subscriptionId);
+
 }

@@ -10,6 +10,24 @@ public class CustomerFeedbackDTO {
     private String customerId;
     private String dealerId;
     private String customerFeedbackId;
+    public String getDealerFirstName() {
+		return dealerFirstName;
+	}
+
+	public void setDealerFirstName(String dealerFirstName) {
+		this.dealerFirstName = dealerFirstName;
+	}
+
+	public String getDealerLastName() {
+		return dealerLastName;
+	}
+
+	public void setDealerLastName(String dealerLastName) {
+		this.dealerLastName = dealerLastName;
+	}
+
+	private String dealerFirstName;
+    private String dealerLastName;
 
     public String getEnquiryCreatedDate() {
         return enquiryCreatedDate;

@@ -585,7 +585,7 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerFeedbackDTO> getAllFeedbackForCustomerId(String customerId) {
         logger.info("getting feedback for customer: {}", customerId);
         List<CustomerFeedbackDTO> customerFeedbackDTOList = new ArrayList<>();
-        List<CustomerFeedback> customerEnquiries = customerFeedbackJpaRepository.findByCustomerId(customerId);
+        List<CustomerFeedback> customerEnquiries = customerFeedbackJpaRepository.findByCustomerId(Long.parseLong(customerId));
         buildCustomerFeedback(customerFeedbackDTOList, customerEnquiries);
         return customerFeedbackDTOList;
     }
@@ -596,19 +596,27 @@ public class CustomerServiceImpl implements CustomerService {
      * @param customerEnquiries - customerEnquiries
      */
     private void buildCustomerFeedback(List<CustomerFeedbackDTO> customerFeedbackDTOList, List<CustomerFeedback> customerEnquiries) {
-        for (CustomerFeedback customerFeedback : customerEnquiries) {
-            CustomerFeedbackDTO customerFeedbackDTO = new CustomerFeedbackDTO();
-            customerFeedbackDTO.setCustomerFeedbackId(customerFeedback.getId().toString());
-            customerFeedbackDTO.setCustomerId(customerFeedback.getCustomer().getId().toString());
-            customerFeedbackDTO.setDealerId(customerFeedback.getDealer().getId().toString());
-            customerFeedbackDTO.setEnquiryQuestion(customerFeedback.getEnquiry_question());
-            customerFeedbackDTO.setEnquiryAnswer(customerFeedback.getEnquiry_answer());
-            customerFeedbackDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_created_date()));
-            customerFeedbackDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_resolved_date()));
-            customerFeedbackDTOList.add(customerFeedbackDTO);
-        }
-    }
-
+       for (CustomerFeedback customerFeedback : customerEnquiries) {
+    	   CustomerFeedbackDTO customerFeedbackDTO = new CustomerFeedbackDTO();
+    	   customerFeedbackDTO.setCustomerFeedbackId(customerFeedback.getId().toString());
+    	   customerFeedbackDTO.setCustomerId(customerFeedback.getCustomer().getId().toString());
+           
+           if(customerFeedback.getDealer()!=null)
+           customerFeedbackDTO.setDealerId(customerFeedback.getDealer().getId().toString());
+           
+           customerFeedbackDTO.setDealerFirstName(customerFeedback.getDealer()!= null ? customerFeedback.getDealer().getFirstname() : "");
+           customerFeedbackDTO.setDealerLastName(customerFeedback.getDealer()!= null ? customerFeedback.getDealer().getLastname() : "");
+           customerFeedbackDTO.setEnquiryQuestion(customerFeedback.getEnquiry_question());
+           customerFeedbackDTO.setEnquiryAnswer(customerFeedback.getEnquiry_answer());
+           
+           if(customerFeedback.getEnquiry_created_date()!=null)
+        	   customerFeedbackDTO.setEnquiryCreatedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_created_date()));
+           
+           if(customerFeedback.getEnquiry_resolved_date()!=null)
+        	   customerFeedbackDTO.setEnquiryResolvedDate(new SimpleDateFormat("DD/MM/yyyy").format(customerFeedback.getEnquiry_resolved_date()));
+           customerFeedbackDTOList.add(customerFeedbackDTO);
+       }
+   }
     /**
      * gets all the feedback for the dealer
      * @param dealerId - dealer id
@@ -618,7 +626,7 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerFeedbackDTO> getAllFeedbackForDealerId(String dealerId) {
         logger.info("getting feedback for dealer: {}", dealerId);
         List<CustomerFeedbackDTO> customerFeedbackDTOList = new ArrayList<>();
-        List<CustomerFeedback> customerFeedback = customerFeedbackJpaRepository.findByDealerId(dealerId);
+        List<CustomerFeedback> customerFeedback = customerFeedbackJpaRepository.findByDealerId(Long.parseLong(dealerId));
         buildCustomerFeedback(customerFeedbackDTOList, customerFeedback);
         logger.info("customerFeedback retrieved successfully");
         return customerFeedbackDTOList;

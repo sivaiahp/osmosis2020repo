@@ -234,7 +234,7 @@ public class CustomerServiceImpl implements CustomerService {
            customerServicesDTO.setServiceRepairsDesc(customerService.getService_repairs_desc());
            
          
-           customerServicesDTO.setServiceRequestedDate(String.valueOf(customerService.getServiceStartDate()));
+           customerServicesDTO.setServiceRequestedDate(String.valueOf(customerService.getServiceRequestedDate()));
            customerServicesDTO.setVin(String.valueOf(customerService.getVin()));
            customerServicesDTO.setServiceStartedDate(String.valueOf(customerService.getServiceStartDate()));
            customerServicesDTO.setServiceStationId(String.valueOf(customerService.getServiceStationId()));

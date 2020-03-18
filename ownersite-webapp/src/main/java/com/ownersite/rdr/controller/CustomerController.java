@@ -203,16 +203,28 @@ public class CustomerController {
         return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
     }
 
-    @PostMapping(value = "/updateService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/completeService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> updateService(@RequestParam  String serviceId,
                                                     @RequestParam  String analysis,
                                                      @RequestParam  String repairs,
-                                                    @RequestParam   String cost,
-                                                    @RequestParam   String serviceStartDate) {
+                                                    @RequestParam   String cost) {
         String responseCode = "0";
         HttpStatus httpStatus = OK;
         try {
-            customerService.updateCustomerServiceForDealer(serviceId,analysis,repairs,cost, serviceStartDate);
+            customerService.updateCustomerServiceForDealer(serviceId,analysis,repairs,cost);
+        } catch (Exception exception) {
+            responseCode = "1";
+            httpStatus = ERROR;
+        }
+        return new ResponseEntity<>(new ResponseDTO(responseCode), httpStatus);
+    }
+    
+    @PostMapping(value = "/startService", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> startService(@RequestParam  String serviceId) {
+        String responseCode = "0";
+        HttpStatus httpStatus = OK;
+        try {
+            customerService.startCustomerServiceForDealer(serviceId);
         } catch (Exception exception) {
             responseCode = "1";
             httpStatus = ERROR;

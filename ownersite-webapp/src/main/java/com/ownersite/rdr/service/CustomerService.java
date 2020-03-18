@@ -62,5 +62,7 @@ public interface CustomerService {
 
 	List<CustomerServicesDTO> getServiceHistoryDealer(String dealerId, String subscriptionId);
 
-    void updateCustomerServiceForDealer(String serviceId, String analysis, String repairs, String cost, String serviceStartDate);
+    void updateCustomerServiceForDealer(String serviceId, String analysis, String repairs, String cost);
+
+	void startCustomerServiceForDealer(String serviceId);
 }

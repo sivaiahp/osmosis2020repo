@@ -748,16 +748,30 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerServiceForDealer(String serviceId, String analysis, String repairs, String cost, String serviceStartDate) {
+    public void updateCustomerServiceForDealer(String serviceId, String analysis, String repairs, String cost) {
         logger.info("Updating customer service");
         try {
             CustomerServices customerServices = customerServicesJpaRepository.getOne(Long.parseLong(serviceId));
             customerServices.setService_analysis_desc(analysis);
             customerServices.setService_cost(Double.parseDouble(cost));
             customerServices.setService_repairs_desc(repairs);
-            customerServices.setServiceStartDate(new SimpleDateFormat("dd/MM/yyyy").parse(
-                    serviceStartDate));
+      
             customerServices.setServiceCompletedDate(new Date());
+            customerServicesJpaRepository.save(customerServices);}
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        logger.info("customer service updated successfully");
+    }
+    
+    @Override
+    public void startCustomerServiceForDealer(String serviceId) {
+        logger.info("Updating customer service");
+        try {
+            CustomerServices customerServices = customerServicesJpaRepository.getOne(Long.parseLong(serviceId));
+            
+      
+            customerServices.setServiceStartDate(new Date());
             customerServicesJpaRepository.save(customerServices);}
         catch(Exception ex) {
             ex.printStackTrace();
